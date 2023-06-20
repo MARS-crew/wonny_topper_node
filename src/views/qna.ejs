@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WonnTopper</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,300;1,900&family=Noto+Sans+KR&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/user/assets/css/common.css">
+    <!-- <link rel="stylesheet" href="/assets/css/swiper.css"> -->
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+        integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="wrap">
+        <header class="gnb">
+            <div class="gnb_content">
+                <img src="/user/assets/images/header_logo.jpeg" alt="" onclick="location.href='/index'">
+
+                <ul class="gnb_menu">
+                    <li><a href=/balloon>풍선장식</a></li>
+                    <li><a href=/topper>토퍼</a></li>
+                    <li><a href=/pierrot>삐에로/페이스페인팅</a></li>
+                    <li><a href=/class>원데이클래스</a></li>
+                    <li><a href=/qna>상담문의</a></li>
+                </ul>
+            </div>
+        </header>
+        <div class="container">
+            <div class="qna_banner_area">
+                <div class="wrap_banner_txt">
+                    <p class="qna_banner_title">상담문의</p>
+                    <p class="qna_banner_sub_title">문의를 남겨주시면 빠른 시일 내로 연락드리겠습니다</p>
+                </div>
+            </div>
+            <div class="qna_content">
+                <div class="qna_input_area">
+                    <div class="qna_left_txt">이름</div>
+                    <div class="qna_right_txt"><input type="text" class="name"></div>
+                </div>
+                <div class="qna_input_area">
+                    <div class="qna_left_txt">휴대폰 번호</div>
+                    <div class="cal_input_area">
+                        <div class="qna_right_txt"><input type="text" class="phoneNum1"></div>
+                        <div>-</div>
+                        <div class="qna_right_txt"><input type="text" class="phoneNum2"></div>
+                        <div>-</div>
+                        <div class="qna_right_txt"><input type="text" class="phoneNum3"></div>
+
+                    </div>
+                </div>
+                <div class="qna_input_area">
+                    <div class="qna_left_txt">이메일</div>
+                    <div class="email_input_area">
+                        <div class="qna_right_txt"><input type="text" class="email"></div>
+                        <div>@</div>
+                        <div class="qna_right_txt"><input type="text" class="address"></div>
+                    </div>
+                </div>
+                <div class="qna_input_area">
+                    <div class="qna_left_txt">장소</div>
+                    <div class="qna_right_txt"><input type="text" class="place"></div>
+                </div>
+                <div class="qna_input_area">
+                    <div class="qna_left_txt">예산</div>
+                    <div class="budget_area">
+                        <div class="qna_right_txt"><input type="text" class="budget"></div>
+                        <div class="qna_cation_txt">만원</div>
+                    </div>
+                </div>
+                <div class="qna_input_area">
+                    <div class="qna_left_txt">의뢰목적</div>
+                    <div class="request_selet_area">
+                        <select name="" id="" class="select request_selet">
+                            <option value="" selected>선택</option>
+                            <option value="풍선장식">풍선장식</option>
+                            <option value="토퍼">토퍼</option>
+                            <option value="부스체험(토퍼, 풍선)">부스체험(토퍼, 풍선)</option>
+                            <option value="삐에로">삐에로</option>
+                            <option value="페이스페인팅">페이스페인팅</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="qna_input_area align_flex_start">
+                    <div class="qna_left_txt">상담내용</div>
+                    <div class="textarea_area">
+                        <textarea name="" id="" placeholder="내용을 입력해주세요" class="qna_content_detail"></textarea>
+                    </div>
+                </div>
+                <div>
+
+                </div>
+                <button class="apply_btn">신청하기</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/user/assets/js/swiper.js"></script>
+    <script src="/user/assets/js/common.js"></script>
+</body>
+
+</html>

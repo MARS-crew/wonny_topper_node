@@ -1,0 +1,255 @@
+.table td{
+  vertical-align: middle !important;
+
+}
+.ib {
+  display: inline-block;
+}
+
+.btn-area {
+  width: 150px;
+}
+
+.btn {
+  color: #fff;
+  background-color: #4e73df;
+}
+
+.btn-dark {
+  color: #fff;
+  background-color: #5a5c69;
+}
+
+.btn-100 {
+  width: 100px;
+}
+
+.tx-align-left {
+  text-align: left;
+}
+
+.tx-align-right {
+  text-align: right;
+}
+
+/* sidebar */
+.nav-item-text {
+  display: inline-block !important;
+  width: 100%;
+  margin: 0 !important;
+}
+
+.nav-arrow-btn {
+  float: right;
+}
+
+
+/* login 페이지 */
+.bg-logo {
+  background: url(../img/wonny_topper_logo.jpg);
+  background-position: center;
+  background-size: cover;
+  height: 80px;
+  margin-bottom: 50px;
+}
+
+.alert-modal-body {
+  margin: 20px;
+  color: black;
+}
+
+.login-btn {
+  color: #ffffff;
+  background-color: #414141;
+  border-color: #414141;
+}
+
+.bg-login-banner-image {
+  background: url(../img/login_main_banner.png);
+  background-position: center;
+  background-size: cover;
+}
+
+.bg-login-page-gradient-primary {
+  background-color: #b6c8e5;
+  background-image: linear-gradient(180deg, #ffe4e1, 10%, #fffcf3 100%);
+  background-size: cover;
+}
+
+/* main */
+.main-title {
+  display: inline-block;
+}
+
+.page-adress {
+  float: right;
+}
+
+.ckbox-inline {
+  padding-right: 30px;
+}
+
+.pagination {
+  text-align: center;
+}
+
+.dataTables_paginate {
+  text-align: center;
+}
+
+
+/* 필터 영역  */
+.panel-body {
+  padding: 15px 0;
+}
+
+.filter-inputs {
+  display: inline-block;
+}
+
+.content-table {
+  text-align: center;
+}
+
+.calender-icon {
+  padding: 10px 12px;
+  font-size: 18px;
+}
+
+.tx-icon {
+  min-width: 36px;
+  line-height: 2.2em;
+  text-align: center;
+}
+
+.datepicker table {
+  height: 200px;
+}
+
+.card-body .row {
+  display: inline-block;
+  width: 100%;
+}
+
+/* 툴 영역 */
+.admin-btn-tool {
+  width: 100%;
+  padding-right: 0px;
+  padding-left: 0px;
+  clear: both;
+}
+
+.tool-select {
+  vertical-align: middle;
+  padding-right: 10px;
+}
+
+#dataTable_wrapper .row .col-md-7 {
+  max-width: 100% !important;
+}
+
+.pagination {
+  justify-content: center !important;
+}
+
+/* register 페이지 */
+table {
+  background: white;
+}
+
+.register-sub-title {
+  padding-top: 1rem;
+}
+
+.register-content-body {
+  padding-top: 1rem;
+}
+
+.star {
+  color: red;
+}
+
+.table-title-td {
+  background-color: #e9ecef;
+  text-align: center;
+  font-weight: bold;
+  vertical-align: middle !important;
+}
+
+.detail-bottom-btn button:nth-child(2) {
+  float: right;
+}
+.register-content-body select{
+  width: 400px;
+}
+
+/* main */
+.content-list:hover {
+  background-color: #599cf3;
+  color: #ffffff;
+}
+
+.content-list {
+  cursor: pointer;
+}
+
+/* detail */
+.detail.table input,
+.detail.table textarea {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  width: 100%;
+  height: 100%;
+  resize: none;
+}
+
+.detail.table td input:focus,
+.detail.table td input:active,
+.detail.table td textarea:focus,
+.detail.table td textarea:active {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-color: transparent;
+  padding: 0;
+  margin: 0;
+  outline: none !important;
+  border: none !important;
+  font-size: inherit;
+  line-height: inherit;
+  font-family: inherit;
+  box-shadow: none;
+}
+
+.detail.table td {
+  vertical-align: middle;
+}
+
+.detail-modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding: 0.75rem;
+  border-top: 1px solid #e3e6f0;
+  border-bottom-right-radius: calc(0.3rem - 1px);
+  border-bottom-left-radius: calc(0.3rem - 1px);
+  justify-content: center;
+}
+
+
+/* 모달 */
+@media (min-width: 576px) {
+  .alert-modal-dialog {
+    max-width: 350px;
+  }
+
+  .modal-dialog {
+    max-width: 50% !important;
+  }
+}

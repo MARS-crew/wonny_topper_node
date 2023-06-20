@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>워니토퍼 관리자 - 컨텐츠 수정</title>
+
+    <!-- Custom fonts for this template -->
+    <link
+      href="/admin/assets/vendor/fontawesome-free/css/all.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+      rel="stylesheet"
+    />
+    <!--  -->
+
+    <!-- Custom styles for this template -->
+    <link href="/admin/assets/css/sb-admin-2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/admin/assets/css/style.css" />
+
+    <!-- Custom styles for this page -->
+    <link
+      href="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css"
+      rel="stylesheet"
+    />
+
+    <!-- jquery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- date picker -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- 공통 -->
+    <script src="/admin/assets/js/common.js"></script>
+
+    <style>
+      .pagination {
+        text-align: center;
+      }
+
+      .dataTables_paginate {
+        text-align: center;
+      }
+    </style>
+
+    <script></script>
+  </head>
+
+  <body id="page-top">
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+      <!-- Sidebar -->
+      <ul
+        class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion"
+        id="accordionSidebar"
+      ></ul>
+      <!-- End of Sidebar -->
+
+      <!-- Content Wrapper -->
+      <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+          <!-- Topbar -->
+          <nav
+            id="top-bar"
+            class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"
+          ></nav>
+          <!-- End of Topbar -->
+
+          <!-- Begin Page Content -->
+          <div class="container-fluid">
+            <!-- Page Heading -->
+            <div class="border-bottom-primary mb-4">
+              <div class="main-title">
+                <h1 class="mb-2 text-gray-800">컨텐츠 수정</h1>
+              </div>
+              <h6 class="page-adress">
+                컨텐츠 관리 > 컨텐츠 관리 > 컨텐츠 수정
+              </h6>
+            </div>
+
+            <!-- Page Heading -->
+
+            <section role="main" class="content-body register-content-body">
+              <form
+                action="/admin/source"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                <h6 class="float-right">
+                  <span class="star">*</span>
+                  는 필수 입력값
+                </h6>
+                <h4 class="register-sub-title">■ 컨텐츠 기본정보</h4>
+                <table
+                  class="register table table-bordered"
+                  id="datatable-ajax"
+                  data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json"
+                >
+                  <tr>
+                    <td width="20%" class="table-title-td">
+                      카테고리<span class="star">*</span>
+                    </td>
+                    <td width="30%">
+                      <select
+                        name="category"
+                        id="category"
+                        class="form-control"
+                        required
+                      >
+                        <option value="">--선택--</option>
+                        <option value="풍선 장식">풍선 장식</option>
+                        <option value="토퍼 제작">토퍼 제작</option>
+                        <option value="삐에로">삐에로</option>
+                        <option value="페이스페인팅">페이스페인팅</option>
+                        <option value="원데이클래스">원데이클래스</option>
+                      </select>
+                    </td>
+                    <td width="20%" class="table-title-td" id="contentId">
+                      컨텐츠코드
+                    </td>
+                    <td width="30%" id="content_id"></td>
+                  </tr>
+                  <tr>
+                    <td width="20%" class="table-title-td">
+                      제목<span class="star">*</span>
+                    </td>
+                    <td width="30%" colspan="3">
+                      <input
+                        type="text"
+                        class="form-control"
+                        name="name"
+                        id="title"
+                        required
+                      />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td width="20%" class="table-title-td">등록일</td>
+                    <td width="30%" id="reg_date"></td>
+                    <td width="20%" class="table-title-td">수정일</td>
+                    <td width="30%" id="mod_date"></td>
+                  </tr>
+                </table>
+
+                <h4 class="register-sub-title">■ 이미지 등록</h4>
+                <table
+                  class="register table table-bordered"
+                  id="datatable-ajax"
+                  data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json"
+                >
+                  <tr>
+                    <td width="20%" class="table-title-td">
+                      대표 이미지<span class="star">*</span>
+                      <div>(최대 1개)</div>
+                    </td>
+                    <td width="40%" colspan="2">
+                      <input
+                        type="file"
+                        accept="image/jpg"
+                        name="introduceImg"
+                        required
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="20%" rowspan="4" class="table-title-td">
+                      추가 이미지
+                      <div>(최대 4개)</div>
+                    </td>
+                    <td width="5%" style="text-align: center">1</td>
+                    <td width="95%">
+                      <input
+                        type="file"
+                        accept="image/jpg"
+                        name="productImgArr[]"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="5%" style="text-align: center">2</td>
+                    <td width="95%">
+                      <input
+                        type="file"
+                        accept="image/jpg"
+                        name="productImgArr[]"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="5%" style="text-align: center">3</td>
+                    <td width="95%">
+                      <input
+                        type="file"
+                        accept="image/jpg"
+                        name="productImgArr[]"
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td width="5%" style="text-align: center">4</td>
+                    <td width="95%">
+                      <input
+                        type="file"
+                        accept="image/jpg"
+                        name="productImgArr[]"
+                      />
+                    </td>
+                  </tr>
+                </table>
+
+                <h4 class="register-sub-title">■ 기타 정보</h4>
+                <table
+                  class="register table table-bordered"
+                  id="datatable-ajax"
+                  data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json"
+                >
+                  <tr>
+                    <td width="20%" class="table-title-td">비고</td>
+                    <td width="80%" colspan="2">
+                      <textarea class="form-control" id="note">
+비고 입니다</textarea
+                      >
+                    </td>
+                  </tr>
+                </table>
+
+                <div class="admin-btn-tool tool-btn ib detail-bottom-btn">
+                  <button
+                    type="button"
+                    class="mb-xs mt-xs mr-xs btn btn-primary btn-100"
+                    onClick="onClickCancleBtn()"
+                  >
+                    목록
+                  </button>
+                  <button
+                    type="button"
+                    class="mb-xs mt-xs mr-xs btn btn-primary btn-100"
+                    onClick="modContent()"
+                  >
+                    완료
+                  </button>
+                </div>
+              </form>
+            </section>
+          </div>
+          <!-- /.container-fluid -->
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+          <div class="container my-auto">
+            <div class="copyright text-center my-auto">
+              <span>Copyright &copy; Your Website 2020</span>
+            </div>
+          </div>
+        </footer>
+        <!-- End of Footer -->
+      </div>
+      <!-- End of Content Wrapper -->
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script>
+      let memberId = "";
+
+      $(document).ready(function () {
+        $("#dataTable").DataTable();
+        findContent();
+      });
+
+      const onClickCancleBtn = () => {
+        if (confirm("등록을 취소하시겠습니까"))
+          location.href = "/admin/content_main";
+      };
+
+      const modContent = async () => {
+        const body = {
+          content_id: document.getElementById("content_id").textContent,
+          member_id: memberId,
+          category: document.getElementById("category").value,
+          note: document.getElementById("note").value,
+          title: document.getElementById("title").value,
+        };
+        if (body.category === "") {
+          alert("필수 값이 입력되지 않았습니다.");
+
+          return;
+        }
+        if (body.title === "") {
+          alert("필수 값이 입력되지 않았습니다.");
+
+          return;
+        }
+  
+        const response = await fetch("/content/update", {
+          headers: {
+            "Content-Type": "application/json",
+          },
+          method: "post",
+          body: JSON.stringify(body),
+        });
+
+        const { code, message } = await response.json();
+        if (code === 200) {
+          alert("수정되었습니다.");
+          window.location.href = "/admin/content_main";
+
+          return;
+        }
+        alert(message);
+      };
+
+      const findContent = async () => {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const id = params.get("content_id");
+          const response = await fetch(`/content/select?content_id=${id}`);
+          const { code, message, data } = await response.json();
+          if (code === 200) {
+            if (!data) {
+              return;
+            }
+
+            memberId = data[0].member_id;
+            const title = document.getElementById("title");
+            const note = document.getElementById("note");
+            const category = document.getElementById("category");
+            const contentId = document.getElementById("content_id");
+            const regDate = document.querySelector("#reg_date");
+            const modDate = document.querySelector("#mod_date");
+            title.value = data[0].title;
+            note.value = data[0].note;
+            category.value = data[0].category;
+            modDate.textContent = dayjs(data[0].mod_date).format(
+              "YYYY-MM-DD HH:mm:ss"
+            );
+            regDate.textContent = dayjs(data[0].reg_date).format(
+              "YYYY-MM-DD HH:mm:ss"
+            );
+            contentId.textContent = data[0].content_id;
+          }
+        } catch (err) {
+          console.log("Err:", err);
+        }
+      };
+    </script>
+
+    <!— Bootstrap core JavaScript—>
+    <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!— Core plugin JavaScript—>
+    <script src="/admin/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!— Custom scripts for all pages—>
+    <script src="/admin/assets/js/sb-admin-2.min.js"></script>
+
+    <!— Page level plugins —>
+    <script src="/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!— Page level custom scripts —>
+    <script src="/admin/assets/js/demo/datatables-demo.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+  </body>
+</html>
