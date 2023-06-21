@@ -112,7 +112,7 @@ const counselService = {
   },
   insertAnswer: async (req, res) => {
     try {
-      const { detail, counsel_id, file } = req.body;
+      const { detail, counsel_id, file, email } = req.body;
       const sql =
         "INSERT INTO tbl_answer (user_id, counsel_id, detail) VALUES(?, ?, ?)";
 
@@ -124,7 +124,7 @@ const counselService = {
       console.log(saveAnswer.insertId);
       console.log(file);
 
-      if(file != undefined) {
+      if(file != undefined && file != ''&& file != null) {
         const sql2 =
         "INSERT INTO tbl_file (target_id, origin_name, change_name, ext, url, del_yn, type) VALUES(?, ?, ?, ?, ?, ?, ?)";
       
@@ -139,7 +139,7 @@ const counselService = {
         ]);
       }
 
-      await sendMail("dbsdmsdud912@gmail.com", "TEST 메일", "TEST 메일 전송");
+      await sendMail(email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", detail);
       res.status(200).json({
         code: 200,
         message: "답변 생성에 성공하였습니다.",
