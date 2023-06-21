@@ -1,7 +1,9 @@
-.table td{
+/* 공통 */
+.table td {
   vertical-align: middle !important;
 
 }
+
 .ib {
   display: inline-block;
 }
@@ -32,7 +34,7 @@
   text-align: right;
 }
 
-/* sidebar */
+/* 사이드바 */
 .nav-item-text {
   display: inline-block !important;
   width: 100%;
@@ -44,7 +46,7 @@
 }
 
 
-/* login 페이지 */
+/* 로그인 페이지 */
 .bg-logo {
   background: url(../img/wonny_topper_logo.jpg);
   background-position: center;
@@ -76,7 +78,20 @@
   background-size: cover;
 }
 
-/* main */
+/* 메인 리스트 */
+.content-list:hover {
+  background-color: #599cf3;
+  color: #ffffff;
+}
+
+.content-list {
+  cursor: pointer;
+}
+
+#dataTable_wrapper .row .col-md-7 {
+  max-width: 100% !important;
+}
+
 .main-title {
   display: inline-block;
 }
@@ -91,14 +106,14 @@
 
 .pagination {
   text-align: center;
+  justify-content: center !important;
 }
 
 .dataTables_paginate {
   text-align: center;
 }
 
-
-/* 필터 영역  */
+/* 메인 필터 영역 */
 .panel-body {
   padding: 15px 0;
 }
@@ -131,7 +146,8 @@
   width: 100%;
 }
 
-/* 툴 영역 */
+/* 메인 버튼 영역 */
+
 .admin-btn-tool {
   width: 100%;
   padding-right: 0px;
@@ -144,15 +160,9 @@
   padding-right: 10px;
 }
 
-#dataTable_wrapper .row .col-md-7 {
-  max-width: 100% !important;
-}
 
-.pagination {
-  justify-content: center !important;
-}
 
-/* register 페이지 */
+/* 등록 페이지 */
 table {
   background: white;
 }
@@ -179,21 +189,12 @@ table {
 .detail-bottom-btn button:nth-child(2) {
   float: right;
 }
-.register-content-body select{
+
+.register-content-body select {
   width: 400px;
 }
 
-/* main */
-.content-list:hover {
-  background-color: #599cf3;
-  color: #ffffff;
-}
-
-.content-list {
-  cursor: pointer;
-}
-
-/* detail */
+/* 컨텐츠 상세 */
 .detail.table input,
 .detail.table textarea {
   border: none;

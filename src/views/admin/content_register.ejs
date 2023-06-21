@@ -5,8 +5,8 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="description" content="" />
-  <meta name="author" content="" />
+  <meta name="description" content="이벤트 케이크토퍼 꽃풍선 파티 풍선" />
+  <meta name="author" content="mars-sequel" />
 
   <title>워니토퍼 관리자 - 컨텐츠 등록</title>
 
@@ -16,39 +16,21 @@
     href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
     rel="stylesheet" />
 
-  <!-- Custom styles -->
+  <!-- Styles for this page -->
   <link href="/admin/assets/css/sb-admin-2.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/admin/assets/css/style.css" />
-
-  <!-- Custom styles for this page -->
   <link href="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
-  <!-- jquery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
-  <!-- 공통 -->
+  <!-- CSS / JS -->
+  <link rel="stylesheet" href="/admin/assets/css/style.css" />
   <script src="/admin/assets/js/common.js"></script>
 
-  <style>
-    .pagination {
-      text-align: center;
-    }
-
-    .dataTables_paginate {
-      text-align: center;
-    }
-  </style>
-
-  <script>
-
-  </script>
 </head>
 
 <body id="page-top">
@@ -79,7 +61,7 @@
           </div>
 
           <section role="main" class="content-body register-content-body">
-            <form  id="uploadForm" method="post" enctype="multipart/form-data">
+            <form id="uploadForm" method="post" enctype="multipart/form-data">
               <h6 class="float-right">
                 <span class="star">*</span>
                 는 필수 입력값
@@ -132,7 +114,8 @@
                         <div>(최대 1개)</div>
                       </td>
                       <td width="40%" colspan="2">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file1" name="productImgArr[]" onchange="uploadFormData(0)" required />
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file1" name="productImgArr[]"
+                          onchange="uploadFormData(0)" required />
                       </td>
                     </tr>
                     <tr>
@@ -140,25 +123,29 @@
                       </td>
                       <td width="5%" style="text-align: center;">1</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file2" onchange="uploadFormData(1)" name="productImgArr[]" />
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file2" onchange="uploadFormData(1)"
+                          name="productImgArr[]" />
                       </td>
                     </tr>
                     <tr>
                       <td width="5%" style="text-align: center;">2</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file3" onchange="uploadFormData(2)" name="productImgArr[]" />
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file3" onchange="uploadFormData(2)"
+                          name="productImgArr[]" />
                       </td>
                     </tr>
                     <tr>
                       <td width="5%" style="text-align: center;">3</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file4" onchange="uploadFormData(3)" name="productImgArr[]" />
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file4" onchange="uploadFormData(3)"
+                          name="productImgArr[]" />
                       </td>
                     </tr>
                     <tr>
                       <td width="5%" style="text-align: center;">4</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file5" onchange="uploadFormData(4)" name="productImgArr[]" />
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file5" onchange="uploadFormData(4)"
+                          name="productImgArr[]" />
                       </td>
                     </tr>
                   </table>
@@ -232,24 +219,24 @@
       if (confirm("등록을 취소하시겠습니까")) location.href = "/admin/content_main";
     }
     function uploadFormData(i) {
-        const input =document.getElementsByName("productImgArr[]");
-        const file = input[i].files[0];
+      const input = document.getElementsByName("productImgArr[]");
+      const file = input[i].files[0];
 
-        const formData = new FormData();
-        formData.append("file", file);
+      const formData = new FormData();
+      formData.append("file", file);
 
-        fetch("/upload", {
-          method: "POST",
-          body: formData,
+      fetch("/upload", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => response.text())
+        .then((data) => {
+          console.log(data); // 파일 업로드 완료 후 서버의 응답 출력
         })
-          .then((response) => response.text())
-          .then((data) => {
-            console.log(data); // 파일 업로드 완료 후 서버의 응답 출력
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
+        .catch((error) => {
+          console.error("Error:", error);
+        });
+    }
 
     const onClickSubmitBtn = async (e) => {
       e.preventDefault();
@@ -257,7 +244,7 @@
       const title = document.getElementById("title").value;
       const note = document.getElementById("note").value;
       const category = document.getElementById("category").value;
-      const requiredPhoto =document.getElementById("file1").value;
+      const requiredPhoto = document.getElementById("file1").value;
 
       if (title == "") {
         alert("필수값이 입력되지 않았습니다.");
@@ -269,7 +256,7 @@
       }
       if (requiredPhoto === "") {
         alert("필수값이 입력되지 않았습니다.");
-        return false; 
+        return false;
       }
 
 
