@@ -12,6 +12,3 @@
 
 #### 4. 주소로 들어가기
   + localhost:3000/admin/index
-
-#### 5. install
-+ 메일 : npm install nodemailer
