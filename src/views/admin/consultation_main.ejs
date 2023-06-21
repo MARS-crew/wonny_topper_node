@@ -324,7 +324,7 @@
                 <td width="20%" class="table-title-td">첨부파일
                 </td>
                 <td width="80%" colspan="2">
-                  <input type="file" accept="image/jpg" name="introduceImg" required />
+                  <input type="file" accept="image/jpg" id="file1" name="file1" required />
                 </td>
               </tr>
             </table>
@@ -334,7 +334,7 @@
         </div>
         <div class="detail-modal-footer">
 
-          <a class="btn btn-primary btn-100">전송</a>
+          <a class="btn btn-primary btn-100" onClick="onClickSubmitBtn(event)">전송</a>
         </div>
       </div>
     </div>
@@ -413,7 +413,7 @@
                 <td width="20%" class="table-title-td">답변
                 </td>
                 <td width="80%" colspan="2">
-                  <textarea class="form-control" value="" readonly>답변입니다.</textarea>
+                  <textarea class="form-control" id="answerDetail" value="" readonly>답변입니다.</textarea>
                 </td>
               </tr>
               <tr>
@@ -588,7 +588,39 @@
     })
 
 
+    const onClickSubmitBtn = async (e) => {
+      console.log("전송이벤트 실행");
+      const answer = document.getElementById("answerDetail").value;
+      const photo = document.getElementById("file1").value;
 
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+      
+
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      try {
+        const response = await fetch(``, requestOptions);
+        const { code, message } = await response.json();
+        if (code === 200) {
+          alert("저장되었습니다.");
+          window.location.href = "/admin/content_main";
+        }
+      } catch (err) {
+        console.log('Err:', err);
+      }
+
+    }
 
 
   </script>
