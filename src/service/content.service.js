@@ -34,14 +34,25 @@ const contentService = {
         sql = `SELECT * FROM tbl_content WHERE del_yn = 'N'`;
       } else {
         sql = `
-        SELECT 
-          ct.*,
-          (SELECT fl.url FROM tbl_file fl WHERE fl.file_id = ct.file_main_id) AS file_main_id_url,
-          (SELECT fl.url FROM tbl_file fl WHERE fl.file_id = ct.file_1_id) AS file_1_id_url,
-          (SELECT fl.url FROM tbl_file fl WHERE fl.file_id = ct.file_2_id) AS file_2_id_url,
-          (SELECT fl.url FROM tbl_file fl WHERE fl.file_id = ct.file_3_id) AS file_3_id_url,
-          (SELECT fl.url FROM tbl_file fl WHERE fl.file_id = ct.file_4_id) AS file_4_id_url
-        FROM tbl_content ct WHERE ct.del_yn = 'N' AND ct.content_id = ?;
+          SELECT 
+            ct.*,
+            fl1.url AS file_main_id_url,
+            fl2.url AS file_1_id_url,
+            fl3.url AS file_2_id_url,
+            fl4.url AS file_3_id_url,
+            fl5.url AS file_4_id_url,
+            fl1.origin_name AS file_main_id_origin_name,
+            fl2.origin_name AS file_1_id_origin_name,
+            fl3.origin_name AS file_2_id_origin_name,
+            fl4.origin_name AS file_3_id_origin_name,
+            fl5.origin_name AS file_4_id_origin_name
+          FROM tbl_content ct
+          LEFT JOIN tbl_file fl1 ON fl1.file_id = ct.file_main_id
+          LEFT JOIN tbl_file fl2 ON fl2.file_id = ct.file_1_id
+          LEFT JOIN tbl_file fl3 ON fl3.file_id = ct.file_2_id
+          LEFT JOIN tbl_file fl4 ON fl4.file_id = ct.file_3_id
+          LEFT JOIN tbl_file fl5 ON fl5.file_id = ct.file_4_id
+          WHERE ct.del_yn = 'N' AND ct.content_id = 2;
         `;
       }
       
