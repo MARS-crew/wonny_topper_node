@@ -10,11 +10,11 @@ const userService = {
   },
   register: async (req, res) => {
     try {
-      const { member_id, pwd, name } = req.body;
+      const { id, pwd, name } = req.body;
 
       const findUser = await executeQuery(
-        "SELECT * FROM tbl_member where member_id = ?",
-        member_id
+        "SELECT * FROM tbl_admin WHERE id = ?",
+        id
       );
       if (findUser.length > 0) {
         res.send(setResponseJson(400, "이미 존재하는 ID 입니다.", false));
@@ -25,8 +25,8 @@ const userService = {
       const hash = await bcrypt.hash(pwd, 10);
 
       await executeQuery(
-        "INSERT INTO tbl_member(member_id, pwd, name) VALUES(?,?,?)",
-        [member_id, hash, name]
+        "INSERT INTO tbl_admin(id, pwd, name) VALUES(?,?,?)",
+        [id, hash, name]
       );
 
       res.send(setResponseJson(200, "회원가입 성공", true));
@@ -37,11 +37,11 @@ const userService = {
   },
   login: async (req, res) => {
     try {
-      const { member_id, pwd, isAuto } = req.body;
+      const { id, pwd, isAuto } = req.body;
 
       const findUser = await executeQuery(
-        "SELECT * FROM tbl_member where member_id = ?",
-        member_id
+        "SELECT * FROM tbl_admin WHERE id = ?",
+        id
       );
 
       if (findUser.length < 1) {
@@ -65,19 +65,19 @@ const userService = {
       }
 
       req.session.user = {
-        id: findUser[0].id,
+        id: findUser[0].admin_id,
       };
 
       if (isAuto) {
-        res.cookie("topper", findUser[0].id, { maxAge: 60 * 60 * 24 * 14 });
+        res.cookie("topper", findUser[0].admin_id, { maxAge: 60 * 60 * 24 * 14 });
       }
 
       res.status(200).json({
         code: 200,
         message: "로그인 성공",
         data: {
+          admin_id: findUser[0].admin_id,
           id: findUser[0].id,
-          member_id: findUser[0].member_id,
           name: findUser[0].name,
         },
       });

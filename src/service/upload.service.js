@@ -1,34 +1,40 @@
-const conn = require("../config/db");
-const setResponseJson = require("../dto/responseDto");
+const { executeQuery } = require("../repository");
 
 const uploadService = {
-  uploadFile: (req, res) => {
-    const { originalname, filename, path, mimetype } = req.file;
+  uploadFile: async (req, res) => { // 등록
+    try {
+      const { originalname, filename, path, mimetype } = req.file;
 
-    const data = {
-      member_id: "admin",
-      target_id: 0,
-      target_code: "CT",
-      origin_name: originalname,
-      change_name: filename,
-      ext: mimetype,
-      url: path,
-      reg_date: setDate(),
-      mod_date: setDate(),
-    };
+      const data = {
+        origin_name: originalname,
+        change_name: filename,
+        ext: mimetype,
+        url: path
+      };
 
-    const sql = "INSERT INTO tbl_file SET ?";
+      const sql = "INSERT INTO tbl_file SET ?";
+      const saveAnswer = await executeQuery(sql, data);
 
-    conn.query(sql, data, (err, row) => {
-      if (err) {
-        console.log(err);
-        res.send(setResponseJson(500, "에러 발생", false));
-        return;
+      res.status(200).json({
+        code: 200,
+        message: "컨텐츠 등록에 성공하였습니다.",
+        data: { file_id: saveAnswer.insertId },
+      });
+    }catch (err) {
+      let message;
+
+      if(req.session.user == undefined) {
+        message = "유저 세션이 존재하지 않습니다."
+      } else {
+        message = "에러가 발생하였습니다.";
       }
-      console.log(row);
-      res.send(setResponseJson(200, "파일 저장 성공", row));
-    });
-  },
+
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: message, data: err, code: 500 });
+    }
+  }
 };
 
 module.exports = uploadService;
