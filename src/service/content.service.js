@@ -43,163 +43,113 @@ const contentService = {
       }
     });
   },
-  insert: (req, res) => {
-    // 등록
-    const today = setDate();
-    const data = {
-      member_id: req.body.member_id,
-      category: req.body.category,
-      title: req.body.title,
-      note: req.body.note,
-      reg_date: today,
-      mod_date: today,
-    };
+  insert: async (req, res) => { // 등록
+    try {
+      const data = {
+        user_id: req.session.user.id,
+        category: req.body.category,
+        title: req.body.title,
+        note: req.body.note
+      };
 
-    const sql = "INSERT INTO tbl_content SET ?";
-    db.query(sql, data, function (err, rows) {
-      if (!err) {
-        if (rows != "") {
-          // 등록 성공
-          const image = req.files; // 업로드된 이미지 정보
+      const sql = "INSERT INTO tbl_content SET ?";
 
-          if (image.length > 0) {
-            // 이미지 업로드 된 경우
-            fnUploadImage(req, rows.insertId, image, today, "등록", res); // 이미지 등록 함수 호출
-          } else {
-            res.send(setResponseJson(200, "컨텐츠 등록 성공", ""));
-          }
-        } else {
-          res.send(setResponseJson(405, "컨텐츠 등록 실패", ""));
-        }
+      const saveAnswer = await executeQuery(sql, data);
+
+      res.status(200).json({
+        code: 200,
+        message: "컨텐츠 등록에 성공하였습니다.",
+        data: true,
+      });
+    } catch (err) {
+      let message;
+
+      if(req.session.user == undefined) {
+        message = "유저 세션이 존재하지 않습니다."
       } else {
-        console.log("컨텐츠 등록 실패 err : " + err);
-        res.send(setResponseJson(404, "컨텐츠 등록 실패", err));
+        message = "에러가 발생하였습니다.";
       }
-    });
-  },
-  update: (req, res) => {
-    // 수정
-    const today = setDate();
-    const data = {
-      content_id: req.body.content_id,
-      member_id: req.body.member_id,
-      category: req.body.category,
-      title: req.body.title,
-      note: req.body.note,
-      mod_date: today,
-    };
 
-    const sql = `UPDATE tbl_content SET category = ?, title = ?, note = ?, mod_date = ? WHERE content_id = ? AND member_id = ? AND del_yn = 'N'`;
-    db.query(
-      sql,
-      [
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: message, data: err, code: 500 });
+    }
+  },
+  update: async (req, res) => { // 수정
+    try {
+      // 수정
+      const data = {
+        user_id: req.session.user.id,
+        content_id: req.body.content_id,
+        category: req.body.category,
+        title: req.body.title,
+        note: req.body.note,
+        reg_date : req.body.reg_date
+      };
+
+      let sql = `UPDATE tbl_content SET category = ?, title = ?, note = ?`;
+      if(data.reg_date != null) {
+        sql += `, reg_date = '${data.reg_date}' `;
+      }
+      sql += `WHERE id = ? AND user_id = ? AND del_yn = 'N'`;
+
+      const saveAnswer = await executeQuery(sql, [
         data.category,
         data.title,
         data.note,
-        data.mod_date,
         data.content_id,
-        data.member_id,
-      ],
-      function (err, rows) {
-        if (!err) {
-          if (rows.affectedRows > 0) {
-            const image = req.file; // 업로드된 이미지 정보
+        data.user_id,
+      ]);
 
-            if (image != undefined) {
-              // 이미지 업로드 된 경우
-              fnUploadImage(req, content_id, image, today, "수정", res); // 이미지 등록 함수 호출
-            } else {
-              res.send(setResponseJson(200, "컨텐츠 수정 성공", ""));
-            }
-          } else {
-            res.send(setResponseJson(405, "컨텐츠 수정 실패", ""));
-          }
-        } else {
-          console.log("컨텐츠 수정 실패 err : " + err);
-          res.send(setResponseJson(404, "컨텐츠 수정 실패", err));
-        }
+      res.status(200).json({
+        code: 200,
+        message: "컨텐츠 수정에 성공하였습니다.",
+        data: true,
+      });
+    } catch (err) {
+      let message;
+
+      if(req.session.user == undefined) {
+        message = "유저 세션이 존재하지 않습니다."
+      } else {
+        message = "에러가 발생하였습니다.";
       }
-    );
+
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: message, data: err, code: 500 });
+    }
   },
-  delete: (req, res) => {
-    // 삭제
-    // const today = setDate();
-    // const arrayData = req.body.data;
-    // const sql = `UPDATE tbl_content SET del_yn = 'Y', mod_date = ? WHERE content_id = ? AND member_id = ?`;
-    // let completedQueries = 0;
+  delete: async (req, res) => { // 삭제
+    // try {
+    //   const data = {
+    //     content_id: req.body.content_id,
+    //     member_id: req.body.member_id
+    //   };
 
-    // for (let i = 0; i < arrayData.length; i++) {
-    //     const data = {
-    //         content_id: arrayData[i].content_id,
-    //         member_id: arrayData[i].content_id,
-    //         mod_date: today
-    //     };
+    //   const sql = `UPDATE tbl_content SET del_yn = 'Y', mod_date = ? WHERE content_id = ? AND member_id = ?`;
+    //   db.query(
+    //     sql,
+    //     [data.mod_date, data.content_id, data.member_id],
+    //     function (err, rows) {
+    //     }
+    //   );
+    // } catch {
+    //   let message;
 
-    //     db.query(sql, [data.mod_date, data.content_id, data.member_id], (err, rows) => {
-    //         if (!err) {
-    //             if (rows.affectedRows > 0) {
-    //                 fnDeleteImage(data.content_id, today, '삭제');
+    //   if(req.session.user == undefined) {
+    //     message = "유저 세션이 존재하지 않습니다."
+    //   } else {
+    //     message = "에러가 발생하였습니다.";
+    //   }
 
-    //                 completedQueries++;
-    //                 if (completedQueries === arrayData.length) {
-    //                     res.send(setResponseJson(200, '모든 컨텐츠 삭제 성공', ''));
-    //                 }
-    //             } else {
-    //                 res.send(setResponseJson(405, '컨텐츠 삭제 실패', ''));
-    //             }
-    //         } else {
-    //             console.log('컨텐츠 삭제 실패 err : ' + err);
-    //             res.send(setResponseJson(404, '컨텐츠 삭제 실패', err));
-    //         }
-    //     });
+    //   console.error(err);
+    //   res
+    //     .status(500)
+    //     .json({ message: message, data: err, code: 500 });
     // }
-
-    // for(i = 0; i < arrayData.length; i++) {
-    //     const data = {
-    //         content_id: arrayData[i].content_id,
-    //         member_id: arrayData[i].content_id,
-    //         mod_date: today
-    //     };
-    //     db.query(sql, [data.mod_date, data.content_id, data.member_id],function(err,rows) {
-    //         if(!err) {
-    //             if(rows.affectedRows > 0) {
-    //                 fnDeleteImage(data.content_id, today, '삭제', res);
-    //                 // res.send(setResponseJson(200, '컨텐츠 삭제 성공', ''));
-    //             } else {
-    //                 res.send(setResponseJson(405, '컨텐츠 삭제 실패', ''));
-    //             }
-    //         } else {
-    //             console.log('컨텐츠 삭제 실패 err : ' + err);
-    //             res.send(setResponseJson(404, '컨텐츠 삭제 실패', err));
-    //         }
-    //     });
-    // }
-
-    const today = setDate();
-    const data = {
-      content_id: req.body.content_id,
-      member_id: req.body.member_id,
-      mod_date: today,
-    };
-
-    const sql = `UPDATE tbl_content SET del_yn = 'Y', mod_date = ? WHERE content_id = ? AND member_id = ?`;
-    db.query(
-      sql,
-      [data.mod_date, data.content_id, data.member_id],
-      function (err, rows) {
-        if (!err) {
-          if (rows.affectedRows > 0) {
-            fnDeleteImage(data.content_id, today, "삭제", res);
-            // res.send(setResponseJson(200, '컨텐츠 삭제 성공', ''));
-          } else {
-            res.send(setResponseJson(405, "컨텐츠 삭제 실패", ""));
-          }
-        } else {
-          console.log("컨텐츠 삭제 실패 err : " + err);
-          res.send(setResponseJson(404, "컨텐츠 삭제 실패", err));
-        }
-      }
-    );
   },
   deleteFile: (req, res) => {
     // 이미지 삭제
