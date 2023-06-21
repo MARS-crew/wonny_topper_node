@@ -52,7 +52,7 @@ const contentService = {
           LEFT JOIN tbl_file fl3 ON fl3.file_id = ct.file_2_id
           LEFT JOIN tbl_file fl4 ON fl4.file_id = ct.file_3_id
           LEFT JOIN tbl_file fl5 ON fl5.file_id = ct.file_4_id
-          WHERE ct.del_yn = 'N' AND ct.content_id = 2;
+          WHERE ct.del_yn = 'N' AND ct.content_id = ?;
         `;
       }
       
