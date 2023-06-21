@@ -1,5 +1,7 @@
 const db = require("../config/db");
 const setResponseJson = require("../dto/responseDto");
+const sendMail = require("../utils/mail");
+const { executeQuery } = require("../repository");
 
 const counselService = {
   search: (req, res) => {
@@ -79,7 +81,6 @@ const counselService = {
   },
   insertCounsel: (req, res) => {
     // 등록
-    const today = setDate();
     const data = {
       name: req.body.name,
       phone_num: req.body.phone_num,
@@ -88,8 +89,7 @@ const counselService = {
       budget: req.body.budget,
       purpose: req.body.purpose,
       detail: req.body.detail,
-      agree: req.body.agree,
-      reg_date: today,
+      agree: req.body.agree
     };
 
     // if (req.session.user) {
@@ -110,33 +110,47 @@ const counselService = {
     //     res.send(setResponseJson(405, '로그인 세션 미존재', ''));
     // }
   },
-  insertAnswer: (req, res) => {
-    // 등록
-    const today = setDate();
-    const data = {
-      member_id: req.body.member_id,
-      counsel_id: req.body.counsel_id,
-      detail: req.body.detail,
-      reg_date: today,
-    };
+  insertAnswer: async (req, res) => {
+    try {
+      const { detail, counsel_id, file } = req.body;
+      const sql =
+        "INSERT INTO tbl_answer (user_id, counsel_id, detail) VALUES(?, ?, ?)";
 
-    // if (req.session.user) {
-    const sql = "INSERT INTO tbl_answer SET ?";
-    db.query(sql, data, function (err, rows) {
-      if (!err) {
-        if (rows != "") {
-          res.send(setResponseJson(200, "상담 답변 등록 성공", ""));
-        } else {
-          res.send(setResponseJson(405, "상담 답변 등록 실패", ""));
-        }
-      } else {
-        console.log("상담 답변 등록 실패 err : " + err);
-        res.send(setResponseJson(404, "상담 답변 등록 실패", err));
+      const saveAnswer = await executeQuery(sql, [
+        req.session.user.id,
+        counsel_id,
+        detail,
+      ]);
+      console.log(saveAnswer.insertId);
+      console.log(file);
+
+      if(file != undefined) {
+        const sql2 =
+        "INSERT INTO tbl_file (target_id, origin_name, change_name, ext, url, del_yn, type) VALUES(?, ?, ?, ?, ?, ?, ?)";
+      
+        await executeQuery(sql2, [
+          saveAnswer.insertId,
+          file.origin_name,
+          file.change_name,
+          file.ext,
+          file.url,
+          "Y",
+          "Main",
+        ]);
       }
-    });
-    // } else {
-    //     res.send(setResponseJson(405, '로그인 세션 미존재', ''));
-    // }
+
+      await sendMail("dbsdmsdud912@gmail.com", "TEST 메일", "TEST 메일 전송");
+      res.status(200).json({
+        code: 200,
+        message: "답변 생성에 성공하였습니다.",
+        data: true,
+      });
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: "에러가 발생하였습니다.", data: err, code: 500 });
+    }
   },
 };
 
