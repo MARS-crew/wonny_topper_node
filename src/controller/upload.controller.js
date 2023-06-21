@@ -12,7 +12,7 @@ const uploadService = require("../service/upload.service");
 
 /**
  * @swagger
- * /api/upload:
+ * /upload:
  *   post:
  *     tags: [Upload]
  *     summary: Upload File

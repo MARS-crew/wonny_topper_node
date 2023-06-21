@@ -11,7 +11,7 @@ const userService = require("../service/user.service");
 
 /**
  * @swagger
- * /api/user/logout:
+ * /user/logout:
  *   get:
  *     tags: [User]
  *     summary: Logout
@@ -19,7 +19,7 @@ const userService = require("../service/user.service");
 router.get("/logout", userService.logout);
 /**
  * @swagger
- * /api/user:
+ * /user:
  *   post:
  *     tags: [User]
  *     summary: Save User
@@ -48,7 +48,7 @@ router.post("/", userService.register);
 
 /**
  * @swagger
- * /api/user/login:
+ * /user/login:
  *   post:
  *     tags: [User]
  *     summary: Login User
