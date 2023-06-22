@@ -113,8 +113,8 @@
                   </td>
                   <td width="40%" colspan="2">
                     <label for="file1" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input"
-                      name="productImgArr[]" onchange="uploadFormData(0)" required />
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
+                      onchange="uploadFormData(0)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
@@ -125,8 +125,8 @@
                   <td width="5%" style="text-align: center;">1</td>
                   <td width="95%">
                     <label for="file2" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input"
-                      name="productImgArr[]" onchange="uploadFormData(1)" required />
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input" name="productImgArr[]"
+                      onchange="uploadFormData(1)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
@@ -135,8 +135,8 @@
                   <td width="5%" style="text-align: center;">2</td>
                   <td width="95%">
                     <label for="file3" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input"
-                      name="productImgArr[]" onchange="uploadFormData(2)" required />
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input" name="productImgArr[]"
+                      onchange="uploadFormData(2)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
@@ -145,8 +145,8 @@
                   <td width="5%" style="text-align: center;">3</td>
                   <td width="95%">
                     <label for="file4" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input"
-                      name="productImgArr[]" onchange="uploadFormData(3)" required />
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input" name="productImgArr[]"
+                      onchange="uploadFormData(3)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
@@ -155,8 +155,8 @@
                   <td width="5%" style="text-align: center;">4</td>
                   <td width="95%">
                     <label for="file5" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input"
-                      name="productImgArr[]" onchange="uploadFormData(4)" required />
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input" name="productImgArr[]"
+                      onchange="uploadFormData(4)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
@@ -209,6 +209,9 @@
     let memberId = "";
     const params = new URLSearchParams(window.location.search);
     const id = params.get("content_id");
+    const fileNameElement = document.getElementsByClassName("file-name");
+    const cancelButton = document.getElementsByClassName("cancel-btn");
+    let fileInput ="";
 
     $(document).ready(function () {
       $("#dataTable").DataTable();
@@ -257,6 +260,76 @@
       alert(message);
     };
 
+
+    const fileDelete = (i) => {
+      fileInput.value = "1";//
+      fileNameElement[i].textContent = "";
+      cancelButton[i].style.display = "none";
+    }
+
+    const uploadFormData = async (i) => {
+      fileInput = event.target;
+      const input = document.getElementsByName("productImgArr[]");
+      const file = input[i].files[0];
+
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileInput=
+        fileNameElement[i].textContent = fileName;
+        fileNameElement[i].style.display = "block";
+        cancelButton[i].style.display = "inline-block";
+      } else {
+        fileNameElement[i].style.display = "none";
+        cancelButton[i].style.display = "none";
+      }
+
+      cancelButton[i].addEventListener("click", fileDelete(i));
+      const formData = new FormData();
+      formData.append("file", file);
+
+
+      var requestOptions = {
+        method: 'POST',
+        //        headers: myHeaders,
+        body: formData,
+        redirect: 'follow'
+      };
+
+      try {
+        const response = await fetch(`/upload`, requestOptions);
+        const { code, message, data } = await response.json();
+        if (code === 200) {
+          console.log(data);
+          switch (i) {
+            case 0:
+              file_main_id = data.file_id;
+              break;
+            case 1:
+              file_1_id = data.file_id;
+              break;
+            case 2:
+              file_2_id = data.file_id;
+              break;
+            case 3:
+              file_3_id = data.file_id;
+              break;
+            case 4:
+              file_4_id = data.file_id;
+              break;
+            default:
+              console.log(data.file_id);
+          }
+        }
+      } catch (err) {
+        console.log('Err:', err);
+      }
+
+
+    }
+
+
+
+
     const findContent = async () => {
       var raw = JSON.stringify({
         "content_id": id
@@ -289,6 +362,7 @@
           const file2 = document.querySelector("#file_2_url");
           const file3 = document.querySelector("#file_3_url");
           const file4 = document.querySelector("#file_4_url");
+
           member_id = data[0].member_id;
           title.value = data[0].title;
           note.value = data[0].note;
@@ -300,11 +374,20 @@
             "YYYY-MM-DD HH:mm:ss"
           );
           contentId.textContent = data[0].content_id;
-          file.innerHTML = data[0].file_main_id_origin_name;
-          file1.innerHTML = data[0].file_1_id_origin_name;
-          file2.innerHTML = data[0].file_2_id_origin_name;
-          file3.innerHTML = data[0].file_3_id_origin_name;
-          file4.innerHTML = data[0].file_4_id_origin_name;
+
+
+          const files = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
+          files.forEach((el, i) => {
+            console.log("본다")
+            if (!(el == null)) {
+              console.log("있어")
+              fileNameElement[i].textContent = el;
+              fileNameElement[i].style.display = "block";
+              cancelButton[i].style.display = "inline-block";
+              cancelButton[i].addEventListener("click", fileDelete(i));
+            }
+           
+          });
         }
       } catch (err) {
         console.log("Err:", err);
