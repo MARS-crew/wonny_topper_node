@@ -99,10 +99,10 @@
     myHeaders.append("Content-Type", "application/json");
 
     const onClickLogin = async () => {
-      let member_id = document.getElementById('email').value;
+      let id = document.getElementById('email').value;
       let pwd = document.getElementById('password').value;
 
-      if (checkID(member_id)) {
+      if (checkID(id)) {
         alert("아이디를 다시 입력해주세요");
         return;
       }
@@ -112,7 +112,7 @@
       }
 
       const raw = JSON.stringify({
-        member_id,
+        id,
         pwd,
         isAuto: true
       });

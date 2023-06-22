@@ -198,9 +198,7 @@
                     </tr>
                   </thead>
                   <tbody>
-
-
-
+                    <!-- 테이블 출력 영역 -->
                   </tbody>
                 </table>
               </div>
@@ -419,6 +417,7 @@
   <!-- Consult Detail Modal End -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script>
+    let counselId="";
 
     window.onload = () => {
       $('#startDate, #endDate').datepicker({
@@ -445,7 +444,7 @@
       decimal: '',
       emptyTable: '데이터가 없습니다.',
       info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-      infoEmpty: '0명',
+
       infoFiltered: '(filtered from _MAX_ total entries)',
       infoPostFix: '',
       thousands: ',',
@@ -463,9 +462,7 @@
         sortDescending: ' :  내림차순 정렬',
       },
     }
-    const selectContentApi = async (DT) => {
-
-
+    const listContentApi = async (DT) => {
       var myHeadersC = new Headers();
       myHeadersC.append("Content-Type", "application/json");
       myHeadersC.append("Cookie", "connect.sid=s%3AauNLpeXzEgXtsif5KhegEgGvQGmNvU00.CETJp7Cu%2FXkU%2FjgMQ4tj09tO2%2FiLzSTpt5M7muWLslE");
@@ -526,7 +523,6 @@
       }
     });
 
-
     $(document).ready(function () {
       const DT = $('#dataTable').DataTable({
         language: lang,
@@ -540,31 +536,29 @@
           { width: '10%' },
           null,
           { width: '10%' },
-          { width: '10%' },
+          { width: '20%' },
           { width: '10%' },
         ],
       });
-      selectContentApi(DT);
+      listContentApi(DT);
 
       $('#dataTable tbody').on('click', '.content-list', function () {
-        const counselId = $(this).data('counselId');
-        // location.href = "/admin/content_detail?counsel_id="+counselId;
+        counselId = $(this).data('counselId');
         console.log('선택한 행의 데이터:', counselId);
       });
 
+      // $('#orderSelect').on('change', function () {
 
-      $('#orderSelect').on('change', function () {
+      //   const columnIndex = 7; // 정렬할 열의 인덱스
+      //   const sortDirection = $(this).val(); // 선택한 정렬 방향 값
 
-        const columnIndex = 7; // 정렬할 열의 인덱스
-        const sortDirection = $(this).val(); // 선택한 정렬 방향 값
+      //   const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
 
-        const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
+      //   if (sortDirection === "asc" || sortDirection === "desc") {
+      //     DT.order(order).draw();
+      //   }
 
-        if (sortDirection === "asc" || sortDirection === "desc") {
-          DT.order(order).draw();
-        }
-
-      });
+      // });
 
     })
 
@@ -602,10 +596,13 @@
       }
 
     }
-
+    const checkID = str => {
+      // 8~10자 / 영어 대소문자, 숫자 사용 가능
+      return str.trim() === '';
+    }
 
   </script>
-  
+
   <script src="/admin/assets/js/common.js"></script>
 
   <!-- Bootstrap core JavaScript-->

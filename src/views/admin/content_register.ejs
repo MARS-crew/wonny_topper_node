@@ -74,11 +74,10 @@
                     <td width="50%" colspan="3">
                       <select name="category" id="category" class="form-control select " required>
                         <option value="">--선택--</option>
-                        <option value="풍선 장식">풍선 장식</option>
-                        <option value="토퍼 제작">토퍼 제작</option>
-                        <option value="삐에로">삐에로</option>
-                        <option value="페이스페인팅">페이스페인팅</option>
-                        <option value="원데이클래스">원데이클래스</option>
+                        <option value=1>풍선 장식</option>
+                        <option value=2>토퍼</option>
+                        <option value=3>삐에로/페이스페인팅</option>
+                        <option value=4>원데이클래스</option>
                       </select>
                     </td>
                     <!-- <td width="20%" class="table-title-td">컨텐츠코드</td>
@@ -114,8 +113,11 @@
                         <div>(최대 1개)</div>
                       </td>
                       <td width="40%" colspan="2">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file1" name="productImgArr[]"
-                          onchange="uploadFormData(0)" required />
+                        <label for="file1" class="file-input-label">파일 선택</label>
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input"
+                          name="productImgArr[]" onchange="uploadFormData(0)" required />
+                        <span id="fileName" class="file-name"></span>
+                        <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                       </td>
                     </tr>
                     <tr>
@@ -123,29 +125,41 @@
                       </td>
                       <td width="5%" style="text-align: center;">1</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file2" onchange="uploadFormData(1)"
-                          name="productImgArr[]" />
+                        <label for="file2" class="file-input-label">파일 선택</label>
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input"
+                          name="productImgArr[]" onchange="uploadFormData(1)" required />
+                        <span id="fileName" class="file-name"></span>
+                        <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                       </td>
                     </tr>
                     <tr>
                       <td width="5%" style="text-align: center;">2</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file3" onchange="uploadFormData(2)"
-                          name="productImgArr[]" />
+                        <label for="file3" class="file-input-label">파일 선택</label>
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input"
+                          name="productImgArr[]" onchange="uploadFormData(2)" required />
+                        <span id="fileName" class="file-name"></span>
+                        <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                       </td>
                     </tr>
                     <tr>
                       <td width="5%" style="text-align: center;">3</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file4" onchange="uploadFormData(3)"
-                          name="productImgArr[]" />
+                        <label for="file4" class="file-input-label">파일 선택</label>
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input"
+                          name="productImgArr[]" onchange="uploadFormData(3)" required />
+                        <span id="fileName" class="file-name"></span>
+                        <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                       </td>
                     </tr>
                     <tr>
                       <td width="5%" style="text-align: center;">4</td>
                       <td width="95%">
-                        <input type="file" accept=".jpg, .jpeg, .png" id="file5" onchange="uploadFormData(4)"
-                          name="productImgArr[]" />
+                        <label for="file5" class="file-input-label">파일 선택</label>
+                        <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input"
+                          name="productImgArr[]" onchange="uploadFormData(4)" required />
+                        <span id="fileName" class="file-name"></span>
+                        <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                       </td>
                     </tr>
                   </table>
@@ -192,6 +206,13 @@
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script>
+    let formattedNow =null;
+    let file_main_id = null;
+    let file_1_id = null;
+    let file_2_id = null;
+    let file_3_id = null;
+    let file_4_id = null;
+
     window.onload = () => {
       $('.date-pick').datepicker({
         dateFormat: 'yy-mm-dd',
@@ -206,7 +227,7 @@
     $(document).ready(function () {
       $('#dataTable').DataTable()
       const now = moment();
-      const formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
+      formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
       const createDate = document.querySelector('#createDate');
       const editDate = document.querySelector('#editDate');
       createDate.textContent = formattedNow;
@@ -218,32 +239,80 @@
     const onClickCancleBtn = () => {
       if (confirm("등록을 취소하시겠습니까")) location.href = "/admin/content_main";
     }
-    function uploadFormData(i) {
+    const uploadFormData = async (i) => {
+      const fileInput = event.target;
+      const fileNameElement = document.getElementsByClassName("file-name");
+      const cancelButton = document.getElementsByClassName("cancel-btn");
       const input = document.getElementsByName("productImgArr[]");
       const file = input[i].files[0];
+
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileNameElement[i].textContent = fileName;
+        fileNameElement[i].style.display = "block";
+        cancelButton[i].style.display = "inline-block";
+      } else {
+        fileNameElement[i].style.display = "none";
+        cancelButton[i].style.display = "none";
+      }
+
+      cancelButton[i].addEventListener("click", function () {
+        fileInput.value = "";
+        fileNameElement[i].textContent = "";
+        cancelButton[i].style.display = "none";
+      });
+
 
       const formData = new FormData();
       formData.append("file", file);
 
-      fetch("/upload", {
-        method: "POST",
+
+      var requestOptions = {
+        method: 'POST',
+        //        headers: myHeaders,
         body: formData,
-      })
-        .then((response) => response.text())
-        .then((data) => {
-          console.log(data); // 파일 업로드 완료 후 서버의 응답 출력
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
+        redirect: 'follow'
+      };
+
+      try {
+        const response = await fetch(`/upload`, requestOptions);
+        const { code, message, data } = await response.json();
+        if (code === 200) {
+          console.log(data);
+          switch (i) {
+            case 0:
+              file_main_id = data.file_id;
+              break;
+            case 1:
+              file_1_id = data.file_id;
+              break;
+            case 2:
+              file_2_id = data.file_id;
+              break;
+            case 3:
+              file_3_id = data.file_id;
+              break;
+            case 4:
+              file_4_id = data.file_id;
+              break;
+            default:
+              console.log(data.file_id);
+          }
+        }
+      } catch (err) {
+        console.log('Err:', err);
+      }
+
+
     }
+
 
     const onClickSubmitBtn = async (e) => {
       e.preventDefault();
 
       const title = document.getElementById("title").value;
       const note = document.getElementById("note").value;
-      const category = document.getElementById("category").value;
+      const category = parseInt(document.getElementById("category").value);
       const requiredPhoto = document.getElementById("file1").value;
 
       if (title == "") {
@@ -258,22 +327,36 @@
         alert("필수값이 입력되지 않았습니다.");
         return false;
       }
+      const regexTitle = /^[^\p{C}]{1,30}$/u; // 정규식 패턴
+      const regexNote = /^[^\p{C}]{0,300}$/u; // 정규식 패턴
 
+      if (!regexTitle.test(title)) {
+        alert("제목은 국/영문, 숫자, 특수문자 최대 30자까지만 입력 가능합니다.");
+        return false;
+      }
+      if (!regexNote.test(note)) {
+        alert("비고는 국/영문, 숫자, 특수문자 최대 300자까지만 입력 가능합니다.");
+        return false;
+      }
 
-      var myHeadersC = new Headers();
-      myHeadersC.append("Content-Type", "application/json");
-      myHeadersC.append("Cookie", "connect.sid=s%3AauNLpeXzEgXtsif5KhegEgGvQGmNvU00.CETJp7Cu%2FXkU%2FjgMQ4tj09tO2%2FiLzSTpt5M7muWLslE");
 
       var raw = JSON.stringify({
-        "member_id": "admin",
+        "admin_id": 1,
         category,
         title,
-        note
+        note,
+        file_main_id,
+        file_1_id,
+        file_2_id,
+        file_3_id,
+        file_4_id,
+        "reg_date": formattedNow
+
       });
 
       var requestOptions = {
         method: 'POST',
-        headers: myHeadersC,
+        headers: myHeaders,
         body: raw,
         redirect: 'follow'
       };

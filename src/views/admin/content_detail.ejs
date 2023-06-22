@@ -107,7 +107,7 @@
                     대표 이미지<span class="star">*</span>
                     <div>(최대 1개)</div>
                   </td>
-                  <td width="40%" colspan="2">00기업_풍선장식_01.jpg</td>
+                  <td width="40%" colspan="2" id="file_main_url">00기업_풍선장식_01.jpg</td>
                 </tr>
                 <tr>
                   <td width="20%" rowspan="4" class="table-title-td">
@@ -115,19 +115,19 @@
                     <div>(최대 4개)</div>
                   </td>
                   <td width="5%" style="text-align: center">1</td>
-                  <td width="95%">00기업_풍선장식_02.jpg</td>
+                  <td width="95%" id="file_1_url">00기업_풍선장식_02.jpg</td>
                 </tr>
                 <tr>
                   <td width="5%" style="text-align: center">2</td>
-                  <td width="95%">00기업_풍선장식_03.jpg</td>
+                  <td width="95%" id="file_2_url">00기업_풍선장식_03.jpg</td>
                 </tr>
                 <tr>
                   <td width="5%" style="text-align: center">3</td>
-                  <td width="95%">00기업_풍선장식_04.jpg</td>
+                  <td width="95%" id="file_3_url">00기업_풍선장식_04.jpg</td>
                 </tr>
                 <tr>
                   <td width="5%" style="text-align: center">4</td>
-                  <td width="95%">00기업_풍선장식_05.jpg</td>
+                  <td width="95%" id="file_4_url">00기업_풍선장식_05.jpg</td>
                 </tr>
               </table>
 
@@ -214,15 +214,26 @@
     });
 
     const findContent = async () => {
+
+      var raw = JSON.stringify({
+        "content_id": id
+      });
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
       try {
-
-
-        const response = await fetch(`/content/select?content_id=${id}`);
+        const response = await fetch(`/content/select/` + id);
         const { code, message, data } = await response.json();
         if (code === 200) {
           if (!data) {
             return;
           }
+          console.log(data);
 
           member_id = data[0].member_id;
           const title = document.getElementById("title");
@@ -231,6 +242,11 @@
           const contentId = document.getElementById("content_id");
           const regDate = document.querySelector("#reg_date");
           const modDate = document.querySelector("#mod_date");
+          const file = document.querySelector("#file_main_url");
+          const file1 = document.querySelector("#file_1_url");
+          const file2 = document.querySelector("#file_2_url");
+          const file3 = document.querySelector("#file_3_url");
+          const file4 = document.querySelector("#file_4_url");
           title.value = data[0].title;
           note.value = data[0].note;
           category.value = data[0].category;
@@ -241,10 +257,19 @@
             "YYYY-MM-DD HH:mm:ss"
           );
           contentId.value = data[0].content_id;
+          file.innerHTML = data[0].file_main_id_origin_name;
+          file1.innerHTML = data[0].file_1_id_origin_name;
+          file2.innerHTML = data[0].file_2_id_origin_name;
+          file3.innerHTML = data[0].file_3_id_origin_name;
+          file4.innerHTML = data[0].file_4_id_origin_name;
+
         }
+
       } catch (err) {
         console.log("Err:", err);
+
       }
+
     };
 
     const onClickCancleBtn = () => {
@@ -257,7 +282,7 @@
   </script>
 
   <script src="/admin/assets/js/common.js"></script>
-  
+
   <!-- Bootstrap core JavaScript-->
   <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
