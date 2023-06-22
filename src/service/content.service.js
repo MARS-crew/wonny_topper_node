@@ -60,7 +60,7 @@ const contentService = {
 
       res.status(200).json({
         code: 200,
-        message: "컨텐츠 등록에 성공하였습니다.",
+        message: "컨텐츠 조회에 성공하였습니다.",
         data: response,
       });
     } catch (err) {
