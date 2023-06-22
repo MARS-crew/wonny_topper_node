@@ -115,8 +115,8 @@
                     <label for="file1" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
                       onchange="uploadFormData(0)" required />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                    <span id="fileName" style="display: block;" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn" style="display: block;"  style="display: none;">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -127,7 +127,7 @@
                     <label for="file2" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input" name="productImgArr[]"
                       onchange="uploadFormData(1)" required />
-                    <span id="fileName" class="file-name"></span>
+                    <span id="fileName" style="display: block;" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
                 </tr>
@@ -329,7 +329,7 @@
 
 
 
-
+//조회
     const findContent = async () => {
       var raw = JSON.stringify({
         "content_id": id
@@ -350,7 +350,7 @@
             return;
           }
 
-          console.log(data);
+          
           const title = document.getElementById("title");
           const note = document.getElementById("note");
           const category = document.getElementById("category");
@@ -374,13 +374,13 @@
             "YYYY-MM-DD HH:mm:ss"
           );
           contentId.textContent = data[0].content_id;
-
+          
+          console.log(data);
 
           const files = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
           files.forEach((el, i) => {
-            console.log("본다")
             if (!(el == null)) {
-              console.log("있어")
+              console.log(el)
               fileNameElement[i].textContent = el;
               fileNameElement[i].style.display = "block";
               cancelButton[i].style.display = "inline-block";

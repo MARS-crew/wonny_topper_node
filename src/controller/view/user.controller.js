@@ -33,4 +33,8 @@ router.get("/pierrot", (req, res) => {
 router.get("/topper", (req, res) => {
   res.render("topper");
 });
+
+router.get("/qna", (req, res) => {
+  res.render("qna");
+});
 module.exports = router;
