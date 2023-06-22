@@ -88,7 +88,7 @@ const contentService = {
         data.reg_date = req.body.reg_date;
       }
 
-      const sql = "INSERT INTO tbl_content SET ?";
+      const sql = `INSERT INTO tbl_content SET ?`;
       const saveAnswer = await executeQuery(sql, data);
       
       res.status(200).json({
