@@ -242,17 +242,33 @@ const contentService = {
   },
   findGallery: async (req, res) => {
     try {
-      const { page, pageSize, category } = req.query;
+      const { page, pageSize } = req.body;
+      let { category } = req.body;
       const offset = (page - 1) * pageSize; // OFFSET 값 계산
 
-      const query = `
-      SELECT tc.id, tc.title, (SELECT tf.url FROM tbl_file tf WHERE tf.target_id = tc.id AND tf.type = "Main" and del_yn = "N") AS url
-      FROM tbl_content tc
-      WHERE tc.del_yn = "N" AND tc.category = "${category}"
-      ORDER BY tc.reg_date DESC
-      LIMIT ${pageSize} OFFSET ${offset};
+      let sql = `
+        SELECT 
+          ct.content_id, 
+          ct.title, 
+          fl.origin_name,
+          fl.url
+        FROM tbl_content ct
+        LEFT JOIN tbl_file fl ON fl.file_id = ct.file_main_id
+        WHERE ct.del_yn = "N"
       `;
-      const response = await executeQuery(query);
+      if(category != null) {
+        sql += `AND ct.category IN (`;
+        for(i = 0;  i < category.length; i++) {
+          sql += category[i];
+          if(i+1 < category.length) {
+            sql += `, `;
+          }
+        }
+        sql += `) `;
+      }
+
+      sql += `ORDER BY ct.reg_date DESC LIMIT ${pageSize} OFFSET ${offset};`;
+      const response = await executeQuery(sql);
 
       res.status(200).json({
         code: 200,
@@ -260,12 +276,10 @@ const contentService = {
         data: response,
       });
     } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        code: 500,
-        message: "조회 실패",
-        data: err,
-      });
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: "에러가 발생하였습니다.", data: err, code: 500 });
     }
   },
 };

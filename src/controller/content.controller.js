@@ -48,6 +48,6 @@ router.post("/deleteFile", contentService.deleteFile);
  *         required: true
  *         example: "삐에"
  */
-router.get("/gallery", contentService.findGallery);
+router.post("/gallery", contentService.findGallery);
 
 module.exports = router;
