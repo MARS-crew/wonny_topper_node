@@ -79,77 +79,73 @@ const counselService = {
     //     res.send(setResponseJson(405, '로그인 세션 미존재', ''));
     // }
   },
-  insertCounsel: (req, res) => {
-    // 등록
-    const data = {
-      name: req.body.name,
-      phone_num: req.body.phone_num,
-      email: req.body.email,
-      location: req.body.location,
-      budget: req.body.budget,
-      purpose: req.body.purpose,
-      detail: req.body.detail,
-      agree: req.body.agree
-    };
-
-    // if (req.session.user) {
-    const sql = "INSERT INTO tbl_counsel SET ?";
-    db.query(sql, data, function (err, rows) {
-      if (!err) {
-        if (rows != "") {
-          res.send(setResponseJson(200, "상담 등록 성공", ""));
-        } else {
-          res.send(setResponseJson(405, "상담 등록 실패", ""));
-        }
-      } else {
-        console.log("상담 등록 실패 err : " + err);
-        res.send(setResponseJson(404, "상담 등록 실패", err));
-      }
-    });
-    // } else {
-    //     res.send(setResponseJson(405, '로그인 세션 미존재', ''));
-    // }
-  },
-  insertAnswer: async (req, res) => {
+  insertCounsel: async (req, res) => { // 등록
     try {
-      const { detail, counsel_id, file, email } = req.body;
-      const sql =
-        "INSERT INTO tbl_answer (user_id, counsel_id, detail) VALUES(?, ?, ?)";
+      const data = {
+        name: req.body.name,
+        phone_num: req.body.phone_num,
+        email: req.body.email,
+        location: req.body.location,
+        budget: req.body.budget,
+        purpose: req.body.purpose,
+        detail: req.body.detail,
+        agree: req.body.agree
+      };
 
-      const saveAnswer = await executeQuery(sql, [
-        req.session.user.id,
-        counsel_id,
-        detail,
-      ]);
-      console.log(saveAnswer.insertId);
-      console.log(file);
+      const sql = "INSERT INTO tbl_counsel SET ?";
+      const saveAnswer = await executeQuery(sql, data);
 
-      if(file != undefined && file != ''&& file != null) {
-        const sql2 =
-        "INSERT INTO tbl_file (target_id, origin_name, change_name, ext, url, del_yn, type) VALUES(?, ?, ?, ?, ?, ?, ?)";
-      
-        await executeQuery(sql2, [
-          saveAnswer.insertId,
-          file.origin_name,
-          file.change_name,
-          file.ext,
-          file.url,
-          "Y",
-          "Main",
-        ]);
-      }
-
-      await sendMail(email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", detail);
       res.status(200).json({
         code: 200,
-        message: "답변 생성에 성공하였습니다.",
+        message: "컨텐츠 등록에 성공하였습니다.",
         data: true,
       });
     } catch (err) {
+      let message;
+
+      if(req.session.user == undefined) {
+        message = "유저 세션이 존재하지 않습니다."
+      } else {
+        message = "에러가 발생하였습니다.";
+      }
+
       console.error(err);
       res
         .status(500)
-        .json({ message: "에러가 발생하였습니다.", data: err, code: 500 });
+        .json({ message: message, data: err, code: 500 });
+    }
+  },
+  insertAnswer: async (req, res) => {
+    try {
+      const data = {
+        admin_id: req.session.user.id,
+        counsel_id: req.body.counsel_id,
+        file_id: req.body.file_id,
+        detail: req.body.detail
+      };
+
+      const sql = `INSERT INTO tbl_answer SET ?`;
+      const saveAnswer = await executeQuery(sql, data);
+
+      await sendMail(req.body.email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", data.detail);
+      res.status(200).json({
+        code: 200,
+        message: "답변 등록에 성공하였습니다.",
+        data: true,
+      });
+    } catch (err) {
+      let message;
+
+      if(req.session.user == undefined) {
+        message = "유저 세션이 존재하지 않습니다."
+      } else {
+        message = "에러가 발생하였습니다.";
+      }
+
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: message, data: err, code: 500 });
     }
   },
 };
