@@ -233,6 +233,8 @@
           if (!data) {
             return;
           }
+
+
           console.log(data);
 
           member_id = data[0].member_id;
@@ -247,9 +249,28 @@
           const file2 = document.querySelector("#file_2_url");
           const file3 = document.querySelector("#file_3_url");
           const file4 = document.querySelector("#file_4_url");
+          
           title.value = data[0].title;
           note.value = data[0].note;
-          category.value = data[0].category;
+          let cate ="";
+          switch (data[0].category) {
+            case 1:
+             cate="풍선 장식"
+              break;
+            case 2:
+            cate="토퍼"
+              break;
+            case 3:
+            cate="삐에로/페이스페인팅"
+             break;
+            case 4:
+            cate="원데이클래스"
+            break;
+            default:
+              console.log(data.file_id);
+          }
+
+          category.value = cate;
           modDate.textContent = dayjs(data[0].mod_date).format(
             "YYYY-MM-DD HH:mm:ss"
           );
