@@ -3,27 +3,65 @@ const setResponseJson = require("../dto/responseDto");
 const { executeQuery } = require("../repository");
 
 const contentService = {
-  search: (req, res) => {
-    const reg_date_from = req.body.reg_date_from + " 00:00:00";
-    const reg_date_to = req.body.reg_date_to + " 23:59:59";
-    const category = req.body.category;
-    const search_word = req.body.search_word;
+  search: async (req, res) => { // 검색
+    try {
+      const { category, search_word, sort, page, pageSize } = req.body;
+      let { from_date, to_date } = req.body;
+      const offset = (page - 1) * pageSize; // OFFSET 값 계산
+      let sql;
 
-    const sql = `SELECT * FROM tbl_content WHERE reg_date BETWEEN ? AND ? AND category = ? AND title LIKE '%${search_word}%'`;
-    db.query(
-      sql,
-      [reg_date_from, reg_date_to, category, search_word],
-      function (err, rows) {
-        if (!err) {
-          res.send(setResponseJson(200, "컨텐츠 검색 성공", rows));
-        } else {
-          console.log("컨텐츠 검색 실패 err : " + err);
-          res.send(setResponseJson(404, "컨텐츠 검색 실패", err));
-        }
+      sql = `
+        SELECT 
+          ct.*
+        FROM tbl_content ct
+        WHERE ct.del_yn = 'N'
+      `;
+      
+      if(from_date != null && to_date != null) {
+        from_date += ' 00:00:00';
+        to_date += ' 23:59:59';
+        sql += `AND ct.reg_date BETWEEN '${from_date}' AND '${to_date}' `;
       }
-    );
-  },
+      if(category != null) {
+        sql += `AND ct.category IN (`;
+        for(i = 0;  i < category.length; i++) {
+          sql += category[i];
+          if(i+1 < category.length) {
+            sql += `, `;
+          }
+        }
+        sql += `) `;
+      }
+      if(search_word != null) {
+        sql += `AND ct.title LIKE '%${search_word}%' `;
+      }
+      
+      sql += `ORDER BY ct.reg_date ${sort} `;
+      sql += `LIMIT ${pageSize} OFFSET ${offset}`;
 
+      
+      const response = await executeQuery(sql);
+
+      res.status(200).json({
+        code: 200,
+        message: "컨텐츠 검색에 성공하였습니다.",
+        data: response,
+      });
+    } catch (err) {
+      let message;
+
+      if(req.session.user == undefined) {
+        message = "유저 세션이 존재하지 않습니다."
+      } else {
+        message = "에러가 발생하였습니다.";
+      }
+
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: message, data: err, code: 500 });
+    }
+  },
   select: async (req, res) => { // 조회
     try {
       const { content_id } = req.params;
