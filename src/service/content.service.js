@@ -29,7 +29,6 @@ const contentService = {
       const { content_id } = req.params;
 
       let sql;
-      console.log(content_id);
       if (content_id == null) {
         sql = `SELECT * FROM tbl_content WHERE del_yn = 'N'`;
       } else {

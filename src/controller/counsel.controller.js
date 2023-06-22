@@ -11,7 +11,8 @@ const counselService = require("../service/counsel.service");
  */
 
 router.get("/search", counselService.search);
-router.get("/select", counselService.select);
+router.post("/select", counselService.select);
+router.get("/select/:counsel_id", counselService.select);
 router.post(
   "/insertCounsel",
   upload.array("image", 5),

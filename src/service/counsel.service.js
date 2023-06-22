@@ -54,30 +54,79 @@ const counselService = {
     //     res.send(setResponseJson(405, '로그인 세션 미존재', ''));
     // }
   },
-  select: (req, res) => {
-    // 상세 조회
-    const data = {
-      //y     counsel_id: req.body.counsel_id
-    };
-    const { counsel_id } = req.query;
+  select: async (req, res) => { // 조회
+    try {
+      const { counsel_id } = req.params;
+      const { purpose, search_word, sort, page, pageSize } = req.body;
+      let { from_date, to_date } = req.body;
+      const offset = (page - 1) * pageSize; // OFFSET 값 계산
+      let sql;
+      
+      if (counsel_id == null) {
+        sql = `
+          SELECT 
+            cs.*,
+            if(aw.answer_id IS NOT NULL, 'Y', 'N') AS answer_yn,
+            if(aw.answer_id IS NOT NULL, aw.reg_date, NULL) AS answer_date
+          FROM tbl_counsel cs
+          LEFT JOIN tbl_answer aw
+          ON aw.counsel_id = cs.counsel_id
+          WHERE cs.del_yn = 'N'
+        `;
+        
+        if(from_date != null && to_date != null) {
+          from_date += ' 00:00:00';
+          to_date += ' 23:59:59';
+          sql += `AND cs.reg_date BETWEEN '${from_date}' AND '${to_date}' `;
+        }
+        if(purpose != null) {
+          sql += `AND cs.purpose IN (`;
+          for(i = 0;  i < purpose.length; i++) {
+            sql += purpose[i];
+            if(i+1 < purpose.length) {
+              sql += `, `;
+            }
+          }
+          sql += `) `;
+        }
+        if(search_word != null) {
+          sql += `AND cs.detail LIKE '%${search_word}%' `;
+        }
+        
+        sql += `ORDER BY cs.reg_date ${sort} `;
+        sql += `LIMIT ${pageSize} OFFSET ${offset}`;
 
-    // if (req.session.user) {
-    let sql = `SELECT * FROM tbl_counsel WHERE del_yn = 'N'`;
-    if (counsel_id) {
-      sql += ` AND counsel_id = ?`;
-    }
-    db.query(sql, [counsel_id], function (err, rows) {
-      if (!err) {
-        // 첨부파일 + 상담 합쳐서 넘겨줘야함
-        res.send(setResponseJson(200, "상담 조회 성공", rows));
       } else {
-        console.log("상담 조회 실패 err : " + err);
-        res.send(setResponseJson(404, "상담 조회 실패", err));
+        sql = `
+          SELECT 
+            cs.*,
+            if(aw.answer_id IS NOT NULL, 'Y', 'N') AS answer_yn,
+            if(aw.answer_id IS NOT NULL, aw.reg_date, NULL) AS answer_date,
+            aw.answer_id,
+            aw.file_id AS answer_file_id,
+            aw.detail AS answer_detail,
+            fl.origin_name AS answer_file_origin_name,
+            fl.url AS answer_file_url
+          FROM tbl_counsel cs
+          LEFT JOIN tbl_answer aw ON aw.counsel_id = cs.counsel_id
+          LEFT JOIN tbl_file fl ON fl.file_id = aw.file_id
+          WHERE cs.del_yn = 'N'
+          AND cs.counsel_id = ?
+        `;
       }
-    });
-    // } else {
-    //     res.send(setResponseJson(405, '로그인 세션 미존재', ''));
-    // }
+      const response = await executeQuery(sql, [counsel_id]);
+
+      res.status(200).json({
+        code: 200,
+        message: "상담 조회에 성공하였습니다.",
+        data: response,
+      });
+    } catch (err) {
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: "에러가 발생하였습니다.", data: err, code: 500 });
+    }
   },
   insertCounsel: async (req, res) => { // 등록
     try {
