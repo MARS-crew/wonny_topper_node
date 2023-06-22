@@ -75,11 +75,10 @@
                   <td width="30%">
                     <select name="category" id="category" class="form-control" required>
                       <option value="">--선택--</option>
-                      <option value="풍선 장식">풍선 장식</option>
-                      <option value="토퍼 제작">토퍼 제작</option>
-                      <option value="삐에로">삐에로</option>
-                      <option value="페이스페인팅">페이스페인팅</option>
-                      <option value="원데이클래스">원데이클래스</option>
+                      <option value=1>풍선 장식</option>
+                      <option value=2>토퍼</option>
+                      <option value=3>삐에로/페이스페인팅</option>
+                      <option value=4>원데이클래스</option>
                     </select>
                   </td>
                   <td width="20%" class="table-title-td" id="contentId">
@@ -113,35 +112,53 @@
                     <div>(최대 1개)</div>
                   </td>
                   <td width="40%" colspan="2">
-                    <input type="file" accept="image/jpg" name="introduceImg" required />
+                    <label for="file1" class="file-input-label">파일 선택</label>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input"
+                      name="productImgArr[]" onchange="uploadFormData(0)" required />
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="20%" rowspan="4" class="table-title-td">
-                    추가 이미지
-                    <div>(최대 4개)</div>
+                  <td width="20%" rowspan="4" class="table-title-td">추가 이미지<div>(최대 4개)</div>
                   </td>
-                  <td width="5%" style="text-align: center">1</td>
+                  <td width="5%" style="text-align: center;">1</td>
                   <td width="95%">
-                    <input type="file" accept="image/jpg" name="productImgArr[]" />
-                  </td>
-                </tr>
-                <tr>
-                  <td width="5%" style="text-align: center">2</td>
-                  <td width="95%">
-                    <input type="file" accept="image/jpg" name="productImgArr[]" />
+                    <label for="file2" class="file-input-label">파일 선택</label>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input"
+                      name="productImgArr[]" onchange="uploadFormData(1)" required />
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center">3</td>
+                  <td width="5%" style="text-align: center;">2</td>
                   <td width="95%">
-                    <input type="file" accept="image/jpg" name="productImgArr[]" />
+                    <label for="file3" class="file-input-label">파일 선택</label>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input"
+                      name="productImgArr[]" onchange="uploadFormData(2)" required />
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center">4</td>
+                  <td width="5%" style="text-align: center;">3</td>
                   <td width="95%">
-                    <input type="file" accept="image/jpg" name="productImgArr[]" />
+                    <label for="file4" class="file-input-label">파일 선택</label>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input"
+                      name="productImgArr[]" onchange="uploadFormData(3)" required />
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                  </td>
+                </tr>
+                <tr>
+                  <td width="5%" style="text-align: center;">4</td>
+                  <td width="95%">
+                    <label for="file5" class="file-input-label">파일 선택</label>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input"
+                      name="productImgArr[]" onchange="uploadFormData(4)" required />
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                   </td>
                 </tr>
               </table>
@@ -190,6 +207,8 @@
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script>
     let memberId = "";
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get("content_id");
 
     $(document).ready(function () {
       $("#dataTable").DataTable();
@@ -239,23 +258,38 @@
     };
 
     const findContent = async () => {
+      var raw = JSON.stringify({
+        "content_id": id
+      });
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
       try {
-        const params = new URLSearchParams(window.location.search);
-        const id = params.get("content_id");
-        const response = await fetch(`/content/select?content_id=${id}`);
+        const response = await fetch(`/content/select/` + id);
         const { code, message, data } = await response.json();
         if (code === 200) {
           if (!data) {
             return;
           }
 
-          memberId = data[0].member_id;
+          console.log(data);
           const title = document.getElementById("title");
           const note = document.getElementById("note");
           const category = document.getElementById("category");
           const contentId = document.getElementById("content_id");
           const regDate = document.querySelector("#reg_date");
           const modDate = document.querySelector("#mod_date");
+          const file = document.querySelector("#file_main_url");
+          const file1 = document.querySelector("#file_1_url");
+          const file2 = document.querySelector("#file_2_url");
+          const file3 = document.querySelector("#file_3_url");
+          const file4 = document.querySelector("#file_4_url");
+          member_id = data[0].member_id;
           title.value = data[0].title;
           note.value = data[0].note;
           category.value = data[0].category;
@@ -266,6 +300,11 @@
             "YYYY-MM-DD HH:mm:ss"
           );
           contentId.textContent = data[0].content_id;
+          file.innerHTML = data[0].file_main_id_origin_name;
+          file1.innerHTML = data[0].file_1_id_origin_name;
+          file2.innerHTML = data[0].file_2_id_origin_name;
+          file3.innerHTML = data[0].file_3_id_origin_name;
+          file4.innerHTML = data[0].file_4_id_origin_name;
         }
       } catch (err) {
         console.log("Err:", err);
