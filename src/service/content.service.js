@@ -169,27 +169,20 @@ const contentService = {
       if(data.reg_date != null) {
         sql += `, reg_date = '${data.reg_date}' `;
       }
-      if(data.file_main_id != null) {
-        sql += `, file_main_id = '${data.file_main_id}' `;
-      }
-      if(data.file_1_id != null) {
-        sql += `, file_1_id = '${data.file_1_id}' `;
-      }
-      if(data.file_2_id != null) {
-        sql += `, file_2_id = '${data.file_2_id}' `;
-      }
-      if(data.file_3_id != null) {
-        sql += `, file_3_id = '${data.file_3_id}' `;
-      }
-      if(data.file_4_id != null) {
-        sql += `, file_4_id = '${data.file_4_id}' `;
-      }
-      sql += `WHERE content_id = ? AND admin_id = ? AND del_yn = 'N'`;
+      sql += ` 
+        , file_main_id = ?, file_1_id = ?, file_2_id = ?, file_3_id = ?, file_4_id = ?
+        WHERE content_id = ? AND admin_id = ? AND del_yn = 'N'
+      `;
 
       const saveAnswer = await executeQuery(sql, [
         data.category,
         data.title,
         data.note,
+        data.file_main_id,
+        data.file_1_id,
+        data.file_2_id,
+        data.file_3_id,
+        data.file_4_id,
         data.content_id,
         data.admin_id,
       ]);
