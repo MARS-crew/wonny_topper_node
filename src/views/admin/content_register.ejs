@@ -181,7 +181,7 @@
           <button type="button" class="btn btn-primary btn-100" onClick="onClickCancleBtn()">
             목록
           </button>
-          <button type="button" class="btn btn-primary btn-100" onClick="onClickSubmitBtn(event)">
+          <button type="button" class="btn btn-primary btn-100" onClick="registeContent(event)">
             등록
           </button>
         </div>
@@ -205,6 +205,7 @@
   <!-- End of Page Wrapper -->
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="/admin/assets/js/common.js"></script>
   <script>
     let formattedNow =null;
     let file_main_id = null;
@@ -239,11 +240,13 @@
     const onClickCancleBtn = () => {
       if (confirm("등록을 취소하시겠습니까")) location.href = "/admin/content_main";
     }
+    
+    //파일 등록
     const uploadFormData = async (i) => {
       const fileInput = event.target;
       const fileNameElement = document.getElementsByClassName("file-name");
       const cancelButton = document.getElementsByClassName("cancel-btn");
-      const input = document.getElementsByName("productImgArr[]");
+      //const input = document.getElementsByName("productImgArr[]");
       const file = input[i].files[0];
 
       if (fileInput.files.length > 0) {
@@ -267,7 +270,7 @@
       formData.append("file", file);
 
 
-      var requestOptions = {
+      const requestOptions = {
         method: 'POST',
         //        headers: myHeaders,
         body: formData,
@@ -307,7 +310,8 @@
     }
 
 
-    const onClickSubmitBtn = async (e) => {
+    //컨텐츠 등록
+    const registeContent = async (e) => {
       e.preventDefault();
 
       const title = document.getElementById("title").value;
@@ -340,7 +344,7 @@
       }
 
 
-      var raw = JSON.stringify({
+      const raw = JSON.stringify({
         admin_id : 1,
         category,
         title,
@@ -354,7 +358,7 @@
 
       });
 
-      var requestOptions = {
+      const requestOptions = {
         method: 'POST',
         headers: myHeaders,
         body: raw,

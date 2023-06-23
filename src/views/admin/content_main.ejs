@@ -235,11 +235,13 @@
   <!-- Logout Modal End -->
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="/admin/assets/js/common.js"></script>
   <script>
     const tbody = document.getElementById("dataTable");
     let listcount = 0;
-
-
+    const myHeadersC = new Headers();
+      myHeadersC.append("Content-Type", "application/json");
+    //  myHeadersC.append("Cookie", "connect.sid=s%3APAgRVsuWaP8LshsiOyI2ut57YP_TmM_7.o1m56SmwRyIU85mKJ3sM6lmPfDn8ueWbxkMKBa9SNIc");
 
 
     const lang = {
@@ -280,11 +282,11 @@
         defaultDate: new Date()
       });
 
-      var today = new Date();
-      var year = today.getFullYear();
-      var month = String(today.getMonth() + 1).padStart(2, '0');
-      var day = String(today.getDate()).padStart(2, '0');
-      var formattedDate = year + '-' + month + '-' + day;
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const formattedDate = year + '-' + month + '-' + day;
       console.log(formattedDate);
 
       $('#startDate, #endDate').datepicker('setDate', formattedDate);
@@ -334,9 +336,6 @@
         }
 
       });
-
-
-
     });
 
 
@@ -358,12 +357,8 @@
 
 
 
-
+//리스트 조회
     const selectContentApi = async (DT) => {
-      var myHeadersC = new Headers();
-      myHeadersC.append("Content-Type", "application/json");
-      myHeadersC.append("Cookie", "connect.sid=s%3AauNLpeXzEgXtsif5KhegEgGvQGmNvU00.CETJp7Cu%2FXkU%2FjgMQ4tj09tO2%2FiLzSTpt5M7muWLslE");
-
       const requestOptions = {
         method: 'GET',
         headers: myHeadersC,
@@ -374,12 +369,10 @@
         const response = await fetch(`/content/select`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-
-
           console.log(data);
   
           let cate ="";
-        //  1:풍선 장식, 2:토퍼, 3:삐에로/페이스페인팅, 4:원데이클래스
+   
           data.forEach(function (row, i) {
             switch (row.category) {
             case 1:
@@ -440,8 +433,6 @@
 
 
   </script>
-
-  <script src="/admin/assets/js/common.js"></script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

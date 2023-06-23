@@ -151,7 +151,7 @@
                     <div class="form-group">
                       <label class="col-md-2 filter-label">검색어</label>
                       <div class="col-sm-8 search-input filter-inputs">
-                        <input type="text" id="keyword" class="form-control" placeholder="검색하기" />
+                        <input type="text" id="keyword" class="form-control" placeholder="" />
                       </div>
                     </div>
                   </form>
@@ -193,7 +193,7 @@
                       <th>의뢰목적</th>
                       <th>상담내용</th>
                       <th>답변여부</th>
-                      <th>답변등록일</th>
+                      <th>답변 등록일</th>
                       <th>등록일</th>
                     </tr>
                   </thead>
@@ -205,7 +205,6 @@
             </div>
           </div>
         </div>
-        <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
 
@@ -223,14 +222,14 @@
   </div>
   <!-- End of Page Wrapper -->
 
-  <!-- Consult Register Modal-->
+  <!-- 답변 등록 모달 -->
   <div class="modal fade consult-modal-dialog" id="consultModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">답변 작성하기</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+          <button class="close consult" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
@@ -241,85 +240,82 @@
               data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
               <tr>
                 <td width="20%" class="table-title-td">이름</td>
-                <td width="80%">
+                <td width="80%" id="reqanswer-name">
                   홍길동
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">휴대폰번호</td>
-                <td width="80%" colspan="3">
-                  010-0000-0000
+                <td width="80%" colspan="3" id="reqanswer-phone">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">이메일</td>
-                <td width="80%" colspan="3">
-                  khj@gmail.com
+                <td width="80%" colspan="3" id="reqanswer-email">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">장소</td>
-                <td width="80%" colspan="3">
-                  경기도 광명 어린이집
+                <td width="80%" colspan="3" id="reqanswer-location">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">예산</td>
                 </td>
-                <td width="80%" colspan="3">
-                  100만원
+                <td width="80%" colspan="3" id="reqanswer-budget">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">의뢰목적</td>
-                <td width="80%" colspan="3">
-                  목적1
+                <td width="80%" colspan="3" id="reqanswer-purpose">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">상담내용</td>
-                <td width="80%" colspan="3">
-                  내용입니다.
+                <td width="80%" colspan="3" id="reqanswer-counsel">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">등록일</td>
-                <td width="80%" colspan="3">
-                  2023-10-10 12:00:00
+                <td width="80%" colspan="3" id="reqanswer-reg-date">
                 </td>
               </tr>
             </table>
             <hr />
             <table class="table table-bordered" id="datatable-ajax"
               data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+              <div class="pb-1 float-right"><span class="star">*</span>는 필수 입력값</div>
               <tr>
                 <td width="20%" class="table-title-td">답변
+                  <span class="star">*</span>
                 </td>
                 <td width="80%" colspan="2">
-                  <textarea class="form-control" value=""></textarea>
+                  <textarea class="form-control answer-text-area" id="reqanswer-answer"></textarea>
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">첨부파일
                 </td>
                 <td width="80%" colspan="2">
-                  <input type="file" accept="image/jpg" id="file1" name="file1" required />
+                  <label for="file1" class="file-input-label">파일 선택</label>
+                  <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
+                    onchange="uploadFormData()" required />
+                  <span id="fileName" class="file-name"></span>
+                  <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                 </td>
               </tr>
             </table>
-
-
           </form>
         </div>
         <div class="detail-modal-footer">
 
-          <a class="btn btn-primary btn-100" onClick="onClickSubmitBtn(event)">전송</a>
+          <a class="btn btn-primary btn-100" onClick="registerAnswer(event)">확인</a>
         </div>
       </div>
     </div>
   </div>
-  <!-- Consult Register Modal End-->
-  <!-- Consult Detail Modal-->
+  <!-- // 답변 등록 모달-->
+  <!-- 상담 상세 모달-->
   <div class="modal fade consult-modal-dialog" id="consultDetailModal" tabindex="-1" role="dialog"
     aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -331,57 +327,55 @@
           </button>
         </div>
         <div class="modal-body">
-          <form action="/admin/source" method="post" enctype="multipart/form-data">
-
             <table class="detail table table-bordered" id="datatable-ajax"
               data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
               <tr>
                 <td width="20%" class="table-title-td">이름</td>
-                <td width="80%">
-                  홍길동
+                <td width="80%" id="counsel-name">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">휴대폰번호</td>
-                <td width="80%" colspan="3">
-                  <input type="text" class="form-control" value="010-0000-0000" readonly name="name" required />
+                <td width="80%" colspan="3" id="counsel-phone">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">이메일</td>
-                <td width="80%" colspan="3">
-                  <input type="text" class="form-control" value="khj@gmail.com" readonly name="name" required />
+                <td width="80%" colspan="3" id="counsel-email">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">장소</td>
-                <td width="80%" colspan="3">
-                  <input type="text" class="form-control" value="경기도 광명 어린이집" readonly name="name" required />
+                <td width="80%" colspan="3" id="counsel-location">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">예산</td>
                 </td>
-                <td width="80%" colspan="3">
-                  <input type="text" class="form-control" value="100만원" readonly name="name" required />
+                <td width="80%" colspan="3" id="counsel-budget">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">의뢰목적</td>
-                <td width="80%" colspan="3">
-                  <input type="text" class="form-control" value="목적1" readonly name="name" required />
+                <td width="80%" colspan="3" id="counsel-purpose">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">상담내용</td>
-                <td width="80%" colspan="3">
-                  <input type="text" class="form-control" value="내용입니다." readonly name="name" required />
+                <td width="80%" colspan="3" id="counsel-counsel">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">등록일</td>
-                <td width="80%" colspan="3">
-                  <input type="text" class="form-control" value="2023-10-10 12:00:00" readonly name="name" required />
+                <td width="80%" colspan="3" id="counsel-reg-date">
+
                 </td>
               </tr>
             </table>
@@ -391,33 +385,113 @@
               <tr>
                 <td width="20%" class="table-title-td">답변
                 </td>
-                <td width="80%" colspan="2">
-                  <textarea class="form-control" id="answerDetail" value="" readonly>답변입니다.</textarea>
+                <td width="80%" colspan="2" id="counsel-answer">
+
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">첨부파일
                 </td>
-                <td width="80%" colspan="2">
+                <td width="80%" colspan="2" id="counsel-file">
                   파일 이름.jpg
                 </td>
               </tr>
             </table>
-
-
-          </form>
         </div>
         <div class="detail-modal-footer">
-
-          <a class="btn btn-primary btn-100">전송</a>
+          <a class="btn btn-primary btn-100" data-dismiss="modal" aria-label="Close">확인</a>
         </div>
       </div>
     </div>
   </div>
-  <!-- Consult Detail Modal End -->
+  <!-- //상담 상세 모달  -->
+   <!-- 답변 등록 확인 모달 -->
+   <div class="modal fade consult-modal-dialog" id="consultModal" tabindex="-1" role="dialog"
+   aria-labelledby="exampleModalLabel" aria-hidden="true">
+   <div class="modal-dialog" role="document">
+     <div class="modal-content">
+       <div class="modal-header">
+         <h5 class="modal-title" id="exampleModalLabel">내용 확인</h5>
+         <button class="close consult" type="button" data-dismiss="modal" aria-label="Close">
+           <span aria-hidden="true">×</span>
+         </button>
+       </div>
+       <div class="modal-body">
+         <form action="/admin/source" method="post" enctype="multipart/form-data">
+
+           <table class="table table-bordered" id="datatable-ajax"
+             data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+             <tr>
+               <td width="20%" class="table-title-td">이름</td>
+               <td width="80%" id="reqanswer-name">
+                 홍길동
+               </td>
+             </tr>
+          
+             <tr>
+               <td width="20%" class="table-title-td">이메일</td>
+               <td width="80%" colspan="3" id="reqanswer-email">
+               </td>
+             </tr>
+          
+             <tr>
+               <td width="20%" class="table-title-td">상담내용</td>
+               <td width="80%" colspan="3" id="reqanswer-counsel">
+               </td>
+             </tr>
+             <tr>
+               <td width="20%" class="table-title-td">등록일</td>
+               <td width="80%" colspan="3" id="reqanswer-reg-date">
+               </td>
+             </tr>
+           </table>
+           <hr />
+           <table class="table table-bordered" id="datatable-ajax"
+             data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+             <div class="pb-1 float-right"><span class="star">*</span>는 필수 입력값</div>
+             <tr>
+               <td width="20%" class="table-title-td">답변
+                 <span class="star">*</span>
+               </td>
+               <td width="80%" colspan="2">
+                 <textarea class="form-control answer-text-area" id="reqanswer-answer"></textarea>
+               </td>
+             </tr>
+             <tr>
+               <td width="20%" class="table-title-td">첨부파일
+               </td>
+               <td width="80%" colspan="2">
+                 <label for="file1" class="file-input-label">파일 선택</label>
+                 <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
+                   onchange="uploadFormData()" required />
+                 <span id="fileName" class="file-name"></span>
+                 <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+               </td>
+             </tr>
+           </table>
+
+
+         </form>
+       </div>
+       <div class="detail-modal-footer">
+
+         <a class="btn btn-primary btn-100" onClick="registerAnswer(event)">확인</a>
+       </div>
+     </div>
+   </div>
+ </div>
+ <!-- // 답변 등록 모달-->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="/admin/assets/js/common.js"></script>
   <script>
-    let counselId="";
+    let counsel_id = "";
+    let listcount = 0; // 페이지 출력 수
+    let file_id = null;
+    const myHeadersC = new Headers();
+    myHeadersC.append("Content-Type", "application/json");
+    //myHeadersC.append("Cookie", "connect.sid=s%3APAgRVsuWaP8LshsiOyI2ut57YP_TmM_7.o1m56SmwRyIU85mKJ3sM6lmPfDn8ueWbxkMKBa9SNIc");
+
+
 
     window.onload = () => {
       $('#startDate, #endDate').datepicker({
@@ -429,16 +503,15 @@
         defaultDate: new Date()
       });
 
-      var today = new Date();
-      var year = today.getFullYear();
-      var month = String(today.getMonth() + 1).padStart(2, '0');
-      var day = String(today.getDate()).padStart(2, '0');
-      var formattedDate = year + '-' + month + '-' + day;
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = String(today.getMonth() + 1).padStart(2, '0');
+      const day = String(today.getDate()).padStart(2, '0');
+      const formattedDate = year + '-' + month + '-' + day;
       console.log(formattedDate);
 
       $('#startDate, #endDate').datepicker('setDate', formattedDate);
     }
-
 
     const lang = {
       decimal: '',
@@ -462,49 +535,74 @@
         sortDescending: ' :  내림차순 정렬',
       },
     }
-    const listContentApi = async (DT) => {
-      var myHeadersC = new Headers();
-      myHeadersC.append("Content-Type", "application/json");
-      myHeadersC.append("Cookie", "connect.sid=s%3AauNLpeXzEgXtsif5KhegEgGvQGmNvU00.CETJp7Cu%2FXkU%2FjgMQ4tj09tO2%2FiLzSTpt5M7muWLslE");
+
+
+    //리스트 조회 
+    const showListData = async (DT) => {
+      const raw = JSON.stringify({
+        // "from_date": "2023-06-20", 
+        // "to_date": "2023-06-22", 
+        "purpose": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ],
+        "search_word": "",
+        "sort": "ASC",
+        "page": 1,
+        "pageSize": 10
+      });
+
 
       const requestOptions = {
-        method: 'GET',
+        method: 'POST',
         headers: myHeadersC,
-        redirect: 'follow',
+        body: raw,
+        redirect: 'follow'
       };
 
       try {
         const response = await fetch(`/counsel/select`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-
           data.forEach(function (row, i) {
             const tr = DT.row.add([
-              row.counsel_id,
+              i + 1,
               row.name,
               row.phone_num,
               row.purpose,
               row.detail,
-              row.agree,
-              dayjs(row.reg_date).format(
-                "YYYY-MM-DD HH:mm:ss"
+              row.answer_yn,
+              row.answer_date ? dayjs(row.answer_date).format(
+                "YYYY-MM-DD") : "-",
+              dayjs(row.mod_date).format(
+                "YYYY-MM-DD"
               ),
-              "-",
             ]).node();
 
             $(tr).attr('data-counsel-id', row.counsel_id);//
             $(tr).addClass('content-list');
             $(tr).attr('href', '#');
             $(tr).attr('data-toggle', 'modal');
-            $(tr).attr('data-target', '#consultModal');
+            if (row.answer_yn === 'Y') {
+              $(tr).attr('data-target', '#consultDetailModal');
+            } else if (row.answer_yn === 'N') {
+              $(tr).attr('data-target', '#consultModal');
+            }
 
 
+
+            $(tr).on('click', function () {
+              // 이벤트 처리 로직을 작성합니다.
+            });
             DT.draw(false);
 
           });
           return;
         }
-        //alert("정보가 없습니다.");
       } catch (err) {
         console.log('Err:', err);
       }
@@ -537,14 +635,16 @@
           null,
           { width: '10%' },
           { width: '20%' },
-          { width: '10%' },
+          { width: '20%' },
         ],
       });
-      listContentApi(DT);
+      showListData(DT);
 
       $('#dataTable tbody').on('click', '.content-list', function () {
-        counselId = $(this).data('counselId');
-        console.log('선택한 행의 데이터:', counselId);
+        counsel_id = $(this).data('counsel-id');
+        console.log('선택한 행의 데이터:', counsel_id);
+        openModal();
+        showCounselData();
       });
 
       // $('#orderSelect').on('change', function () {
@@ -562,22 +662,134 @@
 
     })
 
-
-    const onClickSubmitBtn = async (e) => {
-      console.log("전송이벤트 실행");
-      const answer = document.getElementById("answerDetail").value;
-      const photo = document.getElementById("file1").value;
-
-
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-
-      var raw = JSON.stringify({
+    $('.modal .close.consult').click(function () {
+      if (confirm('답변 작성을 취소하시겠습니까?')) {
+        $('.modal').modal('hide');
+      } else {
+        return false;
+      }
+    });
 
 
+    const validData = (data) => {
+      const regexDtail = /^[\p{L}\p{N}\p{S}\s\n]{10,1000}$/u; // 국/영문, 숫자, 특수문자 최대 10~1,000자
+      if (!regexDtail.test(data)) {
+        alert("필수값을 입력해주세요.\n 국/영문, 숫자, 특수문자 10~1,000자");
+        return false;
+      }
+      return true;
+    }
+
+    //답변 모달 상세
+    const showCounselData = async () => {
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeadersC,
+        redirect: 'follow'
+      };
+      try {
+        const response = await fetch("/counsel/select/" + counsel_id, requestOptions);
+        const { code, message, data } = await response.json();
+        if (code === 200) {
+
+          if (data[0].answer_yn == 'Y') { //답변 등록 된 경우 
+            document.getElementById('counsel-name').innerHTML = data[0].name;
+            document.getElementById('counsel-phone').innerHTML = data[0].phone_num;
+            document.getElementById('counsel-email').innerHTML = data[0].email;
+            document.getElementById('counsel-location').innerHTML = data[0].location;
+            document.getElementById('counsel-budget').innerHTML = data[0].budget;
+            document.getElementById('counsel-purpose').innerHTML = data[0].purpose;
+            document.getElementById('counsel-counsel').innerHTML = data[0].detail;
+            document.getElementById('counsel-reg-date').innerHTML = data[0].reg_date;
+
+            document.getElementById('counsel-answer').innerHTML = data[0].answer_detail;
+            document.getElementById('counsel-file').innerHTML = data[0].answer_file_origin_name
+
+          } else if (data[0].answer_yn == 'N') { //답변 안된 경우 
+            document.getElementById('reqanswer-name').innerHTML = data[0].name;
+            document.getElementById('reqanswer-phone').innerHTML = data[0].phone_num;
+            document.getElementById('reqanswer-email').innerHTML = data[0].email;
+            document.getElementById('reqanswer-location').innerHTML = data[0].location;
+            document.getElementById('reqanswer-budget').innerHTML = data[0].budget;
+            document.getElementById('reqanswer-purpose').innerHTML = data[0].purpose;
+            document.getElementById('reqanswer-counsel').innerHTML = data[0].detail;
+            document.getElementById('reqanswer-reg-date').innerHTML = data[0].reg_date;
+
+          }
+
+        }
+      } catch (err) {
+        console.log("Err:", err);
+      }
+    }
+
+    //파일 등록
+    const uploadFormData = async () => {
+      const fileInput = event.target;
+      const file = fileInput.files[0];
+      if (file) {
+        const fileSizeInBytes = file.size;
+        const fileSizeInMB = fileSizeInBytes / (1024 * 1024); // 바이트를 메가바이트로 변환
+        const maxSizeInMB = 3;
+        if (fileSizeInMB > maxSizeInMB) {
+          alert('파일 크기가 3MB를 초과하였습니다.');
+          fileInput.value = '';
+          return
+        }
+      }
+
+      const fileNameElement = document.getElementsByClassName("file-name");
+      const cancelButton = document.getElementsByClassName("cancel-btn");
+      if (fileInput.files.length > 0) {
+        const fileName = fileInput.files[0].name;
+        fileNameElement[0].textContent = fileName;
+        fileNameElement[0].style.display = "block";
+        cancelButton[0].style.display = "inline-block";
+      } else {
+        fileNameElement[0].style.display = "none";
+        cancelButton[0].style.display = "none";
+      }
+
+      cancelButton[0].addEventListener("click", function () {
+        fileInput.value = "";
+        fileNameElement[0].textContent = "";
+        cancelButton[0].style.display = "none";
       });
 
-      var requestOptions = {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const requestOptions = {
+        method: 'POST',
+        body: formData,
+        redirect: 'follow'
+      };
+
+      try {
+        const response = await fetch(`/upload`, requestOptions);
+        const { code, message, data } = await response.json();
+        if (code === 200) {
+          file_id = data.file_id;
+        }
+      } catch (err) {
+        console.log('Err:', err);
+      }
+    }
+
+    //답변 등록
+    const registerAnswer = async (e) => {
+      const detail = document.getElementById('reqanswer-answer').value;
+      if (!validData(detail)) {
+        return
+      };
+      const raw = JSON.stringify({
+        counsel_id,
+        detail,
+        file_id,
+        "email": "jewallk@gmail.com"
+      });
+      // NOTE CHECK : document.getElementById('reqanswer-email').innerHTML,
+      const requestOptions = {
         method: 'POST',
         headers: myHeaders,
         body: raw,
@@ -585,25 +797,44 @@
       };
 
       try {
-        const response = await fetch(``, requestOptions);
+        const response = await fetch(`/counsel/insertAnswer`, requestOptions);
         const { code, message } = await response.json();
         if (code === 200) {
+
           alert("저장되었습니다.");
-          window.location.href = "/admin/content_main";
+          $('#consultModal').modal('hide');
+          $('#consultDetailModal').modal('hide');
+        } else {
+          alert("저장 실패");
         }
       } catch (err) {
+        alert("저장 실패");
         console.log('Err:', err);
       }
 
     }
+    function openModal() {
+      document.getElementById("consultModal").classList.remove("show");
+      var modal = document.getElementById("consultModal");
+      var modalBackdrop = document.querySelector(".modal-backdrop");
+
+      //  modal.style.display = "block";
+      // modalBackdrop.style.display = "block";
+
+      // 스크롤 비활성화
+      //document.body.style.overflow = "hidden";
+
+      // 모달 닫기 버튼에 클릭 이벤트 핸들러 등록
+      //var closeButton = modal.querySelector(".close");
+      // closeButton.addEventListener("click", closeModal);
+    }
+
     const checkID = str => {
       // 8~10자 / 영어 대소문자, 숫자 사용 가능
       return str.trim() === '';
     }
 
   </script>
-
-  <script src="/admin/assets/js/common.js"></script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
