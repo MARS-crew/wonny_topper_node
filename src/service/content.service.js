@@ -118,7 +118,8 @@ const contentService = {
         file_4_id: req.body.file_4_id,
         category: req.body.category,
         title: req.body.title,
-        note: req.body.note
+        note: req.body.note,
+        exposure_yn: req.body.exposure_yn,
       };
 
       if(req.body.reg_date != undefined && req.body.reg_date != ''&& req.body.reg_date != null) {
@@ -162,12 +163,16 @@ const contentService = {
         category: req.body.category,
         title: req.body.title,
         note: req.body.note,
+        exposure_yn: req.body.exposure_yn,
         reg_date : req.body.reg_date
       };
 
       let sql = `UPDATE tbl_content SET category = ?, title = ?, note = ?`;
       if(data.reg_date != null) {
         sql += `, reg_date = '${data.reg_date}' `;
+      }
+      if(data.exposure_yn != null) {
+        sql += `, exposure_yn = '${data.exposure_yn}' `;
       }
       sql += ` 
         , file_main_id = ?, file_1_id = ?, file_2_id = ?, file_3_id = ?, file_4_id = ?
@@ -214,10 +219,34 @@ const contentService = {
         content_id: req.body.content_id
       };
 
-      const sql = `UPDATE tbl_content SET del_yn = 'Y' WHERE id = ? AND admin_id = ?`;
-      const saveAnswer = await executeQuery(sql,[
-        data.content_id, data.admin_id
-      ]);
+      let sql = `UPDATE tbl_content SET del_yn = 'Y' WHERE admin_id = ? `;
+
+      if(data.content_id != null) {
+        sql += `AND content_id IN (`;
+        for(i = 0;  i < data.content_id.length; i++) {
+          sql += data.content_id[i];
+          if(i+1 < data.content_id.length) {
+            sql += `, `;
+          }
+        }
+        sql += `) `;
+      }
+
+      const deleteContent = await executeQuery(sql,[data.admin_id]);
+
+      sql = `UPDATE tbl_file fl LEFT JOIN tbl_content ct ON ct.admin_id = ? `;
+      sql += `AND ct.content_id IN (`;
+      for(i = 0;  i < data.content_id.length; i++) {
+        sql += data.content_id[i];
+        if(i+1 < data.content_id.length) {
+          sql += `, `;
+        }
+      }
+      sql += `
+        ) SET fl.del_yn = 'Y'
+        WHERE fl.file_id IN (ct.file_main_id, ct.file_1_id, ct.file_2_id, ct.file_3_id, ct.file_4_id)
+      `;
+      const deleteFile = await executeQuery(sql,[data.admin_id]);
 
       res.status(200).json({
         code: 200,
@@ -240,41 +269,11 @@ const contentService = {
     }
   },
   deleteFile: (req, res) => { // 이미지 삭제
-    // const data = {
-    //   file_id: req.body.file_id,
-    //   target_id: req.body.content_id,
-    //   target_code: "CT",
-    //   change_name: req.body.change_name
-    // };
 
-    // sql = `UPDATE tbl_file SET del_yn = 'Y' WHERE id = ? AND target_id = ? AND target_code = ? AND change_name = ?`;
-    // db.query(
-    //   sql,
-    //   [
-    //     data.mod_date,
-    //     data.file_id,
-    //     data.target_id,
-    //     data.target_code,
-    //     data.change_name,
-    //   ],
-    //   function (err, rows) {
-    //     if (!err) {
-    //       if (rows.affectedRows > 0) {
-    //         res.send(setResponseJson(200, "이미지 삭제 성공", ""));
-    //       } else {
-    //         res.send(setResponseJson(405, "이미지 삭제 실패", ""));
-    //       }
-    //     } else {
-    //       console.log("이미지 삭제 실패 err : " + err);
-    //       res.send(setResponseJson(404, "이미지 삭제 실패", err));
-    //     }
-    //   }
-    // );
   },
   findGallery: async (req, res) => {
     try {
-      const { page, pageSize } = req.body;
-      let { category } = req.body;
+      const { page, pageSize, category } = req.body;
       const offset = (page - 1) * pageSize; // OFFSET 값 계산
 
       let sql = `

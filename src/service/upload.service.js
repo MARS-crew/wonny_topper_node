@@ -34,7 +34,37 @@ const uploadService = {
         .status(500)
         .json({ message: message, data: err, code: 500 });
     }
-  }
+  },
+  deleteFile: async (req, res) => { // 등록
+    try {
+      const { originalname, filename, path, mimetype } = req.file;
+
+      // 업로드된 파일의 경로
+      const filePath = req.file.path;
+
+      // 파일 삭제
+      fs.unlink(filePath, (err) => {
+        let message;
+
+        if(err) {
+          message = "파일 삭제 실패"
+        } else {
+          message = "파일 삭제 성공";
+        }
+
+        console.error(err);
+        res
+          .status(500)
+          .json({ message: message, data: err, code: 500 });
+      });
+    } catch {
+      console.error(err);
+      res
+        .status(500)
+        .json({ message: '파일 삭제 실패', data: err, code: 500 });
+    }
+  },
 };
+
 
 module.exports = uploadService;
