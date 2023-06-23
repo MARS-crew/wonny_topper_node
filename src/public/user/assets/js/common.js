@@ -8,16 +8,148 @@ const popupWrap = document.querySelector(".popup_wrap");
 const popupCloseBtn = document.querySelector(".icon_close");
 const applyBtn = document.querySelector(".apply_btn");
 
+// const galleryCategory = document.querySelectorAll(".gallery_category_menu li");
+
+// if (galleryCategoryMenu) {
+//   galleryCategoryMenu.forEach((prElement) => {
+//     prElement.addEventListener("click", () => {
+//       galleryCategoryMenu.forEach((element) => {
+//         element.classList.remove("active");
+//       });
+//       prElement.classList.add("active");
+//       const id = this.id;
+//       console.log(id);
+//     });
+//   });
+// }
+// let galleryCategoryImg = [];
+// if (galleryCategoryMenu) {
+//   let id = 1;
+
+//   galleryCategoryMenu.forEach((prElement) => {
+//     prElement.addEventListener("click", function () {
+//       galleryCategoryMenu.forEach((element) => {
+//         element.classList.remove("active");
+//       });
+//       this.classList.add("active");
+//       id = this.id;
+//       console.log(id);
+
+//       fetch("http://localhost:3000/content/gallery", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify({
+//           page: 1,
+//           pageSize: 8,
+//           category: [id],
+//         }),
+//       })
+//         .then((response) => response.text())
+//         .then((data) => {
+//           galleryCategoryImg = JSON.parse(data);
+//           console.log(galleryCategoryImg);
+//           galleryImageList(galleryCategoryImg);
+//         });
+//     });
+//   });
+// }
+
+// const galleryImageList = (img) => {
+//   console.log(img);
+//   const galleryListContainer = document.querySelector(".gallery_category_list");
+//   galleryListContainer.innerHTML = "";
+//   const categoryObj = Object.assign({}, img);
+//   const categoryList = categoryObj.data;
+
+//   categoryList.forEach((element) => {
+//     console.log(element);
+//     galleryListContainer.insertAdjacentHTML(
+//       "beforeend",
+//       `
+//       <li style="background:url(${element.url}) no-repeat center center/cover">
+//           <div class="gallery_category_list_content">
+//             <div class="gallery_category_title_area">
+//               <div class="gallery_category_title">${element.title}</div>
+//             </div>
+//           </div>
+//       </li>
+//       `
+//     );
+//   });
+// };
+
+let galleryCategoryImg = [];
+
+const fetchGalleryImages = (id) => {
+  fetch("http://localhost:3000/content/gallery", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      page: 1,
+      pageSize: 8,
+      category: [id],
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      galleryCategoryImg = data;
+      console.log(galleryCategoryImg);
+      galleryImageList(galleryCategoryImg);
+    });
+};
+
 if (galleryCategoryMenu) {
+  let id = 1;
+  const activeCategory = document.querySelector(
+    ".gallery_category_menu .active"
+  );
+  if (activeCategory) {
+    id = activeCategory.id;
+  }
+
+  fetchGalleryImages(id);
+
   galleryCategoryMenu.forEach((prElement) => {
-    prElement.addEventListener("click", () => {
+    prElement.addEventListener("click", function () {
       galleryCategoryMenu.forEach((element) => {
         element.classList.remove("active");
       });
-      prElement.classList.add("active");
+      this.classList.add("active");
+      id = this.id;
+      console.log(id);
+
+      fetchGalleryImages(id);
     });
   });
 }
+
+const galleryImageList = (img) => {
+  console.log(img);
+  const galleryListContainer = document.querySelector(".gallery_category_list");
+  galleryListContainer.innerHTML = "";
+  const categoryObj = Object.assign({}, img);
+  const categoryList = categoryObj.data;
+
+  categoryList.forEach((element) => {
+    console.log(element);
+    galleryListContainer.insertAdjacentHTML(
+      "beforeend",
+      `
+      <li style="background:url(http://localhost:3000/img/uploads/${element.url}) no-repeat center center/cover">
+          <div class="gallery_category_list_content">
+            <div class="gallery_category_title_area">
+              <div class="gallery_category_title">${element.title}</div>
+            </div>
+          </div>
+      </li>
+      `
+    );
+  });
+};
 
 if (galleryCategoryList) {
   galleryCategoryList.forEach((element) => {
@@ -48,7 +180,6 @@ if (applyBtn) {
   const qnaContent = document.querySelector(".qna_content_detail");
 
   applyBtn.addEventListener("click", () => {
-
     fetch("http://localhost:3000/counsel/insertCounsel", {
       method: "POST",
       headers: {
@@ -84,7 +215,6 @@ const swiper = new Swiper(".mySwiper", {
     prevEl: ".swiper-button-prev",
   },
 });
-
 
 $(window).on("load", function () {
   load("#js-load", "12");

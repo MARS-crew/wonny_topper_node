@@ -25,6 +25,8 @@ app.use(
 app.set("view engine", "ejs");
 app.set("views", "./src/views");
 // app.use(morgan("combined"));
+
+app.use("/img", express.static(`${__dirname}/src/public`));
 app.use(express.static(`${__dirname}/src/public`));
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
 
