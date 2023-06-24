@@ -250,22 +250,24 @@
     const fileNameElement = document.getElementsByClassName("file-name");
     const cancelButton = document.getElementsByClassName("cancel-btn");
     const input = document.getElementsByName("productImgArr[]");
-
-
     let DT = null;
     let counsel_id = "";
-    let currentListCount = 0;
     let file_id = null;
+
+    let currentListCount = 0;
     let dataLength = 0;
+    let page = 1;
     //페이지네이션
     let from_date = null;
     let to_date = null;
     let search_word = "";
     let category = [1, 2, 3, 4, 5];
     let sort = "DESC";
-    let page = 1;
     let exposure_yn = ['N', 'Y'];
     const pageSize = 10;
+
+    // 전체 페이지 수 , 현재 페이지 ,
+    // 검색 결과 전체 불러오기 
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -281,11 +283,8 @@
         defaultDate: new Date()
       });
 
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, '0');
-      const day = String(today.getDate()).padStart(2, '0');
-      const formattedDate = year + '-' + month + '-' + day;
+      const today = dayjs();
+      const formattedDate = today.format('YYYY-MM-DD');
       $('#from-date, #to-date').datepicker('setDate', formattedDate);
     }
 
@@ -383,7 +382,7 @@
       search_word = document.getElementById('keyword').value;
       from_date = document.getElementById('from-date').value;
       to_date = document.getElementById('to-date').value;
-      sort= "DESC";
+      sort = "DESC";
       showListData();
 
       /*

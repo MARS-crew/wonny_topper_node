@@ -97,15 +97,23 @@
   <script src="/admin/assets/js/common.js"></script>
 
   <script>
+
+    const checkId = ()=>{
+     //4~10자 / 영어 대소문자, 숫자 사용 가능
+    }
+    const checkPwd =()=>{
+ 
+      //비밀번호 4~16자 / 문자, 숫자, 특수 문자 혼용 가능.
+    }
     const onClickLogin = async () => {
       let id = document.getElementById('email').value;
       let pwd = document.getElementById('password').value;
 
-      if (checkID(id)) {
+      if (id.trim() === '') {
         alert("아이디를 다시 입력해주세요");
         return;
       }
-      if (checkPW(pwd)) {
+      if (pwd.trim() === '') {
         alert("비밀번호를 다시 입력해주세요");
         return;
       }
@@ -133,19 +141,21 @@
           window.location.href = "/admin/content_main";
           return;
         }
+        if (message === '패스워드가 틀립니다.') {
+          alert('비밀번호를 다시 입력해주세요');
+          return;
+        }
+        if (message === '유저를 찾을 수 없습니다.') {
+          alert("관리자 정보가 없습니다.");
+          return;
+        }
         alert("관리자 정보가 없습니다.");
       } catch (err) {
         console.log('Err:', err);
       }
     }
 
-    const checkID = str => {
-      // 8~10자 / 영어 대소문자, 숫자 사용 가능
-      return str.trim() === '';
-    }
-    const checkPW = str => {
-      return str.trim() === '';
-    }
+
 
   </script>
 

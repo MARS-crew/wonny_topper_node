@@ -131,4 +131,4 @@ dist
 
 
 
-src/public/uploads/*
+# src/public/uploads/*
