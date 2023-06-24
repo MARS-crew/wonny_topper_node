@@ -132,7 +132,8 @@
                       <div class="col-md-9 filter-inputs">
                         <div class="filter-expose">
                           <label class="radio-button-inline">
-                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" value="${row.bannerIdx}" checked />
+                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" value="${row.bannerIdx}"
+                              checked />
                             전체
                           </label>
                           <label class="radio-button-inline">
@@ -258,12 +259,27 @@
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="/admin/assets/js/common.js"></script>
-  <script>
-    const tbody = document.getElementById("dataTable");
-    let listcount = 0;
-    const myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
 
+  <script>
+    let DT = null;
+    let counsel_id = "";
+    let currentListCount = 0;
+    let file_id = null;
+    //페이지네이션
+    let dataLength = 0;
+    let from_date = "";
+    let to_date = "2023-06-20";
+    let search_word = "2023-06-24";
+    let category = [1, 2, 3, 4];
+    let sort = "ASC";
+    let page = 1;
+    const pageSize = 10;
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+   // myHeaders.append("Accept", "application/json");
+
+   // const tbody = document.getElementById("dataTable");
 
     const lang = {
       decimal: '',
@@ -303,15 +319,11 @@
       const month = String(today.getMonth() + 1).padStart(2, '0');
       const day = String(today.getDate()).padStart(2, '0');
       const formattedDate = year + '-' + month + '-' + day;
-      console.log(formattedDate);
-
       $('#startDate, #endDate').datepicker('setDate', formattedDate);
-
-
     }
 
     $(document).ready(function () {
-      const DT = $('#dataTable').DataTable({
+      DT = $('#dataTable').DataTable({
         language: lang,
         bFilter: false,
         ordering: false,
@@ -324,12 +336,12 @@
           { width: '20%' },
         ],
       });
-      selectContentApi(DT);
+      showListData(DT);
 
       $('#dataTable tbody').on('click', 'tr.content-list', function () {
         if ($(event.target).is('input[type="checkbox"]')) {
           console.log("ck");
-          if ($('.table-ck:checked').length === listcount) {
+          if ($('.table-ck:checked').length === currentListCount) {
             $('input[name=table-ck-all]').prop('checked', true);
           } else {
             $('input[name=table-ck-all]').prop('checked', false);
@@ -343,15 +355,16 @@
       })
 
       $('#orderSelect').on('change', function () {
-        const columnIndex = 4; // 정렬할 열의 인덱스
-        const sortDirection = $(this).val(); // 선택한 정렬 방향 값
+        sort = $(this).val();
+        showListData();
 
-        const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
-        if (sortDirection === "asc" || sortDirection === "desc") {
-          DT.order(order).draw();
-        }
-
+        // const columnIndex = 4; // 정렬할 열의 인덱스
+        // const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
+        // if (sortDirection === "asc" || sortDirection === "desc") {
+        //   DT.order(order).draw();
+        // }
       });
+
     });
 
 
@@ -373,39 +386,56 @@
 
 
 
-//리스트 조회
-    const selectContentApi = async (DT) => {
-      const requestOptions = {
-        method: 'GET',
+    //리스트 조회
+    const showListData = async (DT) => {
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Cookie", "connect.sid=s%3Aeg9wos3lqUenkcx3RQWEW3bP3Qn2R2WT.Zoaqj0ntdmUWyCEun%2BxqBi1yHEGpeVlq5t3lsZ9VHEc");
+
+      var raw = JSON.stringify({
+        "from_date": "2023-06-20",
+        "to_date": "2023-06-22",
+        "category": [1, 2],
+        "search_word": "",
+        "sort": "ASC",
+        "exposure_yn": ["Y", "N"],
+        "page": 1,
+        "pageSize": 10
+      });
+
+      var requestOptions = {
+        method: 'POST',
         headers: myHeaders,
+        body: raw,
         redirect: 'follow'
       };
 
       try {
-        const response = await fetch(`/content/select`, requestOptions);
+
+        const response = await fetch(`/content/search`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          console.log("조회 성공"+data);
-  
-          let cate ="";
-   
+          console.log("조회 성공" + data);
+
+          let categoryStr = "";
           data.forEach(function (row, i) {
             switch (row.category) {
-            case 1:
-             cate="풍선 장식"
-              break;
-            case 2:
-            cate="토퍼"
-              break;
-            case 3:
-            cate="삐에로/페이스페인팅"
-             break;
-            case 4:
-            cate="원데이클래스"
-            break;
-            default:
-              console.log(data.file_id);
-          }
+              case 1:
+                categoryStr = "풍선 장식"
+                break;
+              case 2:
+                categoryStr = "토퍼"
+                break;
+              case 3:
+                categoryStr = "삐에로/페이스페인팅"
+                break;
+              case 4:
+                categoryStr = "원데이클래스"
+                break;
+              default:
+                console.log(data.file_id);
+            }
 
             const checkbox = $('<input>').attr({
               type: 'checkbox',
@@ -418,26 +448,28 @@
             DT.row.add([
               checkbox[0].outerHTML,
               i + 1,
-              cate,
+              categoryStr,
               row.title,
               dayjs(row.reg_date).format(
-              "YYYY-MM-DD HH:mm:ss"
-            )
+                "YYYY-MM-DD HH:mm:ss"
+              )
             ]).node().classList.add('content-list'); // class 추가
 
             DT.draw(false);
 
 
             const pageInfo = DT.page.info();
-            listcount = pageInfo.end - pageInfo.start;
+            currentListCount = pageInfo.end - pageInfo.start;
 
           });
           return;
         }
-        //alert("정보가 없습니다.");
+
       } catch (err) {
         console.log('Err:', err);
       }
+
+
 
     }
 
