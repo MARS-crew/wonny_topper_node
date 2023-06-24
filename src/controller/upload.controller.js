@@ -31,8 +31,8 @@ const uploadService = require("../service/upload.service");
  */
 router.post("/", upload.single("file"), uploadService.uploadFile);
 
-const fs = require('fs');
-router.post("/deleteFile", upload.single("file"), uploadService.deleteFile);
+
+router.post("/deleteFile", uploadService.deleteFile);
 
 
 module.exports = router;
