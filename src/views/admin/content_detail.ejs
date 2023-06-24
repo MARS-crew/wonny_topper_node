@@ -79,7 +79,7 @@
                   </td>
                   <td width="20%" class="table-title-td">컨텐츠코드</td>
                   <td width="30%">
-                    <input name="content_id" value="" id="content_id" readonly />
+                    <input name="content_id" id="content_id" readonly />
                   </td>
                 </tr>
                 <tr>
@@ -191,33 +191,43 @@
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Accept", "application/json");
 
 
     const onClickDeleteBtn = async () => {
-      const content_id = document.getElementById("content_id").value;
+      const content_id = parseInt(document.getElementById("content_id").value);
+      //const contentArr = [parseInt(content_id),];
+
       const contentRaw = JSON.stringify({
-        "content_id": [content_id]
+        "content_id": [
+          content_id,
+        ]
       });
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: contentRaw,
+        redirect: 'follow'
+      };
 
       const result = window.confirm("삭제 하시겠습니까?");
       if (result) {
         try {
-          const response = await fetch(`/content/delete`, {
-            headers: myHeaders,
-            method: 'POST',
-            body: JSON.stringify(contentRaw),
-            redirect: 'follow'
-          });
-
+          const response = await fetch(`/content/delete`, requestOptions);
           const { code, message } = await response.json();
           if (code === 200) {
-            console.log("컨텐츠 삭제 완료 ");
+            window.location.href = "/admin/content_main";
+
+            /*
             const array = [file_main_id, file_1_id, file_2_id, file_3_id, file_4_id];
             array.forEach(el => {
               deleteAllFile(el);
             });
-            
+            */
+
           }
+          console.log(code);
         } catch {
 
         }
@@ -225,9 +235,9 @@
       };
 
       const deleteAllFile = async (file_id) => {
+        console.log(file_id);
         const fileRaw = JSON.stringify({
-          file_id 
-
+          file_id
         });
 
         const response2 = await fetch(`/upload/deleteFile`, {
@@ -241,7 +251,6 @@
         if (code2 === 200) {
           console.log("사진 삭제 완료 ");
 
-          window.location.href = "/admin/content_main";
           return;
         }
         alert(message2);
@@ -263,7 +272,8 @@
         method: 'GET',
         headers: myHeaders,
         body: raw,
-        redirect: 'follow'
+        redirect: 'follow',
+
       };
 
       try {
