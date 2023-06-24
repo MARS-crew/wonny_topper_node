@@ -127,6 +127,28 @@
                       </div>
                     </div>
                     <div class="form-group">
+                      <label class="col-md-2 filter-label">노출여부</label>
+
+                      <div class="col-md-9 filter-inputs">
+                        <div class="filter-expose">
+                          <label class="radio-button-inline">
+                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" value="${row.bannerIdx}" checked />
+                            전체
+                          </label>
+                          <label class="radio-button-inline">
+                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" class="rb"
+                              value="${row.bannerIdx}" />
+                            Y
+                          </label>
+                          <label class="radio-button-inline">
+                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" class="rb"
+                              value="${row.bannerIdx}" />
+                            N
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
                       <label class="col-md-2 filter-label">검색어</label>
                       <div class="col-sm-8 search-input filter-inputs">
                         <input type="text" id="keyword" class="form-control" placeholder="검색하기" />
@@ -239,16 +261,14 @@
   <script>
     const tbody = document.getElementById("dataTable");
     let listcount = 0;
-    const myHeadersC = new Headers();
-      myHeadersC.append("Content-Type", "application/json");
-    //  myHeadersC.append("Cookie", "connect.sid=s%3APAgRVsuWaP8LshsiOyI2ut57YP_TmM_7.o1m56SmwRyIU85mKJ3sM6lmPfDn8ueWbxkMKBa9SNIc");
+    const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
 
     const lang = {
       decimal: '',
       emptyTable: '데이터가 없습니다.',
       info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-      infoEmpty: '0명',
       infoFiltered: '(filtered from _MAX_ total entries)',
       infoPostFix: '',
       thousands: ',',
@@ -267,11 +287,7 @@
       },
     }
 
-
-
-
     window.onload = () => {
-
       $('#startDate, #endDate').datepicker({
         dateFormat: 'yy-mm-dd',
         format: 'yyyy-mm-dd',
@@ -361,7 +377,7 @@
     const selectContentApi = async (DT) => {
       const requestOptions = {
         method: 'GET',
-        headers: myHeadersC,
+        headers: myHeaders,
         redirect: 'follow'
       };
 
@@ -369,7 +385,7 @@
         const response = await fetch(`/content/select`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          console.log(data);
+          console.log("조회 성공"+data);
   
           let cate ="";
    

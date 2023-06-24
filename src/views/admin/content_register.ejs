@@ -243,17 +243,17 @@
     
     //파일 등록
     const uploadFormData = async (i) => {
-      const fileInput = event.target;
       const fileNameElement = document.getElementsByClassName("file-name");
       const cancelButton = document.getElementsByClassName("cancel-btn");
-      //const input = document.getElementsByName("productImgArr[]");
-      const file = input[i].files[0];
-
-      if (fileInput.files.length > 0) {
-        const fileName = fileInput.files[0].name;
+      const input = document.getElementsByName("productImgArr[]");
+      const fileInput = input[i].files[0];
+      
+      if (fileInput != null) {
+        const fileName = fileInput.name;
         fileNameElement[i].textContent = fileName;
         fileNameElement[i].style.display = "block";
         cancelButton[i].style.display = "inline-block";
+        console.log(fileName);
       } else {
         fileNameElement[i].style.display = "none";
         cancelButton[i].style.display = "none";
@@ -267,7 +267,7 @@
 
 
       const formData = new FormData();
-      formData.append("file", file);
+      formData.append("file", fileInput);
 
 
       const requestOptions = {
@@ -312,12 +312,16 @@
 
     //컨텐츠 등록
     const registeContent = async (e) => {
-      e.preventDefault();
+      //e.preventDefault();
 
       const title = document.getElementById("title").value;
       const note = document.getElementById("note").value;
       const category = parseInt(document.getElementById("category").value);
       const requiredPhoto = document.getElementById("file1").value;
+
+      const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
 
       if (title == "") {
         alert("필수값이 입력되지 않았습니다.");
@@ -333,6 +337,7 @@
       }
       const regexTitle = /^[^\p{C}]{1,30}$/u; // 정규식 패턴
       const regexNote = /^[^\p{C}]{0,300}$/u; // 정규식 패턴
+
 
       if (!regexTitle.test(title)) {
         alert("제목은 국/영문, 숫자, 특수문자 최대 30자까지만 입력 가능합니다.");
@@ -354,7 +359,8 @@
         file_2_id,
         file_3_id,
         file_4_id,
-        reg_date: formattedNow
+        reg_date: formattedNow,
+        exposure_yn:'N' //NOTE:
 
       });
 
