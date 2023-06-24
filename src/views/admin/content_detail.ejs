@@ -159,7 +159,6 @@
             </form>
           </section>
         </div>
-        <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
 
@@ -183,29 +182,62 @@
     let member_id = "admin";
     const params = new URLSearchParams(window.location.search);
     const id = params.get("content_id");
+    let formattedNow = null;
+    let file_main_id = null;
+    let file_1_id = null;
+    let file_2_id = null;
+    let file_3_id = null;
+    let file_4_id = null;
+
+    const myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
 
     const onClickDeleteBtn = async () => {
-      const body = {
-        content_id: document.getElementById("content_id").value,
-        member_id,
-      };
+      const content_id = document.getElementById("content_id").value;
+      const contentRaw = JSON.stringify({
+        "content_id": [content_id]
+      });
+
       const result = window.confirm("삭제 하시겠습니까?");
       if (result) {
-        const response = fetch(`/content/delete`, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-          method: "post",
-          body: JSON.stringify(body),
+        try {
+          const response = await fetch(`/content/delete`, {
+            headers: myHeaders,
+            method: 'POST',
+            body: JSON.stringify(contentRaw),
+            redirect: 'follow'
+          });
+
+          const { code, message } = await response.json();
+          if (code === 200) {
+
+          }
+        } catch {
+
+        }
+
+        const fileRaw = JSON.stringify({
+          file_main_id,
+          file_1_id,
+          file_2_id,
+          file_3_id,
+          file_4_id,
         });
 
-        const { code, message } = await response.json();
-        if (code === 200) {
-          window.location.href = "/admin/content_main";
+        const response2 = await fetch(`/upload/deleteFile`, {
+          method: 'POST',
+          headers: myHeaders,
+          body: fileRaw,
+          redirect: 'follow'
+        });
 
+        const { code2, message2 } = await response2.json();
+        if (code2 === 200) {
+          window.location.href = "/admin/content_main";
           return;
         }
-        alert(message);
+        alert(message2);
       }
     };
 
@@ -250,23 +282,23 @@
           const file2 = document.querySelector("#file_2_url");
           const file3 = document.querySelector("#file_3_url");
           const file4 = document.querySelector("#file_4_url");
-          
+
           title.value = data[0].title;
           note.value = data[0].note;
-          let cate ="";
+          let cate = "";
           switch (data[0].category) {
             case 1:
-             cate="풍선 장식"
+              cate = "풍선 장식"
               break;
             case 2:
-            cate="토퍼"
+              cate = "토퍼"
               break;
             case 3:
-            cate="삐에로/페이스페인팅"
-             break;
+              cate = "삐에로/페이스페인팅"
+              break;
             case 4:
-            cate="원데이클래스"
-            break;
+              cate = "원데이클래스"
+              break;
             default:
               console.log(data.file_id);
           }
@@ -284,6 +316,12 @@
           file2.innerHTML = data[0].file_2_id_origin_name;
           file3.innerHTML = data[0].file_3_id_origin_name;
           file4.innerHTML = data[0].file_4_id_origin_name;
+
+          file_main_id = data[0].file_main_id;
+          file_1_id = data[0].file_1_id;
+          file_2_id = data[0].file_2_id;
+          file_3_id = data[0].file_3_id;
+          file_4_id = data[0].file_4_id;
 
         }
 

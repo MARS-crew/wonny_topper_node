@@ -222,6 +222,10 @@
     const cancelButton = document.getElementsByClassName("cancel-btn");
     let fileInput = "";
 
+    const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+
     $(document).ready(function () {
       $("#dataTable").DataTable();
       findContent();
@@ -238,6 +242,8 @@
       const raw = JSON.stringify({
         "content_id": id
       });
+
+      
 
       const requestOptions = {
         method: 'GET',

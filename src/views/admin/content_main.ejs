@@ -239,16 +239,14 @@
   <script>
     const tbody = document.getElementById("dataTable");
     let listcount = 0;
-    const myHeadersC = new Headers();
-      myHeadersC.append("Content-Type", "application/json");
-    //  myHeadersC.append("Cookie", "connect.sid=s%3APAgRVsuWaP8LshsiOyI2ut57YP_TmM_7.o1m56SmwRyIU85mKJ3sM6lmPfDn8ueWbxkMKBa9SNIc");
+    const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
 
     const lang = {
       decimal: '',
       emptyTable: '데이터가 없습니다.',
       info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-      infoEmpty: '0명',
       infoFiltered: '(filtered from _MAX_ total entries)',
       infoPostFix: '',
       thousands: ',',
@@ -267,11 +265,7 @@
       },
     }
 
-
-
-
     window.onload = () => {
-
       $('#startDate, #endDate').datepicker({
         dateFormat: 'yy-mm-dd',
         format: 'yyyy-mm-dd',
