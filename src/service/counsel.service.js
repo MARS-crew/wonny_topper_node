@@ -4,57 +4,7 @@ const sendMail = require("../utils/mail");
 const { executeQuery } = require("../repository");
 
 const counselService = {
-  search: (req, res) => {
-    // 검색
-    const data = {
-      reg_date_from: req.body.reg_date_from + " 00:00:00",
-      reg_date_to: req.body.reg_date_to + " 23:59:59",
-      purpose: req.body.purpose,
-      answer_yn: req.body.answer_yn,
-      search_word: req.body.search_word,
-    };
-
-    // if (req.session.user) {
-    const sql = `
-            SELECT 
-                a.*, 
-                IF(
-                    b.answer_id IS NOT NULL, 
-                    'Y', 'N'
-                ) AS answer_yn
-            FROM tbl_counsel a
-
-            LEFT JOIN tbl_answer b
-            ON b.counsel_id = a.counsel_id
-
-            WHERE a.reg_date BETWEEN ? AND ?
-            AND a.purpose = ?
-            AND a.detail LIKE '%${data.search_word}%'
-            AND ((? = 'N' AND b.answer_id IS NULL) OR (? = 'Y' AND b.answer_id IS NOT NULL))
-        `;
-    db.query(
-      sql,
-      [
-        data.reg_date_from,
-        data.reg_date_to,
-        data.purpose,
-        data.answer_yn,
-        data.answer_yn,
-      ],
-      function (err, rows) {
-        if (!err) {
-          res.send(setResponseJson(200, "상담 검색 성공", rows));
-        } else {
-          console.log("상담 검색 실패 err : " + err);
-          res.send(setResponseJson(404, "상담 검색 실패", err));
-        }
-      }
-    );
-    // } else {
-    //     res.send(setResponseJson(405, '로그인 세션 미존재', ''));
-    // }
-  },
-  select: async (req, res) => { // 조회
+  select: async (req, res) => { // 조회, 검색
     try {
       const { counsel_id } = req.params;
       const { purpose, search_word, sort, page, pageSize } = req.body;
@@ -138,11 +88,52 @@ const counselService = {
         budget: req.body.budget,
         purpose: req.body.purpose,
         detail: req.body.detail,
-        agree: req.body.agree
+        agree: req.body.agree,
+        content_id: req.body.content_id
       };
 
-      const sql = "INSERT INTO tbl_counsel SET ?";
-      const saveAnswer = await executeQuery(sql, data);
+      let sql = "INSERT INTO tbl_counsel SET ?";
+      let response = await executeQuery(sql, data);
+
+      let mailText = `
+      이름 : ${data.name}
+
+      휴대폰번호 : ${data.phone_num}
+
+      이메일 : ${data.email}
+
+      장소 : ${data.location}
+
+      예산 : ${data.budget}
+
+      의뢰목적 : ${data.purpose}
+      
+      상담내용 : ${data.detail}
+
+      `;
+
+      // 해당 컨텐츠의 이미지, 제목, 카테고리
+      if(data.content_id != null) {
+        sql = `
+          SELECT 
+            ct.title, ct.file_main_id, fl.origin_name, fl.url 
+          FROM tbl_content ct 
+          LEFT JOIN tbl_file fl
+          ON fl.file_id = ct.file_main_id
+          AND fl.del_yn = 'N'
+          WHERE ct.content_id = ? AND ct.del_yn = 'N'
+        `;
+        response = await executeQuery(sql, [data.content_id]);
+        if(response[0]) {
+          mailText += `관련컨텐츠 : ${response[0].title}`;
+          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText, response[0].url, response[0].origin_name);
+        } else {
+          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText);
+        }
+      } else {
+        mailText += `관련컨텐츠 : 없음`;
+        await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText);
+      }
 
       res.status(200).json({
         code: 200,
@@ -150,18 +141,10 @@ const counselService = {
         data: true,
       });
     } catch (err) {
-      let message;
-
-      if(req.session.user == undefined) {
-        message = "유저 세션이 존재하지 않습니다."
-      } else {
-        message = "에러가 발생하였습니다.";
-      }
-
       console.error(err);
       res
         .status(500)
-        .json({ message: message, data: err, code: 500 });
+        .json({ message: "에러가 발생하였습니다.", data: err, code: 500 });
     }
   },
   insertAnswer: async (req, res) => {
@@ -173,15 +156,37 @@ const counselService = {
         detail: req.body.detail
       };
 
-      const sql = `INSERT INTO tbl_answer SET ?`;
-      const saveAnswer = await executeQuery(sql, data);
+      let sql = `INSERT INTO tbl_answer SET ?`;
+      let response = await executeQuery(sql, data);
 
-      await sendMail(req.body.email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", data.detail);
-      res.status(200).json({
-        code: 200,
-        message: "답변 등록에 성공하였습니다.",
-        data: true,
-      });
+      if(data.file_id != null) {
+        sql = `
+          SELECT 
+            fl.file_id,
+            fl.url,
+            fl.origin_name
+          FROM tbl_file fl 
+          JOIN tbl_answer aw
+          ON aw.admin_id = ?
+          AND aw.answer_id = ?
+          WHERE fl.file_id = aw.file_id
+        `;
+        response = await executeQuery(sql, [data.admin_id, response.insertId]);
+
+        await sendMail(req.body.email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", data.detail, response[0].url, response[0].origin_name);
+        res.status(200).json({
+          code: 200,
+          message: "답변 등록에 성공하였습니다.",
+          data: true,
+        });
+      } else {
+        await sendMail(req.body.email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", data.detail);
+        res.status(200).json({
+          code: 200,
+          message: "답변 등록에 성공하였습니다.",
+          data: true,
+        });
+      }
     } catch (err) {
       let message;
 

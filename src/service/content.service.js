@@ -4,7 +4,7 @@ const fs = require('fs');
 const contentService = {
   search: async (req, res) => { // 검색
     try {
-      const { category, search_word, sort, page, pageSize } = req.body;
+      const { category, search_word, sort, exposure_yn, page, pageSize } = req.body;
       let { from_date, to_date } = req.body;
       const offset = (page - 1) * pageSize; // OFFSET 값 계산
       let sql;
@@ -34,10 +34,18 @@ const contentService = {
       if(search_word != null) {
         sql += `AND ct.title LIKE '%${search_word}%' `;
       }
-      
+      if(exposure_yn != null) {
+        sql += `AND ct.exposure_yn IN (`;
+        for(i = 0;  i < exposure_yn.length; i++) {
+          sql += `'` + exposure_yn[i];
+          if(i+1 < exposure_yn.length) {
+            sql += `', `;
+          }
+        }
+        sql += `') `;
+      }
       sql += `ORDER BY ct.reg_date ${sort} `;
       sql += `LIMIT ${pageSize} OFFSET ${offset}`;
-
       
       const response = await executeQuery(sql);
 
@@ -47,18 +55,10 @@ const contentService = {
         data: response,
       });
     } catch (err) {
-      let message;
-
-      if(req.session.user == undefined) {
-        message = "유저 세션이 존재하지 않습니다."
-      } else {
-        message = "에러가 발생하였습니다.";
-      }
-
       console.error(err);
       res
         .status(500)
-        .json({ message: message, data: err, code: 500 });
+        .json({ message: "에러가 발생하였습니다.", data: err, code: 500 });
     }
   },
   select: async (req, res) => { // 조회
@@ -118,7 +118,7 @@ const contentService = {
         category: req.body.category,
         title: req.body.title,
         note: req.body.note,
-        exposure_yn: req.body.exposure_yn,
+        exposure_yn: req.body.exposure_yn
       };
 
       if(req.body.reg_date != undefined && req.body.reg_date != ''&& req.body.reg_date != null) {

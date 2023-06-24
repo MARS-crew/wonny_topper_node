@@ -10,7 +10,6 @@ const counselService = require("../service/counsel.service");
  *   description: Counsel API
  */
 
-router.get("/search", counselService.search);
 router.post("/select", counselService.select);
 router.get("/select/:counsel_id", counselService.select);
 router.post(
