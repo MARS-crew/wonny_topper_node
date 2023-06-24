@@ -1,6 +1,5 @@
-const db = require("../config/db");
-const setResponseJson = require("../dto/responseDto");
 const { executeQuery } = require("../repository");
+const fs = require('fs');
 
 const contentService = {
   search: async (req, res) => { // 검색
@@ -232,7 +231,7 @@ const contentService = {
         sql += `) `;
       }
 
-      const deleteContent = await executeQuery(sql,[data.admin_id]);
+      let response = await executeQuery(sql,[data.admin_id]);
 
       sql = `UPDATE tbl_file fl LEFT JOIN tbl_content ct ON ct.admin_id = ? `;
       sql += `AND ct.content_id IN (`;
@@ -246,13 +245,61 @@ const contentService = {
         ) SET fl.del_yn = 'Y'
         WHERE fl.file_id IN (ct.file_main_id, ct.file_1_id, ct.file_2_id, ct.file_3_id, ct.file_4_id)
       `;
-      const deleteFile = await executeQuery(sql,[data.admin_id]);
+      response = await executeQuery(sql,[data.admin_id]);
 
-      res.status(200).json({
-        code: 200,
-        message: "컨텐츠 삭제에 성공하였습니다.",
-        data: true,
-      });
+      sql = `
+        SELECT 
+          fl.file_id,
+          fl.url
+        FROM tbl_file fl 
+        JOIN tbl_content ct 
+        ON ct.admin_id = 1
+        AND ct.content_id IN (
+      `;
+      for(i = 0;  i < data.content_id.length; i++) {
+        sql += data.content_id[i];
+        if(i+1 < data.content_id.length) {
+          sql += `, `;
+        }
+      }
+      sql += `
+        ) WHERE fl.file_id IN (ct.file_main_id, ct.file_1_id, ct.file_2_id, ct.file_3_id, ct.file_4_id)
+      `;
+      response = await executeQuery(sql);
+
+      let filePath;
+      if (response[0]) { // 이미지 존재 여부 확인
+        try {
+          for (let i = 0; i < response.length; i++) {
+            filePath = response[i].url;
+      
+            // 파일 삭제
+            fs.unlink(filePath, (err) => {
+              if (err) {
+                console.error(err);
+              }
+            });
+          }
+          res.status(200).json({
+            code: 200,
+            message: '컨텐츠 삭제 성공',
+            data: response
+          });
+        } catch (err) {
+          console.error(err);
+          res.status(500).json({
+            code: 500,
+            message: '이미지 삭제 실패',
+            data: err
+          });
+        }
+      } else {
+        res.status(200).json({
+          code: 200,
+          message: '컨텐츠 삭제 성공',
+          data: true
+        });
+      }
     } catch (err) {
       let message;
 
@@ -267,9 +314,6 @@ const contentService = {
         .status(500)
         .json({ message: message, data: err, code: 500 });
     }
-  },
-  deleteFile: (req, res) => { // 이미지 삭제
-
   },
   findGallery: async (req, res) => {
     try {

@@ -17,7 +17,6 @@ router.get("/select", contentService.select);
 router.post("/insert", contentService.insert);
 router.post("/update", contentService.update);
 router.post("/delete", contentService.delete);
-router.post("/deleteFile", contentService.deleteFile);
 
 /**
  * @swagger
