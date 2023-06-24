@@ -1,95 +1,52 @@
-<!-- <!DOCTYPE html>
-<html>
-  <head>
-    <title>Image Upload</title>
-  </head>
-
-  <body>
-    <h1>Image Upload</h1>
-    <form id="uploadForm" enctype="multipart/form-data">
-      <div>
-        <label for="image">Image</label>
-        <input
-          type="file"
-          id="image"
-          name="image"
-          onchange="uploadFormData()"
-        />
-      </div>
-    </form>
-
-    <script>
-      function uploadFormData() {
-        const input = document.getElementById("image");
-        const file = input.files[0];
-
-        const formData = new FormData();
-        formData.append("file", file);
-
-        fetch("/upload", {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.text())
-          .then((data) => {
-            console.log(data); // 파일 업로드 완료 후 서버의 응답 출력
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }
-    </script>
-  </body>
-</html> -->
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Image Upload</title>
+  <title>업로드 완료</title>
+  <style>
+    .image-container {
+      position: relative;
+      display: inline-block;
+    }
+    .delete-button {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      background-color: #ff0000;
+      color: #ffffff;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-  <h1>Image Upload</h1>
-  <form id="uploadForm" enctype="multipart/form-data">
-    <div>
-      <label for="member_id">Member ID</label>
-      <input type="text" id="member_id" name="member_id">
-    </div>
-    <div>
-      <label for="category">Category</label>
-      <input type="text" id="category" name="category">
-    </div>
-    <div>
-      <label for="title">Title</label>
-      <input type="text" id="title" name="title">
-    </div>
-    <div>
-      <label for="note">Note</label>
-      <textarea id="note" name="note"></textarea>
-    </div>
-    <div>
-      <label for="image">Image</label>
-      <input type="file" id="image" name="image" multiple>
-    </div>
-    <button type="button" onclick="uploadFormData()">Submit</button>
-  </form>
-
+  <h1>업로드 완료</h1>
+  <p>파일 "<%= filename %>"이(가) 성공적으로 업로드되었습니다.</p>
+  <div class="image-container">
+    <img src="/uploads/<%= filename %>" alt="Uploaded Image" />
+    <button class="delete-button" onclick="deleteImage('<%= filename %>')">삭제</button>
+  </div>
   <script>
-    function uploadFormData() {
-      const form = document.getElementById('uploadForm');
-      const formData = new FormData(form);
-      console.log(formData);
-      fetch('/content/insert', {
+    function deleteImage(filename) {
+      fetch('/upload/deleteFile', {
         method: 'POST',
-        body: formData
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ filename })
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Upload success:', data);
-          // Handle success response
-        })
-        .catch(error => {
-          console.error('Upload error:', error);
-          // Handle error response
-        });
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('이미지가 삭제되었습니다.');
+          window.location.href = '/';
+        } else {
+          alert('이미지 삭제에 실패했습니다.');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
     }
   </script>
 </body>
