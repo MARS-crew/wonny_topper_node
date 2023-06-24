@@ -4,7 +4,7 @@ $(document).ready(function () {
 
 })
 
-/*
+
 const onClickLogout = async () => {
  // event.preventDefault();
   // const raw = JSON.stringify({
@@ -17,7 +17,7 @@ const onClickLogout = async () => {
   myHeaders.append("Cookie", "connect.sid=s%3AJ1YF8vXhf554L2mmcJ5_SAgqhgaQtezX.T3oH00Itci0w8c2pMERC510mlyD6DigniHFBAIfUi3k");
 
   const requestOptions = {
-    method: 'POST',
+    method: 'GET',
     headers: myHeaders,
     redirect: 'follow'
   };
@@ -36,4 +36,4 @@ const onClickLogout = async () => {
   }
 
 }
-  */
+  

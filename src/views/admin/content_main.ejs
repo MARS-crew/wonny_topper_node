@@ -74,14 +74,14 @@
                       <div class="col-md-6 filter-inputs">
                         <div class="input-daterange input-group date-pick" data-plugin-datepicker
                           data-plugin-options='{"format": "yyyy-mm-dd"}'>
-                          <input type="text" class="form-control" id="startDate" name="start" autocomplete="off" />
+                          <input type="text" class="form-control" id="from-date" autocomplete="off" />
                           <span class="input-group-addon">
                             <i class="fa fa-calendar calender-icon"></i>
                           </span>
                           <span class="input-group-addon tx-icon">
                             ~
                           </span>
-                          <input type="text" class="form-control" id="endDate" name="end" autocomplete="off" />
+                          <input type="text" class="form-control" id="to-date" autocomplete="off" />
                           <span class="input-group-addon">
                             <i class="fa fa-calendar calender-icon"></i>
                           </span>
@@ -94,33 +94,27 @@
                       <div class="col-md-9 filter-inputs">
                         <div class="filter-category">
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkAll" name="ckall" value="${row.bannerIdx}" checked />
-
+                            <input type="checkbox" id="checkAll" name="ckall" checked />
                             전체
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" class="ck"
-                              value="${row.bannerIdx}" checked />
+                            <input type="checkbox" id="" name="" class="ck category" value="1" checked />
                             풍선 장식
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" class="ck"
-                              value="${row.bannerIdx}" checked />
+                            <input type="checkbox" id="" name="" class="ck category" value="2" checked />
                             토퍼 제작
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" class="ck"
-                              value="${row.bannerIdx}" checked />
+                            <input type="checkbox" id="" name="" class="ck category" value="3" checked />
                             삐에로
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" class="ck"
-                              value="${row.bannerIdx}" checked />
+                            <input type="checkbox" id="" name="" class="ck category" value="4" checked />
                             페이스페인팅
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" class="ck"
-                              value="${row.bannerIdx}" checked />
+                            <input type="checkbox" id="" name="" class="ck category" value="5" checked />
                             원데이클래스
                           </label>
                         </div>
@@ -128,22 +122,18 @@
                     </div>
                     <div class="form-group">
                       <label class="col-md-2 filter-label">노출여부</label>
-
                       <div class="col-md-9 filter-inputs">
                         <div class="filter-expose">
                           <label class="radio-button-inline">
-                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" value="${row.bannerIdx}"
-                              checked />
+                            <input type="radio" name="exposure_yn" value="all" checked />
                             전체
                           </label>
                           <label class="radio-button-inline">
-                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" class="rb"
-                              value="${row.bannerIdx}" />
+                            <input type="radio" class="rb exposure" name="exposure_yn" value="Y" />
                             Y
                           </label>
                           <label class="radio-button-inline">
-                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" class="rb"
-                              value="${row.bannerIdx}" />
+                            <input type="radio" class="rb exposure" name="exposure_yn" value="N" />
                             N
                           </label>
                         </div>
@@ -160,7 +150,7 @@
               </section>
               <!-- Search-Panel end -->
 
-              <div class="btn-area float-right" onClick="movePage(1)">
+              <div class="btn-area float-right" onClick="onClickSearch()">
                 <a href="#" class="btn btn btn-block">
                   검색
                 </a>
@@ -172,8 +162,8 @@
                 <div class="admin-btn-tool tx-align-left">
                   <div class="tool-select ib">
                     <select id="orderSelect" class="form-control" name="orderSelect">
-                      <option value="desc">등록일 ↓</option>
-                      <option value="asc">등록일 ↑</option>
+                      <option value="DESC">등록일 ↓</option>
+                      <option value="ASC">등록일 ↑</option>
                     </select>
                   </div>
 
@@ -197,18 +187,14 @@
                         <input type="checkbox" id="checkboxExample2" name="table-ck-all" class="table-ck-all"
                           value="${row.bannerIdx}" />
                       </th>
-
                       <th>NO</th>
                       <th>카테고리</th>
                       <th>제목</th>
                       <th>등록일</th>
+                      <th>노출여부</th>
                     </tr>
                   </thead>
-
-
                   <tbody>
-
-
                   </tbody>
                 </table>
               </div>
@@ -261,50 +247,31 @@
   <script src="/admin/assets/js/common.js"></script>
 
   <script>
+    const fileNameElement = document.getElementsByClassName("file-name");
+    const cancelButton = document.getElementsByClassName("cancel-btn");
+    const input = document.getElementsByName("productImgArr[]");
+
+
     let DT = null;
     let counsel_id = "";
     let currentListCount = 0;
     let file_id = null;
-    //페이지네이션
     let dataLength = 0;
-    let from_date = "";
-    let to_date = "2023-06-20";
-    let search_word = "2023-06-24";
-    let category = [1, 2, 3, 4];
-    let sort = "ASC";
+    //페이지네이션
+    let from_date = null;
+    let to_date = null;
+    let search_word = "";
+    let category = [1, 2, 3, 4, 5];
+    let sort = "DESC";
     let page = 1;
+    let exposure_yn = ['N', 'Y'];
     const pageSize = 10;
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
-   // myHeaders.append("Accept", "application/json");
-
-   // const tbody = document.getElementById("dataTable");
-
-    const lang = {
-      decimal: '',
-      emptyTable: '데이터가 없습니다.',
-      info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-      infoFiltered: '(filtered from _MAX_ total entries)',
-      infoPostFix: '',
-      thousands: ',',
-      lengthMenu: '_MENU_ 개씩 보기',
-      search: '검색 : ',
-      zeroRecords: '검색된 데이터가 없습니다.',
-      paginate: {
-        first: '첫 페이지',
-        last: '마지막 페이지',
-        next: "<i class='fa fa-chevron-right'></i>",
-        previous: "<i class='fa fa-chevron-left'></i>",
-      },
-      aria: {
-        sortAscending: ' :  오름차순 정렬',
-        sortDescending: ' :  내림차순 정렬',
-      },
-    }
 
     window.onload = () => {
-      $('#startDate, #endDate').datepicker({
+      $('#from-date, #to-date').datepicker({
         dateFormat: 'yy-mm-dd',
         format: 'yyyy-mm-dd',
         autoclose: true,
@@ -319,10 +286,32 @@
       const month = String(today.getMonth() + 1).padStart(2, '0');
       const day = String(today.getDate()).padStart(2, '0');
       const formattedDate = year + '-' + month + '-' + day;
-      $('#startDate, #endDate').datepicker('setDate', formattedDate);
+      $('#from-date, #to-date').datepicker('setDate', formattedDate);
     }
 
     $(document).ready(function () {
+      const lang = {
+        decimal: '',
+        emptyTable: '데이터가 없습니다.',
+        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
+        infoFiltered: '(filtered from _MAX_ total entries)',
+        infoPostFix: '',
+        thousands: ',',
+        lengthMenu: '_MENU_ 개씩 보기',
+        search: '검색 : ',
+        zeroRecords: '검색된 데이터가 없습니다.',
+        paginate: {
+          first: '첫 페이지',
+          last: '마지막 페이지',
+          next: "<i class='fa fa-chevron-right'></i>",
+          previous: "<i class='fa fa-chevron-left'></i>",
+        },
+        aria: {
+          sortAscending: ' :  오름차순 정렬',
+          sortDescending: ' :  내림차순 정렬',
+        },
+      }
+
       DT = $('#dataTable').DataTable({
         language: lang,
         bFilter: false,
@@ -334,13 +323,13 @@
           { width: '20%' },
           null,
           { width: '20%' },
+          { width: '10%' },
         ],
       });
-      showListData(DT);
+      showListData();
 
       $('#dataTable tbody').on('click', 'tr.content-list', function () {
         if ($(event.target).is('input[type="checkbox"]')) {
-          console.log("ck");
           if ($('.table-ck:checked').length === currentListCount) {
             $('input[name=table-ck-all]').prop('checked', true);
           } else {
@@ -354,19 +343,18 @@
 
       })
 
-      $('#orderSelect').on('change', function () {
-        sort = $(this).val();
-        showListData();
-
-        // const columnIndex = 4; // 정렬할 열의 인덱스
-        // const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
-        // if (sortDirection === "asc" || sortDirection === "desc") {
-        //   DT.order(order).draw();
-        // }
-      });
-
     });
 
+    $('#orderSelect').on('change', function () {
+      sort = $(this).val();
+      showListData();
+
+      // const columnIndex = 4; // 정렬할 열의 인덱스
+      // const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
+      // if (sortDirection === "asc" || sortDirection === "desc") {
+      //   DT.order(order).draw();
+      // }
+    });
 
     $('#checkAll').change(function () {
       $('.ck').prop('checked', $(this).prop('checked'));
@@ -384,39 +372,57 @@
       $('.table-ck').prop('checked', $(this).prop('checked'));
     });
 
+    const onClickSearch = () => {
+      const checkboxes = document.querySelectorAll('.filter-category input[type="checkbox"]:checked:not(#checkAll)');
+      category = [];
+      checkboxes.forEach(function (checkbox) {
+        category.push(parseInt(checkbox.value));
+      });
+      const exposure_yn_radio = document.querySelector('input[name="exposure_yn"]:checked').value;
+      exposure_yn = exposure_yn_radio == 'all' ? ["Y", "N"] : [exposure_yn_radio];
+      search_word = document.getElementById('keyword').value;
+      from_date = document.getElementById('from-date').value;
+      to_date = document.getElementById('to-date').value;
+      sort= "DESC";
+      showListData();
 
+      /*
+        page,
+      
+      */
+
+    }
 
     //리스트 조회
-    const showListData = async (DT) => {
+    const showListData = async () => {
 
-      var myHeaders = new Headers();
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Cookie", "connect.sid=s%3Aeg9wos3lqUenkcx3RQWEW3bP3Qn2R2WT.Zoaqj0ntdmUWyCEun%2BxqBi1yHEGpeVlq5t3lsZ9VHEc");
-
-      var raw = JSON.stringify({
-        "from_date": "2023-06-20",
-        "to_date": "2023-06-22",
-        "category": [1, 2],
-        "search_word": "",
-        "sort": "ASC",
-        "exposure_yn": ["Y", "N"],
-        "page": 1,
-        "pageSize": 10
+      const raw = JSON.stringify({
+        from_date,
+        to_date,
+        category,
+        search_word,
+        sort,
+        page,
+        pageSize,
+        exposure_yn,
       });
 
-      var requestOptions = {
+      console.log("바디" + raw);
+
+      const requestOptions = {
         method: 'POST',
         headers: myHeaders,
         body: raw,
         redirect: 'follow'
       };
 
+
       try {
 
         const response = await fetch(`/content/search`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          console.log("조회 성공" + data);
+          DT.clear().draw();
 
           let categoryStr = "";
           data.forEach(function (row, i) {
@@ -452,7 +458,8 @@
               row.title,
               dayjs(row.reg_date).format(
                 "YYYY-MM-DD HH:mm:ss"
-              )
+              ),
+              row.exposure_yn
             ]).node().classList.add('content-list'); // class 추가
 
             DT.draw(false);
