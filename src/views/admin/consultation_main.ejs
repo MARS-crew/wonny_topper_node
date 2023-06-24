@@ -171,9 +171,9 @@
                 <!--  -->
                 <div class="admin-btn-tool tx-align-left">
                   <div class="tool-select ib">
-                    <select id="orderSelect" class="form-control" id="orderSelect" name="orderSelect">
-                      <option value="asc">등록일 ↓</option>
-                      <option value="desc">등록일 ↑</option>
+                    <select id="orderSelect" class="form-control" name="orderSelect">
+                      <option value="ASC">등록일 ↓</option>
+                      <option value="DESC">등록일 ↑</option>
                     </select>
                   </div>
 
@@ -327,76 +327,76 @@
           </button>
         </div>
         <div class="modal-body">
-            <table class="detail table table-bordered" id="datatable-ajax"
-              data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
-              <tr>
-                <td width="20%" class="table-title-td">이름</td>
-                <td width="80%" id="counsel-name">
+          <table class="detail table table-bordered" id="datatable-ajax"
+            data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+            <tr>
+              <td width="20%" class="table-title-td">이름</td>
+              <td width="80%" id="counsel-name">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">휴대폰번호</td>
-                <td width="80%" colspan="3" id="counsel-phone">
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">휴대폰번호</td>
+              <td width="80%" colspan="3" id="counsel-phone">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">이메일</td>
-                <td width="80%" colspan="3" id="counsel-email">
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">이메일</td>
+              <td width="80%" colspan="3" id="counsel-email">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">장소</td>
-                <td width="80%" colspan="3" id="counsel-location">
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">장소</td>
+              <td width="80%" colspan="3" id="counsel-location">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">예산</td>
-                </td>
-                <td width="80%" colspan="3" id="counsel-budget">
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">예산</td>
+              </td>
+              <td width="80%" colspan="3" id="counsel-budget">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">의뢰목적</td>
-                <td width="80%" colspan="3" id="counsel-purpose">
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">의뢰목적</td>
+              <td width="80%" colspan="3" id="counsel-purpose">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">상담내용</td>
-                <td width="80%" colspan="3" id="counsel-counsel">
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">상담내용</td>
+              <td width="80%" colspan="3" id="counsel-counsel">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">등록일</td>
-                <td width="80%" colspan="3" id="counsel-reg-date">
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">등록일</td>
+              <td width="80%" colspan="3" id="counsel-reg-date">
 
-                </td>
-              </tr>
-            </table>
-            <hr />
-            <table class="detail table table-bordered" id="datatable-ajax"
-              data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
-              <tr>
-                <td width="20%" class="table-title-td">답변
-                </td>
-                <td width="80%" colspan="2" id="counsel-answer">
+              </td>
+            </tr>
+          </table>
+          <hr />
+          <table class="detail table table-bordered" id="datatable-ajax"
+            data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+            <tr>
+              <td width="20%" class="table-title-td">답변
+              </td>
+              <td width="80%" colspan="2" id="counsel-answer">
 
-                </td>
-              </tr>
-              <tr>
-                <td width="20%" class="table-title-td">첨부파일
-                </td>
-                <td width="80%" colspan="2" id="counsel-file">
-                  파일 이름.jpg
-                </td>
-              </tr>
-            </table>
+              </td>
+            </tr>
+            <tr>
+              <td width="20%" class="table-title-td">첨부파일
+              </td>
+              <td width="80%" colspan="2" id="counsel-file">
+                파일 이름.jpg
+              </td>
+            </tr>
+          </table>
         </div>
         <div class="detail-modal-footer">
           <a class="btn btn-primary btn-100" data-dismiss="modal" aria-label="Close">확인</a>
@@ -405,88 +405,106 @@
     </div>
   </div>
   <!-- //상담 상세 모달  -->
-   <!-- 답변 등록 확인 모달 -->
-   <div class="modal fade consult-modal-dialog" id="consultModal" tabindex="-1" role="dialog"
-   aria-labelledby="exampleModalLabel" aria-hidden="true">
-   <div class="modal-dialog" role="document">
-     <div class="modal-content">
-       <div class="modal-header">
-         <h5 class="modal-title" id="exampleModalLabel">내용 확인</h5>
-         <button class="close consult" type="button" data-dismiss="modal" aria-label="Close">
-           <span aria-hidden="true">×</span>
-         </button>
-       </div>
-       <div class="modal-body">
-         <form action="/admin/source" method="post" enctype="multipart/form-data">
+  <!-- 답변 등록 확인 모달 -->
+  <div class="modal fade consult-modal-dialog" id="consultModal" tabindex="-1" role="dialog"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">내용 확인</h5>
+          <button class="close consult" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="/admin/source" method="post" enctype="multipart/form-data">
 
-           <table class="table table-bordered" id="datatable-ajax"
-             data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
-             <tr>
-               <td width="20%" class="table-title-td">이름</td>
-               <td width="80%" id="reqanswer-name">
-                 홍길동
-               </td>
-             </tr>
-          
-             <tr>
-               <td width="20%" class="table-title-td">이메일</td>
-               <td width="80%" colspan="3" id="reqanswer-email">
-               </td>
-             </tr>
-          
-             <tr>
-               <td width="20%" class="table-title-td">상담내용</td>
-               <td width="80%" colspan="3" id="reqanswer-counsel">
-               </td>
-             </tr>
-             <tr>
-               <td width="20%" class="table-title-td">등록일</td>
-               <td width="80%" colspan="3" id="reqanswer-reg-date">
-               </td>
-             </tr>
-           </table>
-           <hr />
-           <table class="table table-bordered" id="datatable-ajax"
-             data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
-             <div class="pb-1 float-right"><span class="star">*</span>는 필수 입력값</div>
-             <tr>
-               <td width="20%" class="table-title-td">답변
-                 <span class="star">*</span>
-               </td>
-               <td width="80%" colspan="2">
-                 <textarea class="form-control answer-text-area" id="reqanswer-answer"></textarea>
-               </td>
-             </tr>
-             <tr>
-               <td width="20%" class="table-title-td">첨부파일
-               </td>
-               <td width="80%" colspan="2">
-                 <label for="file1" class="file-input-label">파일 선택</label>
-                 <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
-                   onchange="uploadFormData()" required />
-                 <span id="fileName" class="file-name"></span>
-                 <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
-               </td>
-             </tr>
-           </table>
+            <table class="table table-bordered" id="datatable-ajax"
+              data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+              <tr>
+                <td width="20%" class="table-title-td">이름</td>
+                <td width="80%" id="reqanswer-name">
+                  홍길동
+                </td>
+              </tr>
+
+              <tr>
+                <td width="20%" class="table-title-td">이메일</td>
+                <td width="80%" colspan="3" id="reqanswer-email">
+                </td>
+              </tr>
+
+              <tr>
+                <td width="20%" class="table-title-td">상담내용</td>
+                <td width="80%" colspan="3" id="reqanswer-counsel">
+                </td>
+              </tr>
+              <tr>
+                <td width="20%" class="table-title-td">등록일</td>
+                <td width="80%" colspan="3" id="reqanswer-reg-date">
+                </td>
+              </tr>
+            </table>
+            <hr />
+            <table class="table table-bordered" id="datatable-ajax"
+              data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+              <div class="pb-1 float-right"><span class="star">*</span>는 필수 입력값</div>
+              <tr>
+                <td width="20%" class="table-title-td">답변
+                  <span class="star">*</span>
+                </td>
+                <td width="80%" colspan="2">
+                  <textarea class="form-control answer-text-area" id="reqanswer-answer"></textarea>
+                </td>
+              </tr>
+              <tr>
+                <td width="20%" class="table-title-td">첨부파일
+                </td>
+                <td width="80%" colspan="2">
+                  <label for="file1" class="file-input-label">파일 선택</label>
+                  <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
+                    onchange="uploadFormData()" required />
+                  <span id="fileName" class="file-name"></span>
+                  <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                </td>
+              </tr>
+            </table>
 
 
-         </form>
-       </div>
-       <div class="detail-modal-footer">
+          </form>
+        </div>
+        <div class="detail-modal-footer">
 
-         <a class="btn btn-primary btn-100" onClick="registerAnswer(event)">확인</a>
-       </div>
-     </div>
-   </div>
- </div>
- <!-- // 답변 등록 모달-->
+          <a class="btn btn-primary btn-100" onClick="registerAnswer(event)">확인</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- // 답변 등록 모달-->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="/admin/assets/js/common.js"></script>
   <script>
+    let DT = null;
     let counsel_id = "";
     let listcount = 0; // 페이지 출력 수
     let file_id = null;
+    //페이지네이션
+    let dataLength =0;
+    let from_date = "2023-06-20";
+    let to_date = "2023-06-22";
+    let purpose = [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ];
+    let search_word = "";
+    let sort = "ASC";
+    let page = 1;
+    const pageSize = 10;
+
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
@@ -516,7 +534,6 @@
       decimal: '',
       emptyTable: '데이터가 없습니다.',
       info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-
       infoFiltered: '(filtered from _MAX_ total entries)',
       infoPostFix: '',
       thousands: ',',
@@ -537,22 +554,13 @@
 
 
     //리스트 조회 
-    const showListData = async (DT) => {
+    const showListData = async () => {
       const raw = JSON.stringify({
-        // "from_date": "2023-06-20", 
-        // "to_date": "2023-06-22", 
-        "purpose": [
-          1,
-          2,
-          3,
-          4,
-          5,
-          6
-        ],
-        "search_word": "",
-        "sort": "ASC",
-        "page": 1,
-        "pageSize": 10
+        purpose,
+        search_word,
+        sort,
+        page,
+        pageSize
       });
 
 
@@ -567,6 +575,8 @@
         const response = await fetch(`/counsel/select`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
+          DT.clear().draw(); 
+          dataLength = data.length;
           data.forEach(function (row, i) {
             const tr = DT.row.add([
               i + 1,
@@ -592,12 +602,7 @@
               $(tr).attr('data-target', '#consultModal');
             }
 
-
-
-            $(tr).on('click', function () {
-              // 이벤트 처리 로직을 작성합니다.
-            });
-            DT.draw(false);
+            DT.draw(false); 
 
           });
           return;
@@ -621,7 +626,7 @@
     });
 
     $(document).ready(function () {
-      const DT = $('#dataTable').DataTable({
+      DT = $('#dataTable').DataTable({
         language: lang,
         bFilter: false,
         ordering: false,
@@ -637,7 +642,7 @@
           { width: '20%' },
         ],
       });
-      showListData(DT);
+      showListData();
 
       $('#dataTable tbody').on('click', '.content-list', function () {
         counsel_id = $(this).data('counsel-id');
@@ -645,19 +650,6 @@
         openModal();
         showCounselData();
       });
-
-      // $('#orderSelect').on('change', function () {
-
-      //   const columnIndex = 7; // 정렬할 열의 인덱스
-      //   const sortDirection = $(this).val(); // 선택한 정렬 방향 값
-
-      //   const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
-
-      //   if (sortDirection === "asc" || sortDirection === "desc") {
-      //     DT.order(order).draw();
-      //   }
-
-      // });
 
     })
 
@@ -667,6 +659,21 @@
       } else {
         return false;
       }
+    });
+
+    $('#orderSelect').on('change', function () {
+      sort = $(this).val();
+      showListData();
+      /*
+      const columnIndex = 7; // 정렬할 열의 인덱스
+     
+      const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
+
+      if (sortDirection === "asc" || sortDirection === "desc") {
+        DT.order(order).draw();
+      }
+      */
+
     });
 
 
