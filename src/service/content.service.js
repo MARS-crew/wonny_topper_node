@@ -280,22 +280,9 @@ const contentService = {
         SELECT 
           ct.content_id, 
           ct.title, 
-          REPLACE(fl1.url, SUBSTRING(fl1.url, 1, 19), '') AS file_main_id_url,
-          REPLACE(fl2.url, SUBSTRING(fl2.url, 1, 19), '') AS file_1_id_url,
-          REPLACE(fl3.url, SUBSTRING(fl3.url, 1, 19), '') AS file_2_id_url,
-          REPLACE(fl4.url, SUBSTRING(fl4.url, 1, 19), '') AS file_3_id_url,
-          REPLACE(fl5.url, SUBSTRING(fl5.url, 1, 19), '') AS file_4_id_url,
-          fl1.origin_name AS file_main_id_origin_name,
-          fl2.origin_name AS file_1_id_origin_name,
-          fl3.origin_name AS file_2_id_origin_name,
-          fl4.origin_name AS file_3_id_origin_name,
-          fl5.origin_name AS file_4_id_origin_name
+          fl1.url AS file_main_id_url
         FROM tbl_content ct
         LEFT JOIN tbl_file fl1 ON fl1.file_id = ct.file_main_id
-        LEFT JOIN tbl_file fl2 ON fl2.file_id = ct.file_1_id
-        LEFT JOIN tbl_file fl3 ON fl3.file_id = ct.file_2_id
-        LEFT JOIN tbl_file fl4 ON fl4.file_id = ct.file_3_id
-        LEFT JOIN tbl_file fl5 ON fl5.file_id = ct.file_4_id
         WHERE ct.del_yn = "N"
       `;
       if(category != null) {
