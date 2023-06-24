@@ -337,10 +337,12 @@ const contentService = {
             sql += `, `;
           }
         }
-        sql += `) `;
+        sql += `) ORDER BY ct.reg_date DESC `;
       }
 
-      sql += `ORDER BY ct.reg_date DESC LIMIT ${pageSize} OFFSET ${offset};`;
+      if(pageSize != null && page != null) {
+        sql += `LIMIT ${pageSize} OFFSET ${offset};`;
+      }
       const response = await executeQuery(sql);
 
       res.status(200).json({
