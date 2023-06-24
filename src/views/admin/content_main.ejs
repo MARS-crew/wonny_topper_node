@@ -127,6 +127,28 @@
                       </div>
                     </div>
                     <div class="form-group">
+                      <label class="col-md-2 filter-label">노출여부</label>
+
+                      <div class="col-md-9 filter-inputs">
+                        <div class="filter-expose">
+                          <label class="radio-button-inline">
+                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" value="${row.bannerIdx}" checked />
+                            전체
+                          </label>
+                          <label class="radio-button-inline">
+                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" class="rb"
+                              value="${row.bannerIdx}" />
+                            Y
+                          </label>
+                          <label class="radio-button-inline">
+                            <input type="radio" id="radioButtonExample1" name="bannerIdxArr" class="rb"
+                              value="${row.bannerIdx}" />
+                            N
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="form-group">
                       <label class="col-md-2 filter-label">검색어</label>
                       <div class="col-sm-8 search-input filter-inputs">
                         <input type="text" id="keyword" class="form-control" placeholder="검색하기" />

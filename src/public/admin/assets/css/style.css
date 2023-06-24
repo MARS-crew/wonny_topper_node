@@ -100,7 +100,7 @@
   float: right;
 }
 
-.ckbox-inline {
+.ckbox-inline, .radio-button-inline {
   padding-right: 30px;
 }
 
