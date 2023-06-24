@@ -211,18 +211,23 @@
 
           const { code, message } = await response.json();
           if (code === 200) {
-
+            console.log("컨텐츠 삭제 완료 ");
+            const array = [file_main_id, file_1_id, file_2_id, file_3_id, file_4_id];
+            array.forEach(el => {
+              deleteAllFile(el);
+            });
+            
           }
         } catch {
 
         }
 
+      };
+
+      const deleteAllFile = async (file_id) => {
         const fileRaw = JSON.stringify({
-          file_main_id,
-          file_1_id,
-          file_2_id,
-          file_3_id,
-          file_4_id,
+          file_id 
+
         });
 
         const response2 = await fetch(`/upload/deleteFile`, {
@@ -234,12 +239,14 @@
 
         const { code2, message2 } = await response2.json();
         if (code2 === 200) {
+          console.log("사진 삭제 완료 ");
+
           window.location.href = "/admin/content_main";
           return;
         }
         alert(message2);
       }
-    };
+    }
 
     $(document).ready(function () {
       $("#dataTable").DataTable();

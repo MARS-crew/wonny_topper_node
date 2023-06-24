@@ -116,13 +116,12 @@
       });
 
 
-      const myHeadersC = new Headers();
-      myHeadersC.append("Content-Type", "application/json");
-     // myHeadersC.append("Cookie", "connect.sid=s%3APAgRVsuWaP8LshsiOyI2ut57YP_TmM_7.o1m56SmwRyIU85mKJ3sM6lmPfDn8ueWbxkMKBa9SNIc");
+      const myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
 
       const requestOptions = {
         method: 'POST',
-        headers: myHeadersC,
+        headers: myHeaders,
         body: raw,
         redirect: 'follow'
       };

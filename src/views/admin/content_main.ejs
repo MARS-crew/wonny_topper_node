@@ -355,7 +355,7 @@
     const selectContentApi = async (DT) => {
       const requestOptions = {
         method: 'GET',
-        headers: myHeadersC,
+        headers: myHeaders,
         redirect: 'follow'
       };
 
@@ -363,7 +363,7 @@
         const response = await fetch(`/content/select`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          console.log(data);
+          console.log("조회 성공"+data);
   
           let cate ="";
    
