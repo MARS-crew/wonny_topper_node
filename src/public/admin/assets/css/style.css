@@ -276,6 +276,11 @@ table {
   justify-content: center;
 }
 
+/* 답변 모달 */
+.answer-text-area{
+  height: 100px !important;
+
+}
 
 /* 모달 */
 @media (min-width: 576px) {

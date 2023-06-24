@@ -178,6 +178,7 @@
 
   <!-- End of Page Wrapper -->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="/admin/assets/js/common.js"></script>
   <script>
     let member_id = "admin";
     const params = new URLSearchParams(window.location.search);
@@ -215,11 +216,11 @@
 
     const findContent = async () => {
 
-      var raw = JSON.stringify({
+      const raw = JSON.stringify({
         "content_id": id
       });
 
-      var requestOptions = {
+      const requestOptions = {
         method: 'GET',
         headers: myHeaders,
         body: raw,
@@ -301,8 +302,6 @@
       location.href = `/admin/content_edit?content_id=${id}`;
     };
   </script>
-
-  <script src="/admin/assets/js/common.js"></script>
 
   <!-- Bootstrap core JavaScript-->
   <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -206,17 +206,19 @@
   <!-- End of Page Wrapper -->
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="/admin/assets/js/common.js"></script>
   <script>
     let file_main_id = null;
     let file_1_id = null;
     let file_2_id = null;
     let file_3_id = null;
     let file_4_id = null;
-
     let memberId = "";
+
     const params = new URLSearchParams(window.location.search);
     const id = params.get("content_id");
-    const fileNameElement = document.getElementsByClassName("file-name");
+    const fileInputArray = document.getElementsByName("productImgArr[]");
+    const fileNameArray = document.getElementsByClassName("file-name");
     const cancelButton = document.getElementsByClassName("cancel-btn");
     let fileInput = "";
 
@@ -230,73 +232,92 @@
         location.href = "/admin/content_main";
     };
 
-    const modContent = async () => {
-      const body = {
-        content_id: document.getElementById("content_id").textContent,
-        member_id: memberId,
-        category: document.getElementById("category").value,
-        note: document.getElementById("note").value,
-        title: document.getElementById("title").value,
-        file_main_id,
-        file_1_id,
-        file_2_id,
-        file_3_id,
-        file_4_id,
-
-        reg_date: document.querySelector("#reg_date").textContent
-      };
-      if (body.category === "") {
-        alert("필수 값이 입력되지 않았습니다.");
-
-        return;
-      }
-      if (body.title === "") {
-        alert("필수 값이 입력되지 않았습니다.");
-
-        return;
-      }
-
-      const response = await fetch("/content/update", {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "post",
-        body: JSON.stringify(body),
+    
+    //컨텐츠 조회
+    const findContent = async () => {
+      const raw = JSON.stringify({
+        "content_id": id
       });
 
-      const { code, message } = await response.json();
-      if (code === 200) {
-        alert("수정되었습니다.");
-        window.location.href = "/admin/content_main";
+      const requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
 
-        return;
+      try {
+        const response = await fetch(`/content/select/` + id);
+        const { code, message, data } = await response.json();
+        if (code === 200) {
+          if (!data) {
+            return;
+          }
+
+          const title = document.getElementById("title");
+          const note = document.getElementById("note");
+          const category = document.getElementById("category");
+          const contentId = document.getElementById("content_id");
+          const regDate = document.querySelector("#reg_date");
+          const modDate = document.querySelector("#mod_date");
+          file_main_id = data[0].file_main_id;
+          file_1_id = data[0].file_1_id;
+          file_2_id = data[0].file_2_id;
+          file_3_id = data[0].file_3_id;
+          file_4_id = data[0].file_4_id;
+
+          member_id = data[0].member_id;
+          title.value = data[0].title;
+          note.value = data[0].note;
+          category.value = data[0].category;
+          modDate.textContent = dayjs(data[0].mod_date).format(
+            "YYYY-MM-DD HH:mm:ss"
+          );
+          regDate.textContent = dayjs(data[0].reg_date).format(
+            "YYYY-MM-DD HH:mm:ss"
+          );
+          contentId.textContent = data[0].content_id;
+
+          console.log(data);
+
+          const files = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
+          files.forEach((el, i) => {
+            if (!(el == null)) {
+              console.log(el)
+              fileNameArray[i].textContent = el;
+              fileNameArray[i].style.display = "block";
+              cancelButton[i].style.display = "inline-block";
+            }
+
+          });
+        }
+      } catch (err) {
+        console.log("Err:", err);
       }
-      alert(message);
     };
 
-
-
-
+    //파일 등록
     const uploadFormData = async (i) => {
       fileInput = event.target;
-      const input = document.getElementsByName("productImgArr[]");
-      const file = input[i].files[0];
+
+      const file = fileInputArray[i].files[0];
 
       if (fileInput.files.length > 0) {
+        console.log("파일 있음");
         const fileName = fileInput.files[0].name;
-        fileInput =
-          fileNameElement[i].textContent = fileName;
-        fileNameElement[i].style.display = "block";
+        fileNameArray[i].textContent = fileName;
+        fileNameArray[i].style.display = "block";
         cancelButton[i].style.display = "inline-block";
       } else {
-        fileNameElement[i].style.display = "none";
+        console.log("파일 없음");
+        fileNameArray[i].style.display = "none";
         cancelButton[i].style.display = "none";
       }
       const formData = new FormData();
       formData.append("file", file);
 
 
-      var requestOptions = {
+      const requestOptions = {
         method: 'POST',
         //        headers: myHeaders,
         body: formData,
@@ -336,80 +357,77 @@
 
     }
 
+    //파일삭제
     const fileDelete = (i) => {
-      fileInput.value = "1";//
-      fileNameElement[i].textContent = "";
+      fileInputArray[i].value = "";//
+      fileNameArray[i].textContent = "";
       cancelButton[i].style.display = "none";
+      switch (i) {
+        case 0:
+          file_main_id = null;
+          break;
+        case 1:
+          file_1_id = null;
+          break;
+        case 2:
+          file_2_id = null;
+          break;
+        case 3:
+          file_3_id = null;
+          break;
+        case 4:
+          file_4_id = null;
+          break;
+
+      }
     }
 
-
-    //조회
-    const findContent = async () => {
-      var raw = JSON.stringify({
-        "content_id": id
-      });
-
-      var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
+    //컨텐츠 수정
+    const modContent = async () => {
+      const raw = {
+        content_id: document.getElementById("content_id").textContent,
+        category: document.getElementById("category").value,
+        note: document.getElementById("note").value,
+        title: document.getElementById("title").value,
+        file_main_id,
+        file_1_id,
+        file_2_id,
+        file_3_id,
+        file_4_id,
+        reg_date: document.querySelector("#reg_date").textContent
       };
 
-      try {
-        const response = await fetch(`/content/select/` + id);
-        const { code, message, data } = await response.json();
-        if (code === 200) {
-          if (!data) {
-            return;
-          }
 
-
-          const title = document.getElementById("title");
-          const note = document.getElementById("note");
-          const category = document.getElementById("category");
-          const contentId = document.getElementById("content_id");
-          const regDate = document.querySelector("#reg_date");
-          const modDate = document.querySelector("#mod_date");
-          const file = document.querySelector("#file_main_url");
-          const file1 = document.querySelector("#file_1_url");
-          const file2 = document.querySelector("#file_2_url");
-          const file3 = document.querySelector("#file_3_url");
-          const file4 = document.querySelector("#file_4_url");
-
-          member_id = data[0].member_id;
-          title.value = data[0].title;
-          note.value = data[0].note;
-          category.value = data[0].category;
-          modDate.textContent = dayjs(data[0].mod_date).format(
-            "YYYY-MM-DD HH:mm:ss"
-          );
-          regDate.textContent = dayjs(data[0].reg_date).format(
-            "YYYY-MM-DD HH:mm:ss"
-          );
-          contentId.textContent = data[0].content_id;
-
-          console.log(data);
-
-          const files = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
-          files.forEach((el, i) => {
-            if (!(el == null)) {
-              console.log(el)
-              fileNameElement[i].textContent = el;
-              fileNameElement[i].style.display = "block";
-              cancelButton[i].style.display = "inline-block";
-              //cancelButton[i].addEventListener("click", fileDelete(i));
-            }
-
-          });
-        }
-      } catch (err) {
-        console.log("Err:", err);
+      console.log(raw);
+      if (raw.category === "") {
+        alert("필수 값이 입력되지 않았습니다.");
+        return;
       }
+      if (raw.title === "") {
+        alert("필수 값이 입력되지 않았습니다.");
+        return;
+      }
+
+      const response = await fetch("/content/update", {
+        method: 'POST',
+        headers: myHeaders,
+        body: JSON.stringify(raw),
+        redirect: 'follow'
+      });
+      const { code, message } = await response.json();
+      if (code === 200) {
+        alert("수정되었습니다.");
+       // window.location.href = "/admin/content_main";
+
+        return;
+      }
+      alert(message);
     };
+
+
+
   </script>
 
-  <script src="/admin/assets/js/common.js"></script>
 
   <!— Bootstrap core JavaScript—>
     <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>

@@ -94,10 +94,9 @@
 
   <!-- Custom scripts for all pages-->
   <script src="/admin/assets/js/sb-admin-2.min.js"></script>
-  <script>
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
+  <script src="/admin/assets/js/common.js"></script>
 
+  <script>
     const onClickLogin = async () => {
       let id = document.getElementById('email').value;
       let pwd = document.getElementById('password').value;
@@ -114,11 +113,16 @@
       const raw = JSON.stringify({
         id,
         pwd,
-        isAuto: true
       });
+
+
+      const myHeadersC = new Headers();
+      myHeadersC.append("Content-Type", "application/json");
+     // myHeadersC.append("Cookie", "connect.sid=s%3APAgRVsuWaP8LshsiOyI2ut57YP_TmM_7.o1m56SmwRyIU85mKJ3sM6lmPfDn8ueWbxkMKBa9SNIc");
+
       const requestOptions = {
         method: 'POST',
-        headers: myHeaders,
+        headers: myHeadersC,
         body: raw,
         redirect: 'follow'
       };
