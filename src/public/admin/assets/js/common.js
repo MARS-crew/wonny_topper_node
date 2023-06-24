@@ -4,6 +4,7 @@ $(document).ready(function () {
 
 })
 
+/*
 const onClickLogout = async () => {
  // event.preventDefault();
   // const raw = JSON.stringify({
@@ -33,4 +34,6 @@ const onClickLogout = async () => {
   } catch (err) {
     console.log('Err:', err);
   }
+
 }
+  */

@@ -108,7 +108,12 @@
                           <label class="ckbox-inline">
                             <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
                               value="${row.bannerIdx}" />
-                            토퍼 제작
+                            토퍼
+                          </label>
+                          <label class="ckbox-inline">
+                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
+                              value="${row.bannerIdx}" />
+                            부스체험(토퍼, 풍선)
                           </label>
                           <label class="ckbox-inline">
                             <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
@@ -123,7 +128,7 @@
                           <label class="ckbox-inline">
                             <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checkedclass="ck" checked
                               value="${row.bannerIdx}" />
-                            원데이클래스
+                            클래스
                           </label>
                         </div>
                       </div>
@@ -563,7 +568,6 @@
         pageSize
       });
 
-
       const requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -587,7 +591,7 @@
               row.answer_yn,
               row.answer_date ? dayjs(row.answer_date).format(
                 "YYYY-MM-DD") : "-",
-              dayjs(row.mod_date).format(
+              dayjs(row.reg_date).format(
                 "YYYY-MM-DD"
               ),
             ]).node();
