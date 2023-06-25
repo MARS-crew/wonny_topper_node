@@ -7,8 +7,8 @@ const contentService = {
       const { category, search_word, sort, exposure_yn, page, pageSize } = req.body;
       let { from_date, to_date } = req.body;
       const offset = (page - 1) * pageSize; // OFFSET 값 계산
-      let sql;
-
+      let sql, sql2;
+      sql2 = `SELECT COUNT(*) AS count FROM (`;
       sql = `
         SELECT 
           ct.*
@@ -45,12 +45,11 @@ const contentService = {
         sql += `') `;
       }
       sql += `ORDER BY ct.reg_date ${sort} `;
+      sql2 += sql + `) a`;
       sql += `LIMIT ${pageSize} OFFSET ${offset}`;
       
       const response = await executeQuery(sql);
-
-      sql = `SELECT COUNT(*) AS count FROM tbl_content WHERE del_yn = 'N'`;
-      const count = await executeQuery(sql);
+      const count = await executeQuery(sql2);
       let result = {'content': response, 'count': count[0].count};
 
       res.status(200).json({

@@ -8,11 +8,12 @@ const counselService = {
       const { purpose, search_word, sort, page, pageSize } = req.body;
       let { from_date, to_date } = req.body;
       const offset = (page - 1) * pageSize; // OFFSET 값 계산
-      let sql;
+      let sql, sql2;
       
       let response;
       let result;
       if (counsel_id == null) {
+        sql2 = `SELECT COUNT(*) AS count FROM (`;
         sql = `
           SELECT 
             cs.*,
@@ -44,11 +45,11 @@ const counselService = {
         }
         
         sql += `ORDER BY cs.reg_date ${sort} `;
+        sql2 += sql + `) a`;
         sql += `LIMIT ${pageSize} OFFSET ${offset}`;
-        response = await executeQuery(sql);
 
-        sql = `SELECT COUNT(*) AS count FROM tbl_counsel WHERE del_yn = 'N'`;
-        const count = await executeQuery(sql);
+        response = await executeQuery(sql);
+        const count = await executeQuery(sql2);
         result = {'counsel': response, 'count': count[0].count};
       } else {
         sql = `
