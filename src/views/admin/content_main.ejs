@@ -197,24 +197,31 @@
                   <tbody>
                   </tbody>
                 </table>
+
+                <div id="paginationContainer">
+                  <ul class="pagination">
+
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <!-- End of Main Content -->
-
-      <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
-          </div>
-        </div>
-      </footer>
-      <!-- End of Footer -->
     </div>
-    <!-- End of Content Wrapper -->
+    <!-- End of Main Content -->
+
+    <!-- Footer -->
+    <footer class="sticky-footer bg-white">
+      <div class="container my-auto">
+        <div class="copyright text-center my-auto">
+          <span>Copyright &copy; Your Website 2020</span>
+        </div>
+      </div>
+    </footer>
+    <!-- End of Footer -->
+  </div>
+  <!-- End of Content Wrapper -->
   </div>
   <!-- End of Page Wrapper -->
 
@@ -247,12 +254,42 @@
   <script src="/admin/assets/js/common.js"></script>
 
   <script>
+
+    const paginationContainer = document.querySelector('#paginationContainer ul.pagination');
+    // 현재 페이지와 전체 페이지 수
+    const currentPage = 1;
+    const totalPages = 5;
+
+    let paginationHTML = '';
+    for (let i = 1; i <= totalPages; i++) {
+      let pageItemClass = 'paginate_button page-item';
+      if (i === currentPage) {
+        pageItemClass += ' active';
+      }
+      paginationHTML += `<li class="${pageItemClass}"><a href="#" class="page-link">${i}</a></li>`;
+    }
+
+    let prevPageLinkHTML = `
+  <li class="paginate_button page-item previous" id="dataTable_previous">
+    <a href="#" onclick="changePage(-1)"  class="page-link">
+      <i class="fa fa-chevron-left"></i>
+    </a>
+  </li>
+`;
+    let nextPageLinkHTML = `
+  <li class="paginate_button page-item next" id="dataTable_next">
+    <a href="#" onclick="changePage(i)" class="page-link">
+      <i class="fa fa-chevron-right"></i>
+    </a>
+  </li>
+`;
+    paginationContainer.innerHTML = prevPageLinkHTML + paginationHTML + nextPageLinkHTML;
+
+
     const fileNameElement = document.getElementsByClassName("file-name");
     const cancelButton = document.getElementsByClassName("cancel-btn");
     const input = document.getElementsByName("productImgArr[]");
     let DT = null;
-    let counsel_id = "";
-    let file_id = null;
 
     let currentListCount = 0;
     let dataLength = 0;
@@ -265,9 +302,10 @@
     let sort = "DESC";
     let exposure_yn = ['N', 'Y'];
     const pageSize = 10;
+    //
+    let page_count = 0;
+    let data_count = 0;
 
-    // 전체 페이지 수 , 현재 페이지 ,
-    // 검색 결과 전체 불러오기 
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -385,11 +423,6 @@
       sort = "DESC";
       showListData();
 
-      /*
-        page,
-      
-      */
-
     }
 
     //리스트 조회
@@ -406,6 +439,7 @@
         exposure_yn,
       });
 
+
       console.log("바디" + raw);
 
       const requestOptions = {
@@ -421,10 +455,11 @@
         const response = await fetch(`/content/search`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          DT.clear().draw();
+          //DT.clear().draw();
 
           let categoryStr = "";
-          data.forEach(function (row, i) {
+
+          data.content.forEach(function (row, i) {
             switch (row.category) {
               case 1:
                 categoryStr = "풍선 장식"
@@ -438,8 +473,6 @@
               case 4:
                 categoryStr = "원데이클래스"
                 break;
-              default:
-                console.log(data.file_id);
             }
 
             const checkbox = $('<input>').attr({
@@ -467,7 +500,10 @@
             const pageInfo = DT.page.info();
             currentListCount = pageInfo.end - pageInfo.start;
 
+
           });
+          data_count = data.count;
+          console.log(data_count);
           return;
         }
 
