@@ -10,6 +10,8 @@ const counselService = {
       const offset = (page - 1) * pageSize; // OFFSET 값 계산
       let sql;
       
+      let response;
+      let result;
       if (counsel_id == null) {
         sql = `
           SELECT 
@@ -43,7 +45,11 @@ const counselService = {
         
         sql += `ORDER BY cs.reg_date ${sort} `;
         sql += `LIMIT ${pageSize} OFFSET ${offset}`;
+        response = await executeQuery(sql);
 
+        sql = `SELECT COUNT(*) AS count FROM tbl_counsel WHERE del_yn = 'N'`;
+        const count = await executeQuery(sql);
+        result = {'counsel': response, 'count': count[0].count};
       } else {
         sql = `
           SELECT 
@@ -61,19 +67,27 @@ const counselService = {
           WHERE cs.del_yn = 'N'
           AND cs.counsel_id = ?
         `;
+        result = await executeQuery(sql, [counsel_id]);
       }
-      const response = await executeQuery(sql, [counsel_id]);
 
       res.status(200).json({
         code: 200,
         message: "상담 조회에 성공하였습니다.",
-        data: response,
+        data: result,
       });
     } catch (err) {
+      let message;
+
+      if(req.session.user == undefined) {
+        message = "유저 세션이 존재하지 않습니다."
+      } else {
+        message = "에러가 발생하였습니다.";
+      }
+
       console.error(err);
       res
         .status(500)
-        .json({ message: "에러가 발생하였습니다.", data: err, code: 500 });
+        .json({ message: message, data: err, code: 500 });
     }
   },
   insertCounsel: async (req, res) => { // 등록

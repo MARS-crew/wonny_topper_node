@@ -49,10 +49,14 @@ const contentService = {
       
       const response = await executeQuery(sql);
 
+      sql = `SELECT COUNT(*) AS count FROM tbl_content WHERE del_yn = 'N'`;
+      const count = await executeQuery(sql);
+      let result = {'content': response, 'count': count[0].count};
+
       res.status(200).json({
         code: 200,
         message: "컨텐츠 검색에 성공하였습니다.",
-        data: response,
+        data: result,
       });
     } catch (err) {
       console.error(err);
