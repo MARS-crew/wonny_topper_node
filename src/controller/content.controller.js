@@ -13,7 +13,6 @@ const contentService = require("../service/content.service");
 router.post("/search", contentService.search);
 router.get("/select/:content_id", contentService.select);
 router.get("/select", contentService.select);
-// router.post("/insert", upload.array("file"), contentService.insert);
 router.post("/insert", contentService.insert);
 router.post("/update", contentService.update);
 router.post("/delete", contentService.delete);

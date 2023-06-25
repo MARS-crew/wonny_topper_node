@@ -12,11 +12,7 @@ const counselService = require("../service/counsel.service");
 
 router.post("/select", counselService.select);
 router.get("/select/:counsel_id", counselService.select);
-router.post(
-  "/insertCounsel",
-  upload.array("image", 5),
-  counselService.insertCounsel
-);
+router.post("/insertCounsel", counselService.insertCounsel);
 
 /**
  * @swagger

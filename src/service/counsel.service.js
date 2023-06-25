@@ -1,5 +1,3 @@
-const db = require("../config/db");
-const setResponseJson = require("../dto/responseDto");
 const sendMail = require("../utils/mail");
 const { executeQuery } = require("../repository");
 

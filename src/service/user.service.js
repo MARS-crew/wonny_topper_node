@@ -1,5 +1,4 @@
 const bcrypt = require("bcrypt");
-const setResponseJson = require("../dto/responseDto");
 const { executeQuery } = require("../repository");
 
 const userService = {
@@ -17,8 +16,11 @@ const userService = {
         id
       );
       if (findUser.length > 0) {
-        res.send(setResponseJson(400, "이미 존재하는 ID 입니다.", false));
-
+        res.status(400).json({
+          code: 400,
+          message: "이미 존재하는 ID 입니다.",
+          data: false,
+        });
         return;
       }
 
@@ -29,10 +31,18 @@ const userService = {
         [id, hash, name]
       );
 
-      res.send(setResponseJson(200, "회원가입 성공", true));
+      res.status(200).json({
+        code: 200,
+        message: "회원가입 성공",
+        data: true,
+      });
     } catch (err) {
       console.error(err);
-      res.send(setResponseJson(500, "회원가입 실패", false));
+      res.status(500).json({
+        code: 500,
+        message: "회원가입 실패",
+        data: false,
+      });
     }
   },
   login: async (req, res) => {
@@ -48,7 +58,7 @@ const userService = {
         res.status(400).json({
           code: 400,
           message: "유저를 찾을 수 없습니다.",
-          data: false,
+          data: false
         });
 
         return;
@@ -59,7 +69,7 @@ const userService = {
         res.status(400).json({
           code: 400,
           message: "패스워드가 틀립니다.",
-          data: false,
+          data: false
         });
         return;
       }
@@ -78,7 +88,7 @@ const userService = {
         data: {
           admin_id: findUser[0].admin_id,
           id: findUser[0].id,
-          name: findUser[0].name,
+          name: findUser[0].name
         },
       });
     } catch (err) {

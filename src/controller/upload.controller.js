@@ -30,8 +30,6 @@ const uploadService = require("../service/upload.service");
  *               file: file
  */
 router.post("/", upload.single("file"), uploadService.uploadFile);
-
-
 router.post("/deleteFile", uploadService.deleteFile);
 
 
