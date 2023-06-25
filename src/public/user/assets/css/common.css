@@ -533,10 +533,11 @@ textarea::placeholder {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgb(0 0 0 / 40%);
+    background: rgb(0 0 0 / 50%);
 
 }
 
+/* 
 .popup_container {
     position: absolute;
     transform: translate(-50%, -50%);
@@ -561,6 +562,36 @@ textarea::placeholder {
 
 .popup_body_content .swiper {
     position: unset !important;
+} */
+.popup_container,
+.popup_content {
+    height: 100%;
+}
+
+.popup_content .swiper-wrapper {
+    align-items: center;
+    position: unset !important;
+}
+
+.popup_body_content {
+    width: 31%;
+    /* margin: 0 auto; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    margin: 0 auto;
+}
+
+/* .popup_header_content {
+    position: absolute;
+    bottom: 0;
+} */
+
+.popup_header_content .swiper-horizontal,
+.popup_body_content .swiper,
+.popup_body_content .swiper-slide {
+    position: unset !important;
 }
 
 .popup_swiper_area {
@@ -573,12 +604,19 @@ textarea::placeholder {
 }
 
 .popup_container .icon_close {
+    position: absolute;
+    right: 1%;
+    top: 2%;
     width: 30px;
     height: 30px;
     background: url('/user/assets/images/ico_close.png') no-repeat center center/cover;
 }
 
 .popup_header_content .popup_title {
+    position: absolute;
+    bottom: 2%;
+    left: 1%;
+    color: #fff;
     font-size: 1.5em;
     font-weight: bold;
 }
@@ -595,12 +633,12 @@ textarea::placeholder {
 
 .swiper-button-next {
     right: 1% !important;
-    background: url('/user/assets/images/ico_arrow_right.png') center center/cover;
+    background: url('/user/assets/images/ico_arrow_right_w.png') center center/cover;
 }
 
 .swiper-button-prev {
     left: 1% !important;
-    background: url('/user/assets/images/ico_arrow_left.png') center center/cover;
+    background: url('/user/assets/images/ico_arrow_left_w.png') center center/cover;
 }
 
 .swiper-button-next::after,
@@ -667,13 +705,21 @@ textarea::placeholder {
     position: relative;
 }
 
-.wrap .container .category_gallery_content .gallery_category_list {
+.wrap .container .category_gallery_content .gallery_category_list,
+.wrap .container .category_gallery_content .balloon_category_list,
+.wrap .container .category_gallery_content .topper_category_list,
+.wrap .container .category_gallery_content .pierrot_category_list,
+.wrap .container .category_gallery_content .class_category_list {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
 }
 
-.wrap .container .category_gallery_content .gallery_category_list li {
+.wrap .container .category_gallery_content .gallery_category_list li,
+.wrap .container .category_gallery_content .balloon_category_list li,
+.wrap .container .category_gallery_content .topper_category_list li,
+.wrap .container .category_gallery_content .pierrot_category_list li,
+.wrap .container .category_gallery_content .class_category_list li {
     position: relative;
     width: 100%;
     width: 100%;
@@ -685,26 +731,42 @@ textarea::placeholder {
     cursor: pointer;
 }
 
-.wrap .container .category_gallery_content .gallery_category_list li::after {
+.wrap .container .category_gallery_content .gallery_category_list li::after,
+.wrap .container .category_gallery_content .balloon_category_list li::after,
+.wrap .container .category_gallery_content .topper_category_list li::after,
+.wrap .container .category_gallery_content .pierrot_category_list li::after,
+.wrap .container .category_gallery_content .class_category_list li::after {
     content: "";
     display: block;
     padding-bottom: 100%;
 }
 
-.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content {
+.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .balloon_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .topper_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .pierrot_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .class_category_list .gallery_category_list_content {
     position: absolute;
     width: 100%;
     height: 100%;
 }
 
-.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content .gallery_category_title_area {
+.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content .gallery_category_title_area,
+.wrap .container .category_gallery_content .balloon_category_list .gallery_category_list_content .gallery_category_title_area,
+.wrap .container .category_gallery_content .topper_category_list .gallery_category_list_content .gallery_category_title_area,
+.wrap .container .category_gallery_content .pierrot_category_list .gallery_category_list_content .gallery_category_title_area,
+.wrap .container .category_gallery_content .class_category_list .gallery_category_list_content .gallery_category_title_area {
     width: 100%;
     height: 100%;
     border-radius: 10px;
     background: rgb(0 0 0 / 40%);
 }
 
-.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content .gallery_category_title_area .gallery_category_title {
+.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content .gallery_category_title_area .gallery_category_title,
+.wrap .container .category_gallery_content .balloon_category_list .gallery_category_list_content .gallery_category_title_area .gallery_category_title,
+.wrap .container .category_gallery_content .topper_category_list .gallery_category_list_content .gallery_category_title_area .gallery_category_title,
+.wrap .container .category_gallery_content .pierrot_category_list .gallery_category_list_content .gallery_category_title_area .gallery_category_title,
+.wrap .container .category_gallery_content .class_category_list .gallery_category_list_content .gallery_category_title_area .gallery_category_title {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -716,11 +778,19 @@ textarea::placeholder {
     color: #fff;
 }
 
-.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content {
+.wrap .container .category_gallery_content .gallery_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .balloon_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .topper_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .pierrot_category_list .gallery_category_list_content,
+.wrap .container .category_gallery_content .class_category_list .gallery_category_list_content {
     opacity: 0;
 }
 
-.wrap .container .category_gallery_content .gallery_category_list li:hover .gallery_category_list_content {
+.wrap .container .category_gallery_content .gallery_category_list li:hover .gallery_category_list_content,
+.wrap .container .category_gallery_content .balloon_category_list li:hover .gallery_category_list_content,
+.wrap .container .category_gallery_content .topper_category_list li:hover .gallery_category_list_content,
+.wrap .container .category_gallery_content .pierrot_category_list li:hover .gallery_category_list_content,
+.wrap .container .category_gallery_content .class_category_list li:hover .gallery_category_list_content {
     opacity: 1;
 }
 
@@ -729,22 +799,28 @@ textarea::placeholder {
     justify-content: center;
     margin-top: 5em;
 }
+
 .wrap .container .category_gallery_content .gallery_category_more_area button {
-    width: 30%;
-    padding: 1em 1em;
-    border: none;
-    border-radius: 0.7em;
-    background-color: #554ba0;
+    width: 16%;
+    padding: 0.75em;
+    border-radius: 30px;
     color: #fff;
     cursor: pointer;
+    background: #fff;
+    color: #554ba0;
+    border: 1px solid #554ba0;
+    font-size: 1.25em;
+    font-weight: bold;
 }
 
 .js-load {
-    display:none;
+    display: none;
 }
+
 .js-load.active {
-    display:block;
+    display: block;
 }
+
 .is_comp.js-load::after {
     display: none;
 }
@@ -777,6 +853,7 @@ textarea::placeholder {
 
 .qna_banner_sub_title {
     font-size: 1.125em;
+    text-align: center;
 }
 
 .qna_content {
@@ -870,6 +947,7 @@ textarea::placeholder {
     background-size: auto;
     background-position: calc(100% - 1.25em) center;
     border: 0;
+    border-radius: 10px;
     padding: 0 1.25em;
 }
 

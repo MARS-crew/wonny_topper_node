@@ -108,7 +108,12 @@
                           <label class="ckbox-inline">
                             <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
                               value="${row.bannerIdx}" />
-                            토퍼 제작
+                            토퍼
+                          </label>
+                          <label class="ckbox-inline">
+                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
+                              value="${row.bannerIdx}" />
+                            부스체험(토퍼, 풍선)
                           </label>
                           <label class="ckbox-inline">
                             <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
@@ -123,7 +128,7 @@
                           <label class="ckbox-inline">
                             <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checkedclass="ck" checked
                               value="${row.bannerIdx}" />
-                            원데이클래스
+                            클래스
                           </label>
                         </div>
                       </div>
@@ -489,9 +494,9 @@
     let listcount = 0; // 페이지 출력 수
     let file_id = null;
     //페이지네이션
-    let dataLength =0;
-    let from_date = "2023-06-20";
-    let to_date = "2023-06-22";
+    let dataLength = 0;
+    let from_date = null;
+    let to_date = null;
     let purpose = [
       1,
       2,
@@ -563,7 +568,6 @@
         pageSize
       });
 
-
       const requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -575,7 +579,7 @@
         const response = await fetch(`/counsel/select`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          DT.clear().draw(); 
+          DT.clear().draw();
           dataLength = data.length;
           data.forEach(function (row, i) {
             const tr = DT.row.add([
@@ -587,7 +591,7 @@
               row.answer_yn,
               row.answer_date ? dayjs(row.answer_date).format(
                 "YYYY-MM-DD") : "-",
-              dayjs(row.mod_date).format(
+              dayjs(row.reg_date).format(
                 "YYYY-MM-DD"
               ),
             ]).node();
@@ -602,7 +606,7 @@
               $(tr).attr('data-target', '#consultModal');
             }
 
-            DT.draw(false); 
+            DT.draw(false);
 
           });
           return;
@@ -675,7 +679,6 @@
       */
 
     });
-
 
     const validData = (data) => {
       const regexDtail = /^[\p{L}\p{N}\p{S}\s\n]{10,1000}$/u; // 국/영문, 숫자, 특수문자 최대 10~1,000자
