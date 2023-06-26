@@ -5,7 +5,7 @@ const counselService = {
   select: async (req, res) => { // 조회, 검색
     try {
       const { counsel_id } = req.params;
-      const { purpose, search_word, sort, page, pageSize } = req.body;
+      const { purpose, search_word, sort, page, pageSize, answer_yn } = req.body;
       let { from_date, to_date } = req.body;
       const offset = (page - 1) * pageSize; // OFFSET 값 계산
       let sql, sql2;
@@ -24,7 +24,16 @@ const counselService = {
           ON aw.counsel_id = cs.counsel_id
           WHERE cs.del_yn = 'N'
         `;
-        
+        if(answer_yn != null) {
+          sql += `AND if(aw.answer_id IS NOT NULL, 'Y', 'N') IN (`;
+          for(i = 0;  i < answer_yn.length; i++) {
+            sql += `'` + answer_yn[i] + `'`;
+            if(i+1 < answer_yn.length) {
+              sql += `, `;
+            }
+          }
+          sql += `) `;
+        }
         if(from_date != null && to_date != null) {
           from_date += ' 00:00:00';
           to_date += ' 23:59:59';
