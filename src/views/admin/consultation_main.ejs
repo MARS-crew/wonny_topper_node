@@ -271,6 +271,16 @@
                 </td>
               </tr>
               <tr>
+                <td width="20%" class="table-title-td">관련컨텐츠</td>
+                <td width="80%" colspan="3" id="reqanswer-relate-content">
+
+                  <div id="reqanswer-relate-img" class="reqanswer-relate-img">
+
+                  </div>
+                  제목입니다
+                </td>
+              </tr>
+              <tr>
                 <td width="20%" class="table-title-td">상담내용</td>
                 <td width="80%" colspan="3" id="reqanswer-counsel">
                 </td>
@@ -298,7 +308,7 @@
                 </td>
                 <td width="80%" colspan="2">
                   <label for="file1" class="file-input-label">파일 선택</label>
-                  <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
+                  <input type="file" accept=".jpg, .png" id="file1" class="file-input" name="productImgArr[]"
                     onchange="uploadFormData()" required />
                   <span id="fileName" class="file-name"></span>
                   <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
@@ -590,7 +600,7 @@
       to_date = document.getElementById('to-date').value;
 
       sort = "DESC";
-      page=1;
+      page = 1;
       showListData();
     }
 
@@ -695,10 +705,10 @@
     }
 
     const paginate = (curDataCount) => {
-      pageCount = Math.ceil(allDataCount * 1.0 / pageSize); 
-      rangeCount = Math.ceil(pageCount * 1.0 / rangeSize); 
+      pageCount = Math.ceil(allDataCount * 1.0 / pageSize);
+      rangeCount = Math.ceil(pageCount * 1.0 / rangeSize);
       curRange = Math.floor((page - 1) / rangeSize) + 1;
-      startPage = (curRange - 1) * rangeSize + 1; 
+      startPage = (curRange - 1) * rangeSize + 1;
       endPage = startPage + rangeSize - 1;
 
       if (endPage > pageCount) {
@@ -798,7 +808,18 @@
             document.getElementById('reqanswer-purpose').innerHTML = data[0].purpose;
             document.getElementById('reqanswer-counsel').innerHTML = data[0].detail;
             document.getElementById('reqanswer-reg-date').innerHTML = data[0].reg_date;
+            if (data[0].answer_file_url !== null) {
+              document.getElementById('reqanswer-relate-img').style.backgroundImage = `url(${data[0].answer_file_url})`;
+              document.getElementById('reqanswer-relate-content').innerHTML= "이미지 있"
+            }else{
+              //document.getElementById('reqanswer-relate-img').style.backgroundImage = `url(${data[0].answer_file_url})`;
+              document.getElementById('reqanswer-relate-content').innerHTML= "-"
+            }
 
+            //
+
+
+            //reqanswer-relate-content
           }
 
         }
