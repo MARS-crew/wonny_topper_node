@@ -80,6 +80,8 @@ const userService = {
 
       if (isAuto) {
         res.cookie("topper", findUser[0].admin_id, { maxAge: 60 * 60 * 24 * 14 });
+      } else {
+        req.session.cookie.expires = new Date(Date.now() + 60 * 60 * 1000); // 1시간
       }
 
       res.status(200).json({
