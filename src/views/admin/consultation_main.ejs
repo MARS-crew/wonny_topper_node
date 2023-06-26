@@ -73,7 +73,7 @@
                       <div class="col-md-6 filter-inputs">
                         <div class="input-daterange input-group date-pick" data-plugin-datepicker
                           data-plugin-options='{"format": "yyyy-mm-dd"}'>
-                          <input type="text" class="form-control daterange" id="startDate" name="start"
+                          <input type="text" class="form-control daterange" id="from-date" name="start"
                             autocomplete="off" />
                           <span class="input-group-addon">
                             <i class="fa fa-calendar calender-icon"></i>
@@ -81,7 +81,7 @@
                           <span class="input-group-addon tx-icon">
                             ~
                           </span>
-                          <input type="text" class="form-control daterange" id="endDate" name="end"
+                          <input type="text" class="form-control daterange" id="to-date" name="end"
                             autocomplete="off" />
                           <span class="input-group-addon">
                             <i class="fa fa-calendar calender-icon"></i>
@@ -93,41 +93,33 @@
                       <label class="col-md-2 filter-label">의뢰목적</label>
 
                       <div class="col-md-9 filter-inputs">
-                        <div class="filter-category">
+                        <div class="filter-purpose">
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkAll" name="ckall" class="checkAll" checked
-                              value="${row.bannerIdx}" />
-
+                            <input type="checkbox" id="checkAll" name="ckall" checked />
                             전체
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
-                              value="${row.bannerIdx}" />
+                            <input type="checkbox" checked class="ck purpose" value="1" />
                             풍선 장식
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
-                              value="${row.bannerIdx}" />
+                            <input type="checkbox" checked class="ck purpose" value="2" />
                             토퍼
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
-                              value="${row.bannerIdx}" />
+                            <input type="checkbox" checked class="ck purpose" value="3" />
                             부스체험(토퍼, 풍선)
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
-                              value="${row.bannerIdx}" />
+                            <input type="checkbox" checked class="ck purpose" value="4" />
                             삐에로
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checked class="ck"
-                              value="${row.bannerIdx}" />
+                            <input type="checkbox" checked class="ck purpose" value="5" />
                             페이스페인팅
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="checkboxExample2" name="bannerIdxArr" checkedclass="ck" checked
-                              value="${row.bannerIdx}" />
+                            <input type="checkbox" checked class="ck purpose" value="6" />
                             클래스
                           </label>
                         </div>
@@ -137,16 +129,16 @@
                       <label class="col-md-2 filter-label">답변여부</label>
 
                       <div class="col-md-9 filter-inputs">
-                        <div class="filter-category">
+                        <div class="filter-answer">
                           <label class="ckbox-inline">
-                            <input type="radio" name="exposureStatus" id="inlineRadio1" value="0" checked> 전체
+                            <input type="radio" name="answer_yn" value="all" checked> 전체
                           </label>
                           <label class="ckbox-inline">
-                            <input type="radio" name="exposureStatus" id="inlineRadio1" value="0">
+                            <input type="radio" name="answer_yn" value="Y">
                             Y
                           </label>
                           <label class="ckbox-inline">
-                            <input type="radio" name="exposureStatus" id="inlineRadio1" value="0">
+                            <input type="radio" name="answer_yn" value="N">
                             N
                           </label>
 
@@ -164,8 +156,8 @@
               </section>
               <!--// 검색창 패널 -->
 
-              <div class="btn-area float-right" onClick="movePage(1)">
-                <a href="#" class="btn btn btn-block">
+              <div class="btn-area float-right">
+                <a href="#" class="btn btn btn-block" onclick="onClickSearch()">
                   검색
                 </a>
               </div>
@@ -173,20 +165,14 @@
 
             <div class="card-body">
               <div class="table-responsive">
-                <!--  -->
                 <div class="admin-btn-tool tx-align-left">
                   <div class="tool-select ib">
                     <select id="orderSelect" class="form-control" name="orderSelect">
-                      <option value="ASC">등록일 ↓</option>
-                      <option value="DESC">등록일 ↑</option>
+                      <option value="DESC">등록일 ↓</option>
+                      <option value="ASC">등록일 ↑</option>
                     </select>
                   </div>
-
-
-
                 </div>
-                <!--  -->
-
                 <table class="table table-bordered content-table" id="dataTable" width="100%" cellspacing="0">
                   <thead>
                     <tr>
@@ -203,9 +189,18 @@
                     </tr>
                   </thead>
                   <tbody>
-                    <!-- 테이블 출력 영역 -->
                   </tbody>
                 </table>
+                <div class="row">
+                  <div class="col-sm-12 col-md-5">
+                    <div id="list_info"></div>
+                  </div>
+                  <div class="col-sm-12 col-md-7"></div>
+                </div>
+                <div id="paginationContainer">
+                  <ul class="pagination">
+                  </ul>
+                </div>
               </div>
             </div>
           </div>
@@ -491,32 +486,30 @@
   <script>
     let DT = null;
     let counsel_id = "";
-    let listcount = 0; // 페이지 출력 수
     let file_id = null;
-    //페이지네이션
-    let dataLength = 0;
+
+    //페이지네이션 
+    let currentListCount = 0;
+    let page = 1;
+    let allDataCount = 0;
+    const rangeSize = 5;
+    const pageSize = 10;
+    let curDataCount = 0;
+    let startIndex = 1;
+
+    //검색
     let from_date = null;
     let to_date = null;
-    let purpose = [
-      1,
-      2,
-      3,
-      4,
-      5,
-      6
-    ];
     let search_word = "";
-    let sort = "ASC";
-    let page = 1;
-    const pageSize = 10;
+    let purpose = [1, 2, 3, 4, 5, 6];
+    let sort = "DESC";
+    let answer_yn = ['N', 'Y'];
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-
-
     window.onload = () => {
-      $('#startDate, #endDate').datepicker({
+      $('#from-date, #to-date').datepicker({
         format: 'yyyy-mm-dd',
         autoclose: true,
         todayHighlight: true,
@@ -525,116 +518,26 @@
         defaultDate: new Date()
       });
 
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, '0');
-      const day = String(today.getDate()).padStart(2, '0');
-      const formattedDate = year + '-' + month + '-' + day;
-      console.log(formattedDate);
-
-      $('#startDate, #endDate').datepicker('setDate', formattedDate);
+      const today = dayjs();
+      const formattedDate = today.format('YYYY-MM-DD');
+      $('#from-date, #to-date').datepicker('setDate', formattedDate);
     }
-
-    const lang = {
-      decimal: '',
-      emptyTable: '데이터가 없습니다.',
-      info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-      infoFiltered: '(filtered from _MAX_ total entries)',
-      infoPostFix: '',
-      thousands: ',',
-      lengthMenu: '_MENU_ 개씩 보기',
-      search: '검색 : ',
-      zeroRecords: '검색된 데이터가 없습니다.',
-      paginate: {
-        first: '첫 페이지',
-        last: '마지막 페이지',
-        next: "<i class='fa fa-chevron-right'></i>",
-        previous: "<i class='fa fa-chevron-left'></i>",
-      },
-      aria: {
-        sortAscending: ' :  오름차순 정렬',
-        sortDescending: ' :  내림차순 정렬',
-      },
-    }
-
-
-    //리스트 조회 
-    const showListData = async () => {
-      const raw = JSON.stringify({
-        purpose,
-        search_word,
-        sort,
-        page,
-        pageSize
-      });
-
-      const requestOptions = {
-        method: 'POST',
-        headers: myHeaders,
-        body: raw,
-        redirect: 'follow'
-      };
-
-      try {
-        const response = await fetch(`/counsel/select`, requestOptions);
-        const { code, message, data } = await response.json();
-        if (code === 200) {
-          DT.clear().draw();
-          dataLength = data.length;
-          data.forEach(function (row, i) {
-            const tr = DT.row.add([
-              i + 1,
-              row.name,
-              row.phone_num,
-              row.purpose,
-              row.detail,
-              row.answer_yn,
-              row.answer_date ? dayjs(row.answer_date).format(
-                "YYYY-MM-DD") : "-",
-              dayjs(row.reg_date).format(
-                "YYYY-MM-DD"
-              ),
-            ]).node();
-
-            $(tr).attr('data-counsel-id', row.counsel_id);//
-            $(tr).addClass('content-list');
-            $(tr).attr('href', '#');
-            $(tr).attr('data-toggle', 'modal');
-            if (row.answer_yn === 'Y') {
-              $(tr).attr('data-target', '#consultDetailModal');
-            } else if (row.answer_yn === 'N') {
-              $(tr).attr('data-target', '#consultModal');
-            }
-
-            DT.draw(false);
-
-          });
-          return;
-        }
-      } catch (err) {
-        console.log('Err:', err);
-      }
-    }
-
-
-    $('#checkAll').change(function () {
-      $('.ck').prop('checked', $(this).prop('checked'));
-    });
-
-    $('.ck').change(function () {
-      if ($('.ck:checked').length === $('.ck').length) {
-        $('#checkAll').prop('checked', true);
-      } else {
-        $('#checkAll').prop('checked', false);
-      }
-    });
 
     $(document).ready(function () {
+      const lang = {
+        decimal: '',
+        emptyTable: '데이터가 없습니다.',
+        thousands: ',',
+        zeroRecords: '검색된 데이터가 없습니다.',
+      }
+
       DT = $('#dataTable').DataTable({
+        info: false,
         language: lang,
         bFilter: false,
         ordering: false,
         lengthChange: false,
+        paginate: false,
         columns: [
           { width: '10px' },
           { width: '10%' },
@@ -657,27 +560,199 @@
 
     })
 
+    $('#orderSelect').on('change', function () {
+      sort = $(this).val();
+      showListData();
+    });
+
+    $('#checkAll').change(function () {
+      $('.ck').prop('checked', $(this).prop('checked'));
+    });
+
+    $('.ck').change(function () {
+      if ($('.ck:checked').length === $('.ck').length) {
+        $('#checkAll').prop('checked', true);
+      } else {
+        $('#checkAll').prop('checked', false);
+      }
+    });
+
+    const onClickSearch = () => {
+      const checkboxes = document.querySelectorAll('.filter-purpose input[type="checkbox"]:checked:not(#checkAll)');
+      purpose = [];
+      checkboxes.forEach(function (checkbox) {
+        purpose.push(parseInt(checkbox.value));
+      });
+      const answer_yn_radio = document.querySelector('input[name="answer_yn"]:checked').value;
+      answer_yn = answer_yn_radio == 'all' ? ["Y", "N"] : [answer_yn_radio];
+      search_word = document.getElementById('keyword').value;
+      from_date = document.getElementById('from-date').value;
+      to_date = document.getElementById('to-date').value;
+
+      sort = "DESC";
+      page=1;
+      showListData();
+    }
+
+    //리스트 조회 
+    const showListData = async () => {
+      const raw = JSON.stringify({
+        from_date,
+        to_date,
+        purpose,
+        search_word,
+        sort,
+        page,
+        pageSize,
+        answer_yn
+      });
+
+      console.log("바디" + raw);
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      };
+
+      try {
+        const response = await fetch(`/counsel/select`, requestOptions);
+        const { code, message, data } = await response.json();
+        if (code === 200) {
+          DT.clear().draw();
+
+          startIndex = ((page - 1) * pageSize) + 1;
+          let purposeStr = "";
+          let curDataCount = 0;
+          data.counsel.forEach(function (row, i) {
+            ++curDataCount;
+            switch (row.purpose) {
+              case 1:
+                purposeStr = "풍선 장식"
+                break;
+              case 2:
+                purposeStr = "토퍼"
+                break;
+              case 3:
+                purposeStr = "부스체험(토퍼,풍선)"
+                break;
+              case 4:
+                purposeStr = "삐에로"
+                break;
+              case 5:
+                purposeStr = "페이스페인팅"
+                break;
+              case 6:
+                purposeStr = "클래스"
+                break;
+            }
+
+            const tr = DT.row.add([
+              i + startIndex,
+              row.name,
+              row.phone_num,
+              purposeStr,
+              row.detail,
+              row.answer_yn,
+              row.answer_date ? dayjs(row.answer_date).format(
+                "YYYY-MM-DD") : "-",
+              dayjs(row.reg_date).format(
+                "YYYY-MM-DD"
+              ),
+            ]).node();
+
+            $(tr).attr('data-counsel-id', row.counsel_id);
+            $(tr).addClass('content-list');
+            // $(tr).attr('href', '#');
+            $(tr).attr('data-toggle', 'modal');
+            if (row.answer_yn === 'Y') {
+              $(tr).attr('data-target', '#consultDetailModal');
+            } else if (row.answer_yn === 'N') {
+              $(tr).attr('data-target', '#consultModal');
+            }
+
+            DT.draw(false);
+
+          });
+          allDataCount = data.count;
+          paginate(curDataCount);
+
+          const listInfoContainer = document.getElementById('list_info');
+          listInfoContainer.innerHTML = `Showing ${startIndex} to ${startIndex + curDataCount - 1} of ${allDataCount} entriess`;
+
+          return;
+        }
+      } catch (err) {
+        console.log('Err:', err);
+      }
+    }
+
+    const changePage = (i) => {
+      page = (i > 0) ? i : ((i > -1) ? page + 1 : page + i);
+      console.log("변경페이지" + page);
+      showListData();
+    }
+
+    const paginate = (curDataCount) => {
+      pageCount = Math.ceil(allDataCount * 1.0 / pageSize); 
+      rangeCount = Math.ceil(pageCount * 1.0 / rangeSize); 
+      curRange = Math.floor((page - 1) / rangeSize) + 1;
+      startPage = (curRange - 1) * rangeSize + 1; 
+      endPage = startPage + rangeSize - 1;
+
+      if (endPage > pageCount) {
+        endPage = pageCount;
+      }
+
+      console.log(`
+      page${page}
+      pageCount${pageCount}
+      rangeCount${rangeCount}
+      curRange${curRange}
+      startIndex${startIndex}
+      startPage${startPage}
+      endPage${endPage}
+      `
+      );
+
+
+      const paginationContainer = document.querySelector('#paginationContainer ul.pagination');
+      let paginationHTML = '';
+      for (let i = startPage; i <= endPage; i++) {
+        let pageItemClass = 'paginate_button page-item';
+        if (i === page) {
+          pageItemClass += ' active';
+        }
+        paginationHTML += `<li class="${pageItemClass}"><a href="#" class="page-link" onclick="changePage(${i})">${i}</a></li>`;
+      }
+
+      let prevPageLinkHTML = `
+      <li class="paginate_button page-item previous ${page === 1 ? 'disabled' : ''}" id="dataTable_previous">
+        <a href="#" onclick="changePage(-1)"  class="page-link" >
+          <i class="fa fa-chevron-left"></i>
+        </a>
+      </li>
+    `;
+      let nextPageLinkHTML = `
+      <li class="paginate_button page-item next ${page === pageCount ? 'disabled' : ''}" id="dataTable_next">
+        <a href="#" onclick="changePage(0)" class="page-link">
+          <i class="fa fa-chevron-right"></i>
+        </a>
+      </li>
+    `;
+      paginationContainer.innerHTML = prevPageLinkHTML + paginationHTML + nextPageLinkHTML;
+
+
+    }
+
+
     $('.modal .close.consult').click(function () {
       if (confirm('답변 작성을 취소하시겠습니까?')) {
         $('.modal').modal('hide');
       } else {
         return false;
       }
-    });
-
-    $('#orderSelect').on('change', function () {
-      sort = $(this).val();
-      showListData();
-      /*
-      const columnIndex = 7; // 정렬할 열의 인덱스
-     
-      const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
-
-      if (sortDirection === "asc" || sortDirection === "desc") {
-        DT.order(order).draw();
-      }
-      */
-
     });
 
     const validData = (data) => {
