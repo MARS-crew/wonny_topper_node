@@ -57,7 +57,7 @@
             <h6 class="page-adress">컨텐츠 관리 > 컨텐츠 관리</h6>
           </div>
 
-          <!-- DataTales Example -->
+          <!-- DataTales -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">
@@ -98,23 +98,19 @@
                             전체
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="" name="" class="ck category" value="1" checked />
+                            <input type="checkbox" class="ck category" value="1" checked />
                             풍선 장식
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="" name="" class="ck category" value="2" checked />
-                            토퍼 제작
+                            <input type="checkbox" class="ck category" value="2" checked />
+                            토퍼
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="" name="" class="ck category" value="3" checked />
-                            삐에로
+                            <input type="checkbox" class="ck category" value="3" checked />
+                            삐에로 / 페이스페인팅
                           </label>
                           <label class="ckbox-inline">
-                            <input type="checkbox" id="" name="" class="ck category" value="4" checked />
-                            페이스페인팅
-                          </label>
-                          <label class="ckbox-inline">
-                            <input type="checkbox" id="" name="" class="ck category" value="5" checked />
+                            <input type="checkbox" class="ck category" value="4" checked />
                             원데이클래스
                           </label>
                         </div>
@@ -142,7 +138,7 @@
                     <div class="form-group">
                       <label class="col-md-2 filter-label">검색어</label>
                       <div class="col-sm-8 search-input filter-inputs">
-                        <input type="text" id="keyword" class="form-control" placeholder="검색하기" />
+                        <input type="text" id="keyword" class="form-control" />
                       </div>
                     </div>
                   </form>
@@ -168,7 +164,7 @@
                   </div>
 
                   <div class="tool-btn ib">
-                    <button type="button" id="delete_btn" class="btn btn-sm btn-dark">
+                    <button type="button" id="delete_btn" class="btn btn-sm btn-dark" onclick="onClickDeleteBtn()">
                       선택 삭제
                     </button>
                   </div>
@@ -184,8 +180,7 @@
                   <thead>
                     <tr>
                       <th>
-                        <input type="checkbox" id="checkboxExample2" name="table-ck-all" class="table-ck-all"
-                          value="${row.bannerIdx}" />
+                        <input type="checkbox" name="table-ck-all" class="table-ck-all" />
                       </th>
                       <th>NO</th>
                       <th>카테고리</th>
@@ -197,10 +192,14 @@
                   <tbody>
                   </tbody>
                 </table>
-
+                <div class="row">
+                  <div class="col-sm-12 col-md-5">
+                    <div id="list_info"></div>
+                  </div>
+                  <div class="col-sm-12 col-md-7"></div>
+                </div>
                 <div id="paginationContainer">
                   <ul class="pagination">
-
                   </ul>
                 </div>
               </div>
@@ -209,29 +208,29 @@
         </div>
       </div>
     </div>
-    <!-- End of Main Content -->
+  </div>
+  <!-- End of Main Content -->
 
-    <!-- Footer -->
-    <footer class="sticky-footer bg-white">
-      <div class="container my-auto">
-        <div class="copyright text-center my-auto">
-          <span>Copyright &copy; Your Website 2020</span>
-        </div>
+  <!-- Footer -->
+  <footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>Copyright &copy; Your Website 2020</span>
       </div>
-    </footer>
-    <!-- End of Footer -->
+    </div>
+  </footer>
+  <!-- End of Footer -->
   </div>
   <!-- End of Content Wrapper -->
   </div>
   <!-- End of Page Wrapper -->
 
   <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-    aria-hidden="true">
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+          <h5 class="modal-title">Ready to Leave?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
@@ -254,58 +253,23 @@
   <script src="/admin/assets/js/common.js"></script>
 
   <script>
-
-    const paginationContainer = document.querySelector('#paginationContainer ul.pagination');
-    // 현재 페이지와 전체 페이지 수
-    const currentPage = 1;
-    const totalPages = 5;
-
-    let paginationHTML = '';
-    for (let i = 1; i <= totalPages; i++) {
-      let pageItemClass = 'paginate_button page-item';
-      if (i === currentPage) {
-        pageItemClass += ' active';
-      }
-      paginationHTML += `<li class="${pageItemClass}"><a href="#" class="page-link">${i}</a></li>`;
-    }
-
-    let prevPageLinkHTML = `
-  <li class="paginate_button page-item previous" id="dataTable_previous">
-    <a href="#" onclick="changePage(-1)"  class="page-link">
-      <i class="fa fa-chevron-left"></i>
-    </a>
-  </li>
-`;
-    let nextPageLinkHTML = `
-  <li class="paginate_button page-item next" id="dataTable_next">
-    <a href="#" onclick="changePage(i)" class="page-link">
-      <i class="fa fa-chevron-right"></i>
-    </a>
-  </li>
-`;
-    paginationContainer.innerHTML = prevPageLinkHTML + paginationHTML + nextPageLinkHTML;
-
-
-    const fileNameElement = document.getElementsByClassName("file-name");
-    const cancelButton = document.getElementsByClassName("cancel-btn");
-    const input = document.getElementsByName("productImgArr[]");
     let DT = null;
 
-    let currentListCount = 0;
-    let dataLength = 0;
-    let page = 1;
     //페이지네이션
+    let page = 1;
+    let allDataCount = 0;
+    const rangeSize = 5;
+    const pageSize = 10;
+    let curDataCount = 0;
+    let startIndex = 1;
+
+    //검색
     let from_date = null;
     let to_date = null;
     let search_word = "";
     let category = [1, 2, 3, 4, 5];
     let sort = "DESC";
     let exposure_yn = ['N', 'Y'];
-    const pageSize = 10;
-    //
-    let page_count = 0;
-    let data_count = 0;
-
 
     const myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -330,30 +294,17 @@
       const lang = {
         decimal: '',
         emptyTable: '데이터가 없습니다.',
-        info: 'Showing _START_ to _END_ of _TOTAL_ entries',
-        infoFiltered: '(filtered from _MAX_ total entries)',
-        infoPostFix: '',
         thousands: ',',
-        lengthMenu: '_MENU_ 개씩 보기',
-        search: '검색 : ',
         zeroRecords: '검색된 데이터가 없습니다.',
-        paginate: {
-          first: '첫 페이지',
-          last: '마지막 페이지',
-          next: "<i class='fa fa-chevron-right'></i>",
-          previous: "<i class='fa fa-chevron-left'></i>",
-        },
-        aria: {
-          sortAscending: ' :  오름차순 정렬',
-          sortDescending: ' :  내림차순 정렬',
-        },
       }
 
       DT = $('#dataTable').DataTable({
+        info: false,
         language: lang,
         bFilter: false,
         ordering: false,
         lengthChange: false,
+        paginate: false,
         columns: [
           { width: '10px' },
           { width: '10px' },
@@ -365,40 +316,23 @@
       });
       showListData();
 
-      $('#dataTable tbody').on('click', 'tr.content-list', function () {
-        if ($(event.target).is('input[type="checkbox"]')) {
-          if ($('.table-ck:checked').length === currentListCount) {
-            $('input[name=table-ck-all]').prop('checked', true);
-          } else {
-            $('input[name=table-ck-all]').prop('checked', false);
-          }
-          return;
-        }
-        const checkboxValue = $(this).find('.table-ck').val();
-        const queryString = `?content_id=${checkboxValue}`;
-        window.location.href = '/admin/content_detail' + queryString;
 
-      })
 
     });
 
     $('#orderSelect').on('change', function () {
       sort = $(this).val();
       showListData();
-
-      // const columnIndex = 4; // 정렬할 열의 인덱스
-      // const order = [[columnIndex, sortDirection]]; // 정렬 열 인덱스와 방향을 배열로 저장
-      // if (sortDirection === "asc" || sortDirection === "desc") {
-      //   DT.order(order).draw();
-      // }
     });
 
+    //나머지 체크
     $('#checkAll').change(function () {
       $('.ck').prop('checked', $(this).prop('checked'));
     });
 
+    //전첵 체크
     $('.ck').change(function () {
-      if ($('.ck:checked').length === $('.ck').length) {
+      if ($('.ck:checked').length === curDataCount) {
         $('#checkAll').prop('checked', true);
       } else {
         $('#checkAll').prop('checked', false);
@@ -420,9 +354,10 @@
       search_word = document.getElementById('keyword').value;
       from_date = document.getElementById('from-date').value;
       to_date = document.getElementById('to-date').value;
-      sort = "DESC";
-      showListData();
 
+      sort = "DESC";
+      page = 1;
+      showListData();
     }
 
     //리스트 조회
@@ -439,7 +374,6 @@
         exposure_yn,
       });
 
-
       console.log("바디" + raw);
 
       const requestOptions = {
@@ -449,17 +383,17 @@
         redirect: 'follow'
       };
 
-
       try {
-
         const response = await fetch(`/content/search`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          //DT.clear().draw();
+          DT.clear().draw();
 
+          startIndex = ((page - 1) * pageSize) + 1;
           let categoryStr = "";
-
+          let curDataCount = 0;
           data.content.forEach(function (row, i) {
+            ++curDataCount;
             switch (row.category) {
               case 1:
                 categoryStr = "풍선 장식"
@@ -477,7 +411,7 @@
 
             const checkbox = $('<input>').attr({
               type: 'checkbox',
-              class: 'table-ck',
+              class: 'content-ck table-ck',
               value: row.content_id,
               name: "idxArr[]",
               id: "checkbox" + i
@@ -485,42 +419,149 @@
 
             DT.row.add([
               checkbox[0].outerHTML,
-              i + 1,
+              i + startIndex,
               categoryStr,
               row.title,
               dayjs(row.reg_date).format(
-                "YYYY-MM-DD HH:mm:ss"
+                "YYYY-MM-DD"
               ),
               row.exposure_yn
-            ]).node().classList.add('content-list'); // class 추가
+            ]).node().classList.add('content-list');
 
             DT.draw(false);
 
-
             const pageInfo = DT.page.info();
-            currentListCount = pageInfo.end - pageInfo.start;
-
 
           });
-          data_count = data.count;
-          console.log(data_count);
+
+          allDataCount = data.count;
+          paginate(curDataCount);
+
+          const listInfoContainer = document.getElementById('list_info');
+          listInfoContainer.innerHTML = `Showing ${startIndex} to ${startIndex + curDataCount - 1} of ${allDataCount} entriess`;
+
+          $('#dataTable tbody').on('click', 'tr.content-list', function () {
+            if ($(event.target).is('input[type="checkbox"]')) {
+              console.log("현재리스트"+curDataCount);
+              if ($('.table-ck:checked').length === curDataCount) {
+                console.log("티알 누름 ");
+                $('input[name=table-ck-all]').prop('checked', true);
+              } else {
+                $('input[name=table-ck-all]').prop('checked', false);
+              }
+              return;
+            }
+            const checkboxValue = $(this).find('.table-ck').val();
+            const queryString = `?content_id=${checkboxValue}`;
+            window.location.href = '/admin/content_detail' + queryString;
+          })
+
           return;
         }
 
       } catch (err) {
         console.log('Err:', err);
       }
+    }
 
+    const changePage = (i) => {
+      page = (i > 0) ? i : ((i > -1) ? page + 1 : page + i);
+      console.log("변경페이지" + page);
+      showListData();
+    }
+
+
+    const paginate = (curDataCount) => {
+      pageCount = Math.ceil(allDataCount * 1.0 / pageSize);
+      rangeCount = Math.ceil(pageCount * 1.0 / rangeSize);
+      curRange = Math.floor((page - 1) / rangeSize) + 1;
+      startPage = (curRange - 1) * rangeSize + 1;
+      endPage = startPage + rangeSize - 1;
+
+      if (endPage > pageCount) {
+        endPage = pageCount;
+      }
+
+      console.log(`
+      page${page}
+      pageCount${pageCount}
+      rangeCount${rangeCount}
+      curRange${curRange}
+      startIndex${startIndex}
+      startPage${startPage}
+      endPage${endPage}
+      `
+      );
+
+
+      const paginationContainer = document.querySelector('#paginationContainer ul.pagination');
+      let paginationHTML = '';
+      for (let i = startPage; i <= endPage; i++) {
+        let pageItemClass = 'paginate_button page-item';
+        if (i === page) {
+          pageItemClass += ' active';
+        }
+        paginationHTML += `<li class="${pageItemClass}"><a href="#" class="page-link" onclick="changePage(${i})">${i}</a></li>`;
+      }
+
+      let prevPageLinkHTML = `
+      <li class="paginate_button page-item previous ${page === 1 ? 'disabled' : ''}" id="dataTable_previous">
+        <a href="#" onclick="changePage(-1)"  class="page-link" >
+          <i class="fa fa-chevron-left"></i>
+        </a>
+      </li>
+    `;
+      let nextPageLinkHTML = `
+      <li class="paginate_button page-item next ${page === pageCount ? 'disabled' : ''}" id="dataTable_next">
+        <a href="#" onclick="changePage(0)" class="page-link">
+          <i class="fa fa-chevron-right"></i>
+        </a>
+      </li>
+    `;
+      paginationContainer.innerHTML = prevPageLinkHTML + paginationHTML + nextPageLinkHTML;
 
 
     }
 
-    const checkID = str => {
-      // 8~10자 / 영어 대소문자, 숫자 사용 가능
-      return str.trim() === '';
+    //컨텐츠 선택삭제 
+    const onClickDeleteBtn = async () => {
+      const checkboxes = document.querySelectorAll('.content-table input[type="checkbox"]:checked:not(#checkAll)');
+      if (checkboxes.length === 0) {
+        alert("삭제할 컨텐츠를 선택해주세요.");
+        return;
+      }
+      delContents = [];
+      checkboxes.forEach(function (checkbox) {
+        delContents.push(parseInt(checkbox.value, 10));
+      });
+
+      const contentRaw = JSON.stringify({
+        "content_id": delContents
+      });
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: contentRaw,
+        redirect: 'follow'
+      };
+
+      const result = window.confirm("삭제 하시겠습니까?");
+      if (result) {
+        try {
+          const response = await fetch(`/content/delete`, requestOptions);
+          const { code, message } = await response.json();
+          if (code === 200) {
+            window.location.href = "/admin/content_main";
+
+
+          }
+          console.log(code);
+        } catch {
+
+        }
+      };
     }
-
-
 
   </script>
 
