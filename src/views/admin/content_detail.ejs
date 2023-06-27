@@ -67,6 +67,7 @@
                 <span class="star">*</span>
                 는 필수 입력값
               </h6>
+              <input name="content_id" id="content_id" class="hidden" readonly />
               <h4 class="register-sub-title">■ 컨텐츠 기본정보</h4>
               <table class="detail table table-bordered" id="datatable-ajax"
                 data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
@@ -77,10 +78,22 @@
                   <td width="30%">
                     <input name="category" value="" id="category" readonly />
                   </td>
-                  <td width="20%" class="table-title-td">컨텐츠코드</td>
-                  <td width="30%">
-                    <input name="content_id" id="content_id" readonly />
+                  <td width="20%" class="table-title-td">
+                    노출여부<span class="star">*</span>
                   </td>
+                  <td width="30%">
+                    <label class="radio-button-inline">
+                      <input type="radio" class="rb exposure" id="exposure_yn_y" value="Y" />
+                      노출
+                    </label>
+                    <label class="radio-button-inline">
+                      <input type="radio" class="rb exposure" id="exposure_yn_n" value="N" />
+                      비노출
+                    </label>
+
+                  </td>
+
+
                 </tr>
                 <tr>
                   <td width="20%" class="table-title-td">
@@ -193,7 +206,7 @@
     myHeaders.append("Content-Type", "application/json");
     myHeaders.append("Accept", "application/json");
 
-
+    //삭제 
     const onClickDeleteBtn = async () => {
       const content_id = parseInt(document.getElementById("content_id").value);
       //const contentArr = [parseInt(content_id),];
@@ -262,8 +275,8 @@
       findContent();
     });
 
+    //상세 조회
     const findContent = async () => {
-
       const raw = JSON.stringify({
         "content_id": id
       });
@@ -273,7 +286,6 @@
         headers: myHeaders,
         body: raw,
         redirect: 'follow',
-
       };
 
       try {
@@ -283,8 +295,6 @@
           if (!data) {
             return;
           }
-
-
           console.log(data);
 
           member_id = data[0].member_id;
@@ -299,6 +309,12 @@
           const file2 = document.querySelector("#file_2_url");
           const file3 = document.querySelector("#file_3_url");
           const file4 = document.querySelector("#file_4_url");
+          if (data[0].exposure_yn === 'Y') {
+            document.getElementById('exposure_yn_y').checked = true;
+          } else {
+            document.getElementById('exposure_yn_n').checked = true;
+
+          }
 
           title.value = data[0].title;
           note.value = data[0].note;

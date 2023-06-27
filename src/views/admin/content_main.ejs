@@ -315,9 +315,6 @@
         ],
       });
       showListData();
-
-
-
     });
 
     $('#orderSelect').on('change', function () {
@@ -442,9 +439,7 @@
 
           $('#dataTable tbody').on('click', 'tr.content-list', function () {
             if ($(event.target).is('input[type="checkbox"]')) {
-              console.log("현재리스트"+curDataCount);
               if ($('.table-ck:checked').length === curDataCount) {
-                console.log("티알 누름 ");
                 $('input[name=table-ck-all]').prop('checked', true);
               } else {
                 $('input[name=table-ck-all]').prop('checked', false);
@@ -553,8 +548,6 @@
           const { code, message } = await response.json();
           if (code === 200) {
             window.location.href = "/admin/content_main";
-
-
           }
           console.log(code);
         } catch {

@@ -25,12 +25,10 @@
 
 <body class="bg-login-page-gradient-primary">
   <div class="container">
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
-      <div class="col-xl-10 col-lg-12 col-md-9">
+    <div class="login-area row justify-content-center">
+      <div class="login-container col-xl-10 col-lg-12 col-md-9">
         <div class="card o-hidden border-0 shadow-lg my-5">
           <div class="login-card-body p-0">
-            <!-- Nested Row within Card Body -->
             <div class="row">
               <div class="col-lg-6 d-none d-lg-block bg-login-banner-image"></div>
               <div class="col-lg-6">
@@ -97,14 +95,6 @@
   <script src="/admin/assets/js/common.js"></script>
 
   <script>
-
-    const checkId = () => {
-      //4~10자 / 영어 대소문자, 숫자 사용 가능
-    }
-    const checkPwd = () => {
-
-      //비밀번호 4~16자 / 문자, 숫자, 특수 문자 혼용 가능.
-    }
     const onClickLogin = async () => {
       let id = document.getElementById('email').value;
       let pwd = document.getElementById('password').value;
@@ -119,6 +109,15 @@
         return;
       }
 
+      /*
+      if(!validInput(id,regexId,"아이디는 4~10자 / 영어 대소문자, 숫자만 입력 가능합니다")){
+        return;
+      };
+      if(!validInput(pwd),regexPwd,"비밀번호는 4~16자 / 문자, 숫자, 특수 문자만 혼용 가능합니다"){
+        return;
+      };
+      */
+
       if (document.querySelector('input[name="is_auto"]:checked') != null) {
         isAuto = true;
       }
@@ -129,7 +128,6 @@
         isAuto
       });
 
-
       const myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
@@ -139,32 +137,29 @@
         body: raw,
         redirect: 'follow'
       };
-      
-            try {
-              const response = await fetch(`/user/login`, requestOptions);
-              const { code, message } = await response.json();
-              
-              if (code === 200) {
-                window.location.href = "/admin/content_main";
-                return;
-              }
-              if (message === '패스워드가 틀립니다.') {
-                alert('비밀번호를 다시 입력해주세요');
-                return;
-              }
-              if (message === '유저를 찾을 수 없습니다.') {
-                alert("관리자 정보가 없습니다.");
-                return;
-              }
-              alert("관리자 정보가 없습니다.");
-            } catch (err) {
-              console.log('Err:', err);
-            }
-          
+
+      try {
+        const response = await fetch(`/user/login`, requestOptions);
+        const { code, message } = await response.json();
+
+        if (code === 200) {
+          window.location.href = "/admin/content_main";
+          return;
+        }
+        if (message === '패스워드가 틀립니다.') {
+          alert('비밀번호를 다시 입력해주세요');
+          return;
+        }
+        if (message === '유저를 찾을 수 없습니다.') {
+          alert("관리자 정보가 없습니다.");
+          return;
+        }
+        alert("관리자 정보가 없습니다.");
+      } catch (err) {
+        console.log('Err:', err);
+      }
+
     }
-
-
-
   </script>
 
 </body>
