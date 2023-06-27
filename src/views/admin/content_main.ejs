@@ -275,21 +275,29 @@
     myHeaders.append("Content-Type", "application/json");
 
     window.onload = () => {
-      $('#from-date, #to-date').datepicker({
-        dateFormat: 'yy-mm-dd',
-        format: 'yyyy-mm-dd',
-        autoclose: true,
-        todayHighlight: true,
-        placement: 'bottom',
-        orientation: 'auto bottom',
-        defaultDate: new Date()
-      });
+  $('#from-date, #to-date').datepicker({
+    dateFormat: 'yy-mm-dd',
+    format: 'yyyy-mm-dd',
+    autoclose: true,
+    todayHighlight: true,
+    placement: 'bottom',
+    orientation: 'auto bottom',
+    defaultDate: new Date(),
+    onClose: function (dateStr, datepicker) {
+      console.log('클로즈');
+      const startDate = new Date($('#from-date').val());
+      const endDate = new Date($('#to-date').val());
+      if (endDate < startDate) {
+        console.log("끝날짜가 시작날짜보다 이전입니다.");
+        $('#to-date').val($('#from-date').val());
+      }
+    },
+  });
 
-      const today = dayjs();
-      const formattedDate = today.format('YYYY-MM-DD');
-      $('#from-date, #to-date').datepicker('setDate', formattedDate);
-    }
-
+  const today = dayjs();
+  const formattedDate = today.format('YYYY-MM-DD');
+  $('#from-date, #to-date').datepicker('setDate', formattedDate);
+}
     $(document).ready(function () {
       const lang = {
         decimal: '',
@@ -371,8 +379,6 @@
         exposure_yn,
       });
 
-      console.log("바디" + raw);
-
       const requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -387,24 +393,9 @@
           DT.clear().draw();
 
           startIndex = ((page - 1) * pageSize) + 1;
-          let categoryStr = "";
           let curDataCount = 0;
           data.content.forEach(function (row, i) {
             ++curDataCount;
-            switch (row.category) {
-              case 1:
-                categoryStr = "풍선 장식"
-                break;
-              case 2:
-                categoryStr = "토퍼"
-                break;
-              case 3:
-                categoryStr = "삐에로/페이스페인팅"
-                break;
-              case 4:
-                categoryStr = "원데이클래스"
-                break;
-            }
 
             const checkbox = $('<input>').attr({
               type: 'checkbox',
@@ -417,7 +408,7 @@
             DT.row.add([
               checkbox[0].outerHTML,
               i + startIndex,
-              categoryStr,
+              categoryDecode(row.category),
               row.title,
               dayjs(row.reg_date).format(
                 "YYYY-MM-DD"
@@ -461,7 +452,6 @@
 
     const changePage = (i) => {
       page = (i > 0) ? i : ((i > -1) ? page + 1 : page + i);
-      console.log("변경페이지" + page);
       showListData();
     }
 
@@ -477,16 +467,16 @@
         endPage = pageCount;
       }
 
-      console.log(`
-      page${page}
-      pageCount${pageCount}
-      rangeCount${rangeCount}
-      curRange${curRange}
-      startIndex${startIndex}
-      startPage${startPage}
-      endPage${endPage}
-      `
-      );
+      // console.log(`
+      // page${page}
+      // pageCount${pageCount}
+      // rangeCount${rangeCount}
+      // curRange${curRange}
+      // startIndex${startIndex}
+      // startPage${startPage}
+      // endPage${endPage}
+      // `
+      // );
 
 
       const paginationContainer = document.querySelector('#paginationContainer ul.pagination');
@@ -549,7 +539,6 @@
           if (code === 200) {
             window.location.href = "/admin/content_main";
           }
-          console.log(code);
         } catch {
 
         }

@@ -32,6 +32,16 @@ const requireInput = (inputs) =>{
   return true;
 }
 
+const categoryDecode = (code) => {
+  const category = [
+    "풍선 장식",
+    "토퍼",
+    "삐에로/페이스페인팅",
+    "원데이클래스"
+  ];
+  return category[code - 1] || "";
+}
+
 const purposeDecode = (code) => {
   const purposes = [
     "풍선 장식",

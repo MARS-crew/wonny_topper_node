@@ -56,7 +56,6 @@
             <h6 class="page-adress">게시판 관리 > 상담문의 관리</h6>
           </div>
 
-          <!-- DataTales Example -->
           <div class="card shadow mb-4">
             <div class="card-header py-3">
               <h6 class="m-0 font-weight-bold text-primary">
@@ -224,18 +223,17 @@
 
   <!-- 상담 상세 모달-->
   <div class="modal fade consult-modal-dialog" id="consultDetailModal" data-backdrop="static" tabindex="-1"
-    role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">답변 상세보기</h5>
+          <h5 class="modal-title">답변 상세보기</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
         <div class="modal-body">
-          <table class="detail table table-bordered"
-            data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+          <table class="detail table table-bordered">
             <tr>
               <td width="20%" class="table-title-td">이름</td>
               <td width="80%" id="counsel-name">
@@ -295,8 +293,7 @@
             </tr>
           </table>
           <hr />
-          <table class="detail table table-bordered" id="datatable-ajax"
-            data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+          <table class="detail table table-bordered">
             <tr>
               <td width="20%" class="table-title-td">답변
               </td>
@@ -395,8 +392,7 @@
               </tr>
             </table>
             <hr />
-            <table class="table table-bordered" id="datatable-ajax"
-              data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+            <table class="table table-bordered">
               <div class="pb-1 float-right"><span class="star">*</span>는 필수 입력값</div>
               <tr>
                 <td width="20%" class="table-title-td">답변
@@ -500,8 +496,7 @@
             </tr>
           </table>
           <hr />
-          <table class="detail table table-bordered" id="datatable-ajax"
-            data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+          <table class="detail table table-bordered">
             <tr>
               <td width="20%" class="table-title-td">답변
               </td>
@@ -526,26 +521,6 @@
       </div>
     </div>
   </div>
-
-
-  <!--
-    <td width="80%" id="reqanswer-name">
-               
-      <td width="20%" class="table-title-td">이메일</td>
-      <td width="80%" colspan="3" id="reqanswer-email">
-  
-      <td width="80%" colspan="2">
-        <textarea class="form-control answer-text-area" id="reqanswer-answer"></textarea>
-      </td>
-    </tr>
-
-<form action="/admin/source" method="post" enctype="multipart/form-data">
-  <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
-  onchange="uploadFormData()" required />
-</form>
-<a class="btn btn-primary btn-100" onClick="registerAnswer()">확인</a>
-  -->
-
 
   <!-- // 답변 등록 모달-->
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
@@ -588,20 +563,19 @@
         todayHighlight: true,
         placement: 'bottom',
         orientation: 'auto bottom',
-        defaultDate: new Date()
+        defaultDate: new Date(),
+        onSelect: function (dateStr, datepicker) {
+          const startDate = new Date($('#from-date').val());
+          const endDate = new Date($('#to-date').val());
+          if (endDate < startDate) {
+            $('#to-date').val(dateStr);
+          }
+        },
       });
 
       const today = dayjs();
       const formattedDate = today.format('YYYY-MM-DD');
       $('#from-date, #to-date').datepicker('setDate', formattedDate);
-
-      /*consultModal consultConfirmModal consultDetailModal
-       $('.modal').modal({
-         backdrop: 'static', // 모달 바깥 부분 클릭 무시
-         keyboard: false // 키보드 이벤트에 의한 모달 닫힘 비활성화
-       });
- 
-       */
     }
 
     $(document).ready(function () {
@@ -634,8 +608,6 @@
 
       $('#dataTable tbody').on('click', '.content-list', function () {
         counsel_id = $(this).data('counsel-id');
-        console.log('선택한 행의 데이터:', counsel_id);
-        //openModal("consultModal");
         showCounselData();
       });
 
@@ -687,8 +659,6 @@
         pageSize,
         answer_yn
       });
-
-      console.log("바디" + raw);
 
       const requestOptions = {
         method: 'POST',
@@ -763,17 +733,6 @@
       if (endPage > pageCount) {
         endPage = pageCount;
       }
-
-      console.log(`
-      page${page}
-      pageCount${pageCount}
-      rangeCount${rangeCount}
-      curRange${curRange}
-      startIndex${startIndex}
-      startPage${startPage}
-      endPage${endPage}
-      `
-      );
 
       const paginationContainer = document.querySelector('#paginationContainer ul.pagination');
       let paginationHTML = '';
@@ -870,8 +829,6 @@
         const response = await fetch("/counsel/select/" + counsel_id, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          console.log(data);
-
           if (data[0].answer_yn == 'Y') { //답변 등록 된 경우 
             setData('counsel', data[0]);
             document.getElementById('counsel-answer').innerHTML = data[0].answer_detail;
@@ -884,7 +841,6 @@
               document.getElementById('confirm-answer-answer').innerHTML = confirmAnswer;
               document.getElementById('confirm-answer-file').innerHTML = confirmFileName.trim() === "" ? "-" : `${confirmFileName}`;
             } else {
-              console.log("에딧" + editing);
               setData('reqanswer', data[0]);
             }
 
@@ -912,10 +868,8 @@
         const response = await fetch(`/upload/deleteFile`, requestOptions);
         const { code, message } = await response.json();
         if (code === 200) {
-          console.log("이전 파일 삭제 완료");
           resetModal("delPhoto");
         } else {
-          console.log("이전 파일 삭제 실패");
         }
       } catch (err) {
         console.log("Err:", err);
@@ -967,13 +921,11 @@
       const fileNameElement = document.getElementsByClassName("file-name");
       const cancelButton = document.getElementsByClassName("cancel-btn");
       if (fileInput.files.length > 0) {
-        console.log("파일긴다");
         const fileName = fileInput.files[0].name;
         fileNameElement[0].textContent = fileName;
         fileNameElement[0].style.display = "inline";
         cancelButton[0].style.display = "inline-block";
       } else {
-        console.log("파일잘브다");
         fileNameElement[0].style.display = "none";
         cancelButton[0].style.display = "none";
       }
@@ -1043,36 +995,6 @@
           console.log('Err:', err);
         }
       }
-    }
-    function closeModal(modal) {
-      //document.getElementById(modal).classList.remove("show");
-      //var modal = document.getElementById(modal);
-      //var modalBackdrop = document.querySelector(".modal-backdrop");
-
-      //odal.style.display = "block";
-      // modalBackdrop.style.display = "block";
-
-      // 스크롤 비활성화
-      //document.body.style.overflow = "hidden";
-
-      // 모달 닫기 버튼에 클릭 이벤트 핸들러 등록
-      //  var closeButton = modal.querySelector(".close");
-      // closeButton.addEventListener("click", closeModal);
-    }
-    function openModal(modal) {
-      //document.getElementById(modal).classList.remove("show");
-      //var modal = document.getElementById(modal);
-      //var modalBackdrop = document.querySelector(".modal-backdrop");
-
-      // modal.style.display = "block";
-      // modalBackdrop.style.display = "block";
-
-      // 스크롤 비활성화
-      //document.body.style.overflow = "hidden";
-
-      // 모달 닫기 버튼에 클릭 이벤트 핸들러 등록
-      //  var closeButton = modal.querySelector(".close");
-      // closeButton.addEventListener("click", closeModal);
     }
 
   </script>
