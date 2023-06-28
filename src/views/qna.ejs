@@ -42,26 +42,28 @@
             </div>
             <div class="qna_content">
                 <div class="qna_input_area">
-                    <div class="qna_left_txt">이름</div>
-                    <div class="qna_right_txt"><input type="text" class="name"></div>
+                    <div class="qna_left_txt">이름<span class="essential">*</span></div>
+                    <div class="qna_right_txt"><input type="text" class="name" maxlength="20"></div>
                 </div>
                 <div class="qna_input_area">
-                    <div class="qna_left_txt">휴대폰 번호</div>
+                    <div class="qna_left_txt">휴대폰 번호<span class="essential">*</span></div>
                     <div class="cal_input_area">
                         <div class="qna_right_txt"><input type="text" class="phoneNum1" maxlength="3"
                                 oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
                         <div>-</div>
-                        <div class="qna_right_txt"><input type="text" class="phoneNum2" maxlength="4" pattern="[0-9]*">
+                        <div class="qna_right_txt"><input type="text" class="phoneNum2" maxlength="4"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
                         <div>-</div>
-                        <div class="qna_right_txt"><input type="text" class="phoneNum3" maxlength="4" pattern="[0-9]*">
+                        <div class="qna_right_txt"><input type="text" class="phoneNum3" maxlength="4"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                         </div>
 
                     </div>
                 </div>
                 <div class="qna_input_area">
-                    <div class="qna_left_txt">이메일</div>
+                    <div class="qna_left_txt">이메일<span class="essential">*</span></div>
                     <div class="email_input_area">
                         <div class="qna_right_txt"><input type="text" class="email"></div>
                         <div>@</div>
@@ -69,27 +71,29 @@
                     </div>
                 </div>
                 <div class="qna_input_area">
-                    <div class="qna_left_txt">장소</div>
+                    <div class="qna_left_txt">장소<span class="essential">*</span></div>
                     <div class="qna_right_txt"><input type="text" class="place"></div>
                 </div>
                 <div class="qna_input_area">
-                    <div class="qna_left_txt">예산</div>
+                    <div class="qna_left_txt">예산<span class="essential">*</span></div>
                     <div class="budget_area">
-                        <div class="qna_right_txt"><input type="text" class="budget"></div>
+                        <div class="qna_right_txt"><input type="text" class="budget"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
                         <div class="qna_cation_txt">만원</div>
                     </div>
                 </div>
 
                 <div class="qna_input_area">
-                    <div class="qna_left_txt">의뢰목적</div>
+                    <div class="qna_left_txt">의뢰목적<span class="essential">*</span></div>
                     <div class="request_selet_area">
                         <select name="" id="" class="select request_selet">
                             <option value="" selected>선택</option>
-                            <option value="풍선장식">풍선장식</option>
-                            <option value="토퍼">토퍼</option>
-                            <option value="부스체험(토퍼, 풍선)">부스체험(토퍼, 풍선)</option>
-                            <option value="삐에로">삐에로</option>
-                            <option value="페이스페인팅">페이스페인팅</option>
+                            <option value="1">풍선장식</option>
+                            <option value="2">토퍼</option>
+                            <option value="3">부스체험(토퍼, 풍선)</option>
+                            <option value="4">삐에로</option>
+                            <option value="5">페이스페인팅</option>
+                            <option value="6">페이스페인팅</option>
                         </select>
                     </div>
                 </div>
@@ -110,7 +114,7 @@
                 </div>
 
                 <div class="qna_input_area align_flex_start">
-                    <div class="qna_left_txt">상담내용</div>
+                    <div class="qna_left_txt">상담내용<span class="essential">*</span></div>
                     <div class="textarea_area">
                         <textarea name="" id="" placeholder="내용을 입력해주세요" class="qna_content_detail"></textarea>
                     </div>
