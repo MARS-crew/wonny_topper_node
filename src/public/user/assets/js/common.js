@@ -3,13 +3,21 @@ const galleryCategoryMenu = document.querySelectorAll(
 );
 const galleryMoreBtn = document.querySelector(".gallery_more_btn");
 const popupWrap = document.querySelector(".popup_wrap");
-const popupCloseBtn = document.querySelector(".icon_close");
+const qnaPopupWrap = document.querySelector(".qna_popup_wrap");
+const popupCloseBtn = document.querySelector(".close_btn");
 const applyBtn = document.querySelector(".apply_btn");
 const classListContainer = document.querySelector(".class_category_list");
 const pierrotListContainer = document.querySelector(".pierrot_category_list");
 const topperListContainer = document.querySelector(".topper_category_list");
 const balloonListContainer = document.querySelector(".balloon_category_list");
 const ballonMoreBtn = document.querySelector(".ballon_more_btn");
+const qnaConetntsContainer = document.querySelector(".conetnts_list");
+const contentsBtn = document.querySelector(".contents_btn");
+const saveBtn = document.querySelector(".save_btn");
+const contentDelBtn = document.querySelector(".content_del");
+
+const contentTitle = document.querySelector(".select_content_title");
+const contentId = document.querySelector(".select_content_id");
 
 let galleryCategoryImg = [];
 let classCategoryImg = [];
@@ -17,6 +25,7 @@ let pierrotCategoryImg = [];
 let topperCategoryImg = [];
 let balloonCategoryImg = [];
 let galleryCategoryPopup = [];
+let popupCategoryPopup = [];
 
 // main images 8개  api
 const fetchGalleryImages = (id) => {
@@ -114,28 +123,10 @@ const fetchBalloonImages = (id) => {
   })
     .then((response) => response.json())
     .then((data) => {
-      // balloonCategoryImg = data;
-      // balloonImageList(balloonCategoryImg);
       const categoryObj = Object.assign({}, data);
       const categoryList = categoryObj.data;
-
-      // if (categoryList.length === 0) {
-      //   ballonMoreBtn.classList.add("hidden");
-      // } else {
       balloonCategoryImg = balloonCategoryImg.concat(categoryList); // 받아온 이미지를 배열에 추가
       balloonImageList(balloonCategoryImg);
-      //}
-
-      /*
-      if (categoryList.length === 0) {
-        // 더 이상 데이터가 없을 경우
-        galleryMoreBtn.style.display = "none"; // 더보기 버튼 숨기기
-      } else {
-        balloonImages = balloonImages.concat(categoryList); // 받아온 이미지를 배열에 추가
-        balloonImageList(balloonImages);
-      }
-      
-      */
     });
 };
 
@@ -151,6 +142,29 @@ const fetchGalleryPopupDetail = (id) => {
     .then((data) => {
       galleryCategoryPopup = data;
       popupAddElement(data); // 수정: data를 전달
+    });
+};
+
+// 상담문의 카테고리 조회  api
+const fetchPopupCategoryImages = (id) => {
+  fetch("http://localhost:3000/content/gallery", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      page: null,
+      pageSize: null,
+      category: [id],
+    }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      popupCategoryPopup = data;
+      console.log(popupCategoryPopup);
+      contentsImageList(popupCategoryPopup);
+      // galleryCategoryImg = data;
+      // galleryImageList(galleryCategoryImg);
     });
 };
 
@@ -227,29 +241,30 @@ const trimFilePath = (filePath) => {
 
 /* */
 const galleryImageList = (img) => {
-  console.log(img);
   const galleryListContainer = document.querySelector(".gallery_category_list");
 
-  galleryListContainer.innerHTML = "";
-  const categoryObj = Object.assign({}, img);
-  const categoryList = categoryObj.data;
+  if (galleryListContainer) {
+    galleryListContainer.innerHTML = "";
+    const categoryObj = Object.assign({}, img);
+    const categoryList = categoryObj.data;
+    categoryList.forEach((element) => {
+      const mainImgUrl = trimFilePath(element.file_main_id_url);
 
-  categoryList.forEach((element) => {
-    const mainImgUrl = trimFilePath(element.file_main_id_url);
-
-    galleryListContainer.insertAdjacentHTML(
-      "beforeend",
-      `
-      <li data-id=${element.content_id} style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
-          <div class="gallery_category_list_content">
-            <div class="gallery_category_title_area">
-              <div class="gallery_category_title">${element.title}</div>
+      galleryListContainer.insertAdjacentHTML(
+        "beforeend",
+        `
+        <li data-id=${element.content_id} style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+            <div class="gallery_category_list_content">
+              <div class="gallery_category_title_area">
+                <div class="gallery_category_title">${element.title}</div>
+              </div>
             </div>
-          </div>
-      </li>
-      `
-    );
-  });
+        </li>
+        `
+      );
+    });
+  }
+
   const galleryCategoryList = document.querySelectorAll(
     ".gallery_category_list li"
   );
@@ -324,7 +339,19 @@ const popupAddElement = (data) => {
 /* popup close */
 if (popupCloseBtn) {
   popupCloseBtn.addEventListener("click", (event) => {
-    popupWrap.classList.add("hidden");
+    if (popupWrap) {
+      popupWrap.classList.add("hidden");
+    }
+    if (qnaPopupWrap) {
+      qnaPopupWrap.classList.add("hidden");
+    }
+  });
+}
+
+/* contents popup open */
+if (contentsBtn) {
+  contentsBtn.addEventListener("click", (event) => {
+    qnaPopupWrap.classList.remove("hidden");
   });
 }
 
@@ -348,8 +375,95 @@ if (applyBtn) {
   const budget = document.querySelector(".budget");
   const requestSelet = document.querySelector(".request_selet");
   const qnaContent = document.querySelector(".qna_content_detail");
+  const categoryRequestSelet = document.querySelector(
+    ".category_request_selet"
+  );
+  const selectContentId = document.querySelector(".select_content_id");
+  const agreeCheckbox = document.querySelector("#agree");
+  console.log(agreeCheckbox.checked);
+
+  /* 이름 국/영문 최대 20자 */
+  name.addEventListener("input", () => {
+    const inputValue = name.value;
+    const isValid = /^[A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]*$/g.test(inputValue);
+    if (!isValid) {
+      name.value = inputValue
+        .replace(/[^A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]/g, "")
+        .slice(0, 20);
+    }
+  });
+
+  /* 이메일 영문, 숫자 최대 20자 */
+  email.addEventListener("input", () => {
+    const inputValue = email.value;
+    const isValid = /^[a-zA-Z0-9]{1,20}$/.test(inputValue);
+
+    if (!isValid) {
+      email.value = inputValue.replace(/[^a-zA-Z0-9]/g, "").slice(0, 20);
+    }
+  });
+
+  /* 장소  최대 30자 */
+  place.addEventListener("input", () => {
+    const inputValue = place.value;
+    if (inputValue.length > 30) {
+      place.value = inputValue.slice(0, 30);
+    }
+  });
+
+  // const qnaContentDetail = document.querySelector(".qna_content_detail");
+
+  qnaContent.addEventListener("input", () => {
+    const inputValue = qnaContent.value;
+    const isValid = /^[A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]*$/g.test(inputValue);
+
+    if (!isValid) {
+      qnaContent.value = inputValue
+        .replace(/[^A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]/g, "")
+        .slice(0, 500);
+    }
+  });
+
+  //   qnaContent.addEventListener("input", () => {
+  //   const inputValue = qnaContent.value;
+  //   const length = inputValue.length;
+  //   if (length < 10) {
+  //     qnaContent.setCustomValidity("최소 10글자 이상 입력해주세요.");
+  //   } else if (length > 500) {
+  //     qnaContent.setCustomValidity("최대 500글자까지 입력 가능합니다.");
+  //   } else {
+  //     qnaContent.setCustomValidity("");
+  //   }
+  // });
 
   applyBtn.addEventListener("click", () => {
+    // 유효성 체크
+    if (
+      name.value.trim() === "" ||
+      hp1.value === "" ||
+      hp2.value === "" ||
+      hp3.value === "" ||
+      email.value === "" ||
+      address.value === "" ||
+      place.value === "" ||
+      budget.value === "" ||
+      requestSelet.value === "" ||
+      qnaContent.value === ""
+    ) {
+      alert("모든 내용을 입력해주세요.");
+      return;
+    }
+
+    if (qnaContent.value.length < 10) {
+      alert("10자부터 입력 가능합니다.");
+      return;
+    }
+
+    if (!agreeCheckbox.checked) {
+      alert("개인정보취급방침에 동의해주세요.");
+      return;
+    }
+
     fetch("http://localhost:3000/counsel/insertCounsel", {
       method: "POST",
       headers: {
@@ -363,17 +477,112 @@ if (applyBtn) {
         budget: budget.value,
         purpose: requestSelet.options[requestSelet.selectedIndex].value,
         detail: qnaContent.value,
-        agree: "Y",
+        agree: agreeCheckbox.checked,
+        content_id: selectContentId.value,
       }),
     })
       .then((response) => response.text())
       .then((data) => {
         console.log(data);
+        alert("신청이 완료되었습니다");
+        location.href = "/index";
       });
+  });
+
+  if (categoryRequestSelet) {
+    let categoryId;
+
+    const popupCategoryId = (id) => {
+      fetchPopupCategoryImages(id);
+      fetchGalleryImages(id);
+    };
+
+    // 페이지 로딩 시 전체를 선택한 상태로 조회
+    popupCategoryId(categoryRequestSelet.value);
+
+    categoryRequestSelet.addEventListener("change", () => {
+      categoryId = categoryRequestSelet.value;
+
+      // "전체"를 선택한 경우와 다른 카테고리를 선택한 경우에만 조회 실행
+      if (categoryId !== "") {
+        popupCategoryId(categoryId);
+      }
+    });
+  }
+}
+
+/* 상담문의 컨텐츠 조회 태그 추가 */
+const contentsImageList = (data) => {
+  console.log(data);
+
+  qnaConetntsContainer.innerHTML = "";
+  const categoryObj = Object.assign({}, data);
+  const categoryList = categoryObj.data;
+
+  categoryList.forEach((element) => {
+    const mainImgUrl = trimFilePath(element.file_main_id_url);
+
+    qnaConetntsContainer.insertAdjacentHTML(
+      "beforeend",
+      `
+      <li data-id=${element.content_id}>
+        <div class="conetnts_list_area">
+          <div class="conetnts_list_content" style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+            <div class="radio_area">
+              <input type="radio" id=${element.content_id} name="applyInfoType" value="${element.title}" />
+                <label for=${element.content_id}>
+                  <span class="radio"></span>
+                </label>
+            </div>
+          </div>
+          <div class="conetnts_list_title">${element.title}</div>
+        </div>
+      </li>
+      `
+    );
+  });
+};
+
+let checkTitle;
+let checkId;
+
+/* 컨텐츠 저장하기 */
+if (saveBtn) {
+  saveBtn.addEventListener("click", (event) => {
+    const radios = document.querySelectorAll(
+      ".radio_area input[name=applyInfoType]"
+    );
+
+    let isChecked = false; // 선택 여부를 변수
+
+    radios.forEach((radio) => {
+      if (radio.checked) {
+        checkTitle = radio.value;
+        checkId = radio.getAttribute("id");
+        isChecked = true; // 선택되었음을 표시
+      }
+    });
+
+    if (!isChecked) {
+      event.preventDefault(); // 기본 동작(폼 제출) 중단
+      alert("컨텐츠를 선택해주세요");
+    }
+
+    contentTitle.textContent = checkTitle;
+    contentId.value = checkId;
+    contentDelBtn.classList.remove("hidden");
   });
 }
 
-/* 원데이 클래스 리스트 조회 */
+/* 컨텐츠 선택한 title 삭제 */
+if (contentDelBtn) {
+  contentDelBtn.addEventListener("click", () => {
+    contentTitle.textContent = "";
+    contentDelBtn.classList.add("hidden");
+  });
+}
+
+/* 원데이 클래스 조회 태그 추가 */
 const classImageList = (img) => {
   console.log(img);
 

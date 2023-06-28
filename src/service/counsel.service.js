@@ -64,16 +64,20 @@ const counselService = {
         sql = `
           SELECT 
             cs.*,
+            fl2.origin_name AS counsel_file_origin_name,
+            fl2.url AS counsel_file_url,
             if(aw.answer_id IS NOT NULL, 'Y', 'N') AS answer_yn,
             if(aw.answer_id IS NOT NULL, aw.reg_date, NULL) AS answer_date,
             aw.answer_id,
             aw.file_id AS answer_file_id,
             aw.detail AS answer_detail,
-            fl.origin_name AS answer_file_origin_name,
-            fl.url AS answer_file_url
+            fl1.origin_name AS answer_file_origin_name,
+            fl1.url AS answer_file_url
           FROM tbl_counsel cs
           LEFT JOIN tbl_answer aw ON aw.counsel_id = cs.counsel_id
-          LEFT JOIN tbl_file fl ON fl.file_id = aw.file_id
+          LEFT JOIN tbl_content ct ON ct.content_id = cs.content_id
+          LEFT JOIN tbl_file fl1 ON fl1.file_id = aw.file_id AND fl1.del_yn = 'N'
+          LEFT JOIN tbl_file fl2 ON fl2.file_id = ct.file_main_id AND fl2.del_yn = 'N'
           WHERE cs.del_yn = 'N'
           AND cs.counsel_id = ?
         `;
@@ -117,6 +121,21 @@ const counselService = {
       let sql = "INSERT INTO tbl_counsel SET ?";
       let response = await executeQuery(sql, data);
 
+      let purpose;
+      if(data.purpose == 1) {
+        purpose = '풍선장식';
+      } else if(data.purpose == 2) {
+        purpose = '토퍼';
+      } else if(data.purpose == 3) {
+        purpose = '부스체험(토퍼, 풍선)';
+      } else if(data.purpose == 4) {
+        purpose = '삐에로';
+      } else if(data.purpose == 5) {
+        purpose = '페이스페인팅';
+      } else if(data.purpose == 6) {
+        purpose = '클래스';
+      }
+
       let mailText = `
       이름 : ${data.name}
 
@@ -126,12 +145,9 @@ const counselService = {
 
       장소 : ${data.location}
 
-      예산 : ${data.budget}
+      예산 : ${data.budget} 만원
 
-      의뢰목적 : ${data.purpose}
-      
-      상담내용 : ${data.detail}
-
+      의뢰목적 : ${purpose}
       `;
 
       // 해당 컨텐츠의 이미지, 제목, 카테고리
@@ -146,15 +162,29 @@ const counselService = {
           WHERE ct.content_id = ? AND ct.del_yn = 'N'
         `;
         response = await executeQuery(sql, [data.content_id]);
+        let mailText2;
         if(response[0]) {
-          mailText += `관련컨텐츠 : ${response[0].title}`;
-          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText, response[0].url, response[0].origin_name);
+          mailText2 = `
+      관련컨텐츠 : ${response[0].title}
+
+      상담내용 : ${data.detail}
+          `;
+          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText + mailText2, response[0].url, response[0].origin_name);
         } else {
-          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText);
+          mailText2 = `
+      관련컨텐츠 : 삭제된 컨텐츠
+
+      상담내용 : ${data.detail}
+          `;
+          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText + mailText2);
         }
       } else {
-        mailText += `관련컨텐츠 : 없음`;
-        await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText);
+        mailText2 = `
+      관련컨텐츠 : 없음
+
+      상담내용 : ${data.detail}
+        `;
+        await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText + mailText2);
       }
 
       res.status(200).json({
