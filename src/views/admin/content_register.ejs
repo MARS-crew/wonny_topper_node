@@ -30,7 +30,6 @@
   <!-- CSS / JS -->
   <link rel="stylesheet" href="/admin/assets/css/style.css" />
   <script src="/admin/assets/js/common.js"></script>
-
 </head>
 
 <body id="page-top">
@@ -71,7 +70,7 @@
                   data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
                   <tr>
                     <td width="20%" class="table-title-td">카테고리<span class="star">*</span></td>
-                    <td width="50%" colspan="3">
+                    <td width="30%">
                       <select name="category" id="category" class="form-control select " required>
                         <option value="">--선택--</option>
                         <option value=1>풍선 장식</option>
@@ -80,10 +79,23 @@
                         <option value=4>원데이클래스</option>
                       </select>
                     </td>
-                    <!-- <td width="20%" class="table-title-td">컨텐츠코드</td>
-                    <td width="30%" id="contentCode">
-                    </td> -->
+                    <td width="20%" class="table-title-td">노출여부<span class="star">*</span></td>
+                    <td width="30%" id="exposure_yn_radio">
+                      <div class="col-md-9 filter-inputs">
+                        <div class="filter-answer">
+                          <label class="radio-button-filter">
+                            <input type="radio" name="exposure_yn" value="Y" required>
+                            노출
+                          </label>
+                          <label class="radio-button-filter">
+                            <input type="radio" name="exposure_yn" value="N" checked>
+                            비노출
+                          </label>
+                        </div>
+                      </div>
+                    </td>
                   </tr>
+
                   <tr>
                     <td width="20%" class="table-title-td">제목<span class="star">*</span></td>
                     <td width="30%" colspan="3">
@@ -92,12 +104,27 @@
                   </tr>
 
                   <tr>
-                    <td width="20%" class="table-title-td">등록일</td>
-                    <td width="30%" id="createDate">
+                    <td width="20%" class="table-title-td">등록일<span class="star">*</span></td>
+                    <td width="30%">
+                      <div class="input-date">
+                        <div class="input-daterange input-date date-pick" data-plugin-datepicker
+                          data-plugin-options='{"format": "yyyy-mm-dd"}'>
+                          <input type="text" class="form-control daterange" id="selectDate" name="start"
+                            autocomplete="off"/>
+                          <span class="input-group-addon">
+                            <i class="fa fa-calendar calender-icon"></i>
+                          </span>
+                        </div>
+                        <div class="col-md-6 filter-date">
+                          <select class="form-control hour"></select> <span class="mlr-5">:</span> <select class="form-control minute"></select> <span class="mlr-5">:</span> <select class="form-control second"></select>
+                        </div>
+                      </div>
+                    
+
 
                     </td>
                     <td width="20%" class="table-title-td">수정일</td>
-                    <td width="30%" id="editDate">
+                    <td width="30%" id="editDate">-
 
                     </td>
                   </tr>
@@ -221,7 +248,12 @@
         autoclose: true,
         todayHighlight: true,
         placement: 'bottom',
-        orientation: 'auto bottom'
+        orientation: 'auto bottom',
+        templates: {
+          leftArrow: '<i class="fa fa-angle-left"></i>',
+          rightArrow: '<i class="fa fa-angle-right"></i>'
+        },
+        endDate: new Date(),
       })
     }
 
@@ -384,8 +416,81 @@ myHeaders.append("Content-Type", "application/json");
 
     }
 
+      // 현재 날짜를 'selectDate'에 넣어줌
+      var today = new Date();
+      var year = today.getFullYear();
+      var month = today.getMonth()+1;
+      var date = today.getDate();
+      if(month < 10) {
+          month = "0" + month;
+      }
+      if(date < 10) {
+          date = "0" + date;
+      }
+      var now = year + "-" + month + "-" + date;
+      $("#selectDate").val(now);
+
+      // '.hour'에 시간을 넣어줌
+      for(var i=0; i<24; i++) {
+          if(i < 10) {
+              i = "0" + i;
+          }
+          $(".hour").append("<option value='"+i+"'>"+i+"</option>");
+      }
+
+      // '.minute'에 분을 넣어줌
+      for(var i=0; i<60; i++) {
+          if(i < 10) {
+              i = "0" + i;
+          }
+          $(".minute").append("<option value='"+i+"'>"+i+"</option>");
+      }
+
+      // '.second'에 초를 넣어줌
+      for(var i=0; i<60; i++) {
+          if(i < 10) {
+              i = "0" + i;
+          }
+          $(".second").append("<option value='"+i+"'>"+i+"</option>");
+      }
+
+      // 현재 시간을 '.hour', '.minute', '.second'에 넣어줌
+      var hour = today.getHours();
+      var minute = today.getMinutes();
+      var second = today.getSeconds();
+      if(hour < 10) {
+          hour = "0" + hour;
+      }
+      if(minute < 10) {
+          minute = "0" + minute;
+      }
+      if(second < 10) {
+          second = "0" + second;
+      }
+      $(".hour").val(hour);
+      $(".minute").val(minute);
+      $(".second").val(second);
+
+      // '.hour', '.minute', '.second'에 현재 시간보다 미래의 시간이 선택되면 alert 창으로 경고
+      $(".hour, .minute, .second").change(function() {
+          var selectDate = $("#selectDate").val();
+          var selectHour = $(".hour").val();
+          var selectMinute = $(".minute").val();
+          var selectSecond = $(".second").val();
+          var selectDateTime = selectDate + " " + selectHour + ":" + selectMinute + ":" + selectSecond;
+          var selectTime = new Date(selectDateTime).getTime();
+          var nowTime = new Date().getTime();
+          if(selectTime > nowTime) {
+              alert("현재 시간 이후로는 선택이 불가능합니다");
+              $(".hour").val(hour);
+              $(".minute").val(minute);
+              $(".second").val(second);
+          }
+      });
 
 
+
+    
 
   </script>
 

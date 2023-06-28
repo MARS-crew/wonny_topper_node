@@ -195,6 +195,44 @@ textarea::placeholder {
     color: #d9d9d9;
 }
 
+input[type="radio"],
+input[type="checkbox"] {
+    display: none;
+}
+
+input[type="radio"]+label span.radio {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    font-size: 0;
+    vertical-align: middle;
+    background: url('/user/assets/images/ico_radio.png') 50% 50% no-repeat;
+    background-size: cover;
+    cursor: pointer;
+}
+
+input[type="radio"]:checked+label span.radio {
+    background: url('/user/assets/images/ico_radio_active.png') 50% 50% no-repeat;
+    background-size: cover;
+}
+
+input[type="checkbox"]+label span.checkbox {
+    display: inline-block;
+    margin-right: 0.5rem;
+    width: 20px;
+    height: 20px;
+    font-size: 0;
+    vertical-align: middle;
+    background: url('/user/assets/images/ico_checkbox.png') 50% 50% no-repeat;
+    background-size: cover;
+    cursor: pointer;
+}
+
+input[type="checkbox"]:checked+label span.checkbox {
+    background: url('/user/assets/images/ico_checkbox_active.png') 50% 50% no-repeat;
+    background-size: cover;
+}
+
 .wrap {
     width: 100%;
     height: 100%;
@@ -274,9 +312,10 @@ textarea::placeholder {
 
 
 .wrap .container .banner_area {
-    background-image: linear-gradient(rgba(0, 0, 0, 0.127), rgba(0, 0, 0, 0.1)), url('/user/assets/images/banner.jpg');
     width: 100%;
     height: 83%;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.127), rgba(0, 0, 0, 0.1)), url('/user/assets/images/banner.jpg');
+    background-repeat: no-repeat;
 }
 
 .wrap .container .banner_area .wrap_banner_txt {
@@ -526,7 +565,8 @@ textarea::placeholder {
 }
 
 /* 상세 POPUP */
-.popup_wrap {
+.popup_wrap,
+.qna_popup_wrap {
     z-index: 11;
     position: fixed;
     top: 0;
@@ -537,32 +577,6 @@ textarea::placeholder {
 
 }
 
-/* 
-.popup_container {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    left: 50%;
-    width: 30%;
-    background: #fff;
-    border-radius: 10px;
-}
-
-.popup_body_content {
-    position: relative;
-    margin: 0 2em 1.5em 2em;
-}
-
-.popup_header_content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1em 2em;
-}
-
-.popup_body_content .swiper {
-    position: unset !important;
-} */
 .popup_container,
 .popup_content {
     height: 100%;
@@ -583,10 +597,6 @@ textarea::placeholder {
     margin: 0 auto;
 }
 
-/* .popup_header_content {
-    position: absolute;
-    bottom: 0;
-} */
 
 .popup_header_content .swiper-horizontal,
 .popup_body_content .swiper,
@@ -594,9 +604,6 @@ textarea::placeholder {
     position: unset !important;
 }
 
-.popup_swiper_area {
-    /* width: calc(100% - 80px - 2em); */
-}
 
 .popup_swiper_area img {
     display: block;
@@ -609,7 +616,7 @@ textarea::placeholder {
     top: 2%;
     width: 30px;
     height: 30px;
-    background: url('/user/assets/images/ico_close.png') no-repeat center center/cover;
+    background: url('/user/assets/images/ico_close_w.png') no-repeat center center/cover;
 }
 
 .popup_header_content .popup_title {
@@ -652,6 +659,102 @@ textarea::placeholder {
 }
 
 /* //상세 POPUP */
+
+/* 상담문의 컨텐츠 POPUP */
+.qna_popup_container {
+    position: relative;
+    height: 100%;
+}
+
+.qna_popup_content {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.5em;
+    width: 66%;
+    border-radius: 10px;
+    background: #fff;
+}
+
+.qna_popup_container .qna_icon_close {
+    width: 30px;
+    height: 30px;
+    background: url('/user/assets/images/ico_close.png') no-repeat center center/cover;
+}
+
+.qna_popup_header_content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.qna_popup_header_content .qna_popup_title {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+
+.qna_popup_body_content .conetnts_list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    margin-top: 1.5em;
+    height: 350px;
+    overflow-y: auto;
+}
+
+.qna_popup_body_content .conetnts_list .conetnts_list_area .conetnts_list_content {
+    position: relative;
+    width: 100%;
+    width: 100%;
+    border: 1px solid #f5f5f5;
+    background: #FFF;
+    border-radius: 15px;
+    box-shadow: 5px 6px 12px 1px rgba(25, 48, 88, 0.1);
+
+}
+
+.qna_popup_body_content .conetnts_list .conetnts_list_content::after {
+    content: "";
+    display: block;
+    padding-bottom: 100%;
+}
+
+.qna_popup_body_content .conetnts_list .conetnts_list_area .conetnts_list_title {
+    margin-top: 10px;
+    word-break: break-all;
+    font-size: 1em;
+}
+
+.radio_area {
+    position: absolute;
+    left: 5%;
+    top: 5%;
+}
+
+.popup_btn {
+    height: 60px;
+    line-height: 60px;
+    font-size: 1.25em;
+}
+
+.save_btn {
+    height: 55px;
+    font-size: 1.25em;
+    line-height: 55px;
+    min-width: 200px;
+    display: block;
+    font-weight: bold;
+    color: #fff;
+    text-align: center;
+    background-color: #554ba0;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-top: 2em;
+}
+
+/* //상담문의 컨텐츠 POPUP */
 
 .hidden {
     display: none;
@@ -883,6 +986,29 @@ textarea::placeholder {
     height: 50px;
 }
 
+.contents_input_area {
+    position: relative;
+}
+
+.contents_input_area .select_content_title {
+    position: absolute;
+    top: 50%;
+    left: 1.25em;
+    transform: translateY(-50%);
+}
+
+.contents_input_area .content_del {
+    position: absolute;
+    top: 50%;
+    right: 1.25em;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    background: url('/user/assets/images/ico_close.png') no-repeat center center/cover;
+    cursor: pointer;
+
+}
+
 .qna_input_area input {
     padding: 0 1.25em;
     height: 100%;
@@ -891,6 +1017,32 @@ textarea::placeholder {
     background: inherit;
     font-size: 1.125em;
     border-radius: 10px;
+}
+
+.qna_input_area .contents_area {
+    display: grid;
+    grid-template-columns: 80% 20%;
+}
+
+.qna_input_area .contents_area .contents_btn {
+    margin-left: 0.9em;
+    border: 1px solid #554ba0;
+    border-radius: 10px;
+    background: #fff;
+    color: #554ba0;
+    font-size: 1.25em;
+    font-weight: bold;
+}
+
+.agree_area {
+    border-top: 1px solid #d9d9d9;
+    padding-top: 1.5em;
+    margin-top: 1.5em
+}
+
+.agree_area .agree_text {
+    font-size: 1.25em;
+    font-weight: bold;
 }
 
 .cal_input_area,
@@ -974,15 +1126,18 @@ textarea::placeholder {
     width: auto;
     min-width: 240px;
     height: 70px;
-    /* font-family: "HGGGothicssi"; */
     font-weight: bold;
     font-size: 1.5em;
     color: #fff;
     text-align: center;
     line-height: 70px;
     background-color: #554ba0;
-    border-radius: 8px;
-    /* padding: 0 30px; */
+    border-radius: 10px;
     margin: 0 auto;
     margin-top: 2em;
+}
+
+.essential {
+    color: #DE3729;
+    margin-left: 5px;
 }
