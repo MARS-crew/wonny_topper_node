@@ -484,6 +484,8 @@ if (applyBtn) {
       .then((response) => response.text())
       .then((data) => {
         console.log(data);
+        alert("신청이 완료되었습니다");
+        location.href = "/index";
       });
   });
 
