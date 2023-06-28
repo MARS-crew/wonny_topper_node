@@ -86,11 +86,11 @@ const contentService = {
             fl4.origin_name AS file_3_id_origin_name,
             fl5.origin_name AS file_4_id_origin_name
           FROM tbl_content ct
-          LEFT JOIN tbl_file fl1 ON fl1.file_id = ct.file_main_id
-          LEFT JOIN tbl_file fl2 ON fl2.file_id = ct.file_1_id
-          LEFT JOIN tbl_file fl3 ON fl3.file_id = ct.file_2_id
-          LEFT JOIN tbl_file fl4 ON fl4.file_id = ct.file_3_id
-          LEFT JOIN tbl_file fl5 ON fl5.file_id = ct.file_4_id
+          LEFT JOIN tbl_file fl1 ON fl1.file_id = ct.file_main_id AND fl1.del_yn = 'N'
+          LEFT JOIN tbl_file fl2 ON fl2.file_id = ct.file_1_id AND fl2.del_yn = 'N'
+          LEFT JOIN tbl_file fl3 ON fl3.file_id = ct.file_2_id AND fl3.del_yn = 'N'
+          LEFT JOIN tbl_file fl4 ON fl4.file_id = ct.file_3_id AND fl4.del_yn = 'N'
+          LEFT JOIN tbl_file fl5 ON fl5.file_id = ct.file_4_id AND fl5.del_yn = 'N'
           WHERE ct.del_yn = 'N' AND ct.content_id = ?;
         `;
       }
@@ -329,8 +329,8 @@ const contentService = {
           ct.title, 
           fl1.url AS file_main_id_url
         FROM tbl_content ct
-        LEFT JOIN tbl_file fl1 ON fl1.file_id = ct.file_main_id
-        WHERE ct.del_yn = "N"
+        LEFT JOIN tbl_file fl1 ON fl1.file_id = ct.file_main_id AND fl1.del_yn = 'N'
+        WHERE ct.del_yn = 'N'
       `;
       if(category != null) {
         sql += `AND ct.category IN (`;

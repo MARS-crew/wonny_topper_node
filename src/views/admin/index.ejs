@@ -39,10 +39,10 @@
                   <form class="user">
                     <div class="form-group">
                       <input type="email" class="form-control form-control-user" id="email" aria-describedby="emailHelp"
-                        placeholder="아이디" />
+                        placeholder="아이디" onkeydown="checkEnter(event)" />
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="password" placeholder="비밀번호" />
+                      <input type="password" class="form-control form-control-user" id="password" placeholder="비밀번호" onkeydown="checkEnter(event)"/>
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
@@ -95,9 +95,19 @@
   <script src="/admin/assets/js/common.js"></script>
 
   <script>
+    let idInput = document.getElementById('email');
+    let pwdInput = document.getElementById('password')
+
+    const checkEnter = (event) => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        onClickLogin();
+      }
+    }
+
     const onClickLogin = async () => {
-      let id = document.getElementById('email').value;
-      let pwd = document.getElementById('password').value;
+      let id = idInput.value;
+      let pwd = pwdInput.value;
       let isAuto = false;
 
       if (id.trim() === '') {

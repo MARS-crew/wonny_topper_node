@@ -66,8 +66,8 @@
                 는 필수 입력값
               </h6>
               <h4 class="register-sub-title">■ 컨텐츠 기본정보</h4>
-              <table class="register table table-bordered" id="datatable-ajax"
-                data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+              <table class="register table table-bordered">
+                <td width="30%" id="content_id" class="hidden"></td>
                 <tr>
                   <td width="20%" class="table-title-td">
                     카테고리<span class="star">*</span>
@@ -81,10 +81,20 @@
                       <option value=4>원데이클래스</option>
                     </select>
                   </td>
-                  <td width="20%" class="table-title-td" id="contentId">
-                    컨텐츠코드
+
+                  <td width="20%" class="table-title-td">
+                    노출여부<span class="star">*</span>
                   </td>
-                  <td width="30%" id="content_id"></td>
+                  <td width="30%">
+                    <label class="radio-button-inline">
+                      <input type="radio" class="rb exposure y" name="exposure_yn" id="exposure_yn_y" value="Y" />
+                      노출
+                    </label>
+                    <label class="radio-button-inline" >
+                      <input type="radio" class="rb exposure n" name="exposure_yn" id="exposure_yn_n" value="N" />
+                      비노출
+                    </label>
+                  </td>
                 </tr>
                 <tr>
                   <td width="20%" class="table-title-td">
@@ -96,7 +106,7 @@
                 </tr>
 
                 <tr>
-                  <td width="20%" class="table-title-td">등록일</td>
+                  <td width="20%" class="table-title-td">등록일<span class="star">*</span></td>
                   <td width="30%" id="reg_date"></td>
                   <td width="20%" class="table-title-td">수정일</td>
                   <td width="30%" id="mod_date"></td>
@@ -104,8 +114,7 @@
               </table>
 
               <h4 class="register-sub-title">■ 이미지 등록</h4>
-              <table class="register table table-bordered" id="datatable-ajax"
-                data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+              <table class="register table table-bordered" >
                 <tr>
                   <td width="20%" class="table-title-td">
                     대표 이미지<span class="star">*</span>
@@ -115,8 +124,8 @@
                     <label for="file1" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
                       onchange="uploadFormData(0)" required />
-                    <span id="fileName" style="display: block;" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: block;" style="display: none;"
+                    <span id="fileName"  class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn hidden" 
                       onclick="fileDelete(0)">X</a>
                   </td>
                 </tr>
@@ -128,8 +137,8 @@
                     <label for="file2" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input" name="productImgArr[]"
                       onchange="uploadFormData(1)" required />
-                    <span id="fileName" style="display: block;" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;" onclick="fileDelete(1)">X</a>
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(1)">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -138,8 +147,8 @@
                     <label for="file3" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input" name="productImgArr[]"
                       onchange="uploadFormData(2)" required />
-                    <span id="fileName" style="display: block;" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;" onclick="fileDelete(2)">X</a>
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(2)">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -148,8 +157,8 @@
                     <label for="file4" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input" name="productImgArr[]"
                       onchange="uploadFormData(3)" required />
-                    <span id="fileName" style="display: block;" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;" onclick="fileDelete(3)">X</a>
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(3)">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -158,15 +167,14 @@
                     <label for="file5" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input" name="productImgArr[]"
                       onchange="uploadFormData(4)" required />
-                    <span id="fileName" style="display: block;" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;" onclick="fileDelete(4)">X</a>
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(4)">X</a>
                   </td>
                 </tr>
               </table>
 
               <h4 class="register-sub-title">■ 기타 정보</h4>
-              <table class="register table table-bordered" id="datatable-ajax"
-                data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+              <table class="register table table-bordered" >
                 <tr>
                   <td width="20%" class="table-title-td">비고</td>
                   <td width="80%" colspan="2">
@@ -223,8 +231,7 @@
     let fileInput = "";
 
     const myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
-
+    myHeaders.append("Content-Type", "application/json");
 
     $(document).ready(function () {
       $("#dataTable").DataTable();
@@ -236,14 +243,11 @@ myHeaders.append("Content-Type", "application/json");
         location.href = "/admin/content_main";
     };
 
-    
     //컨텐츠 조회
     const findContent = async () => {
       const raw = JSON.stringify({
         "content_id": id
       });
-
-      
 
       const requestOptions = {
         method: 'GET',
@@ -266,15 +270,20 @@ myHeaders.append("Content-Type", "application/json");
           const contentId = document.getElementById("content_id");
           const regDate = document.querySelector("#reg_date");
           const modDate = document.querySelector("#mod_date");
+
           file_main_id = data[0].file_main_id;
           file_1_id = data[0].file_1_id;
           file_2_id = data[0].file_2_id;
           file_3_id = data[0].file_3_id;
           file_4_id = data[0].file_4_id;
-
           member_id = data[0].member_id;
           title.value = data[0].title;
           note.value = data[0].note;
+          if (data[0].exposure_yn === 'Y') {
+            document.querySelector('.exposure.y').checked = true;
+          } else {
+            document.querySelector('.exposure.n').checked = true;
+          }
           category.value = data[0].category;
           modDate.textContent = dayjs(data[0].mod_date).format(
             "YYYY-MM-DD HH:mm:ss"
@@ -284,14 +293,11 @@ myHeaders.append("Content-Type", "application/json");
           );
           contentId.textContent = data[0].content_id;
 
-          console.log(data);
-
           const files = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
           files.forEach((el, i) => {
             if (!(el == null)) {
-              console.log(el)
               fileNameArray[i].textContent = el;
-              fileNameArray[i].style.display = "block";
+              fileNameArray[i].style.display = "inline";
               cancelButton[i].style.display = "inline-block";
             }
 
@@ -309,13 +315,11 @@ myHeaders.append("Content-Type", "application/json");
       const file = fileInputArray[i].files[0];
 
       if (fileInput.files.length > 0) {
-        console.log("파일 있음");
         const fileName = fileInput.files[0].name;
         fileNameArray[i].textContent = fileName;
-        fileNameArray[i].style.display = "block";
+        fileNameArray[i].style.display = "inline";
         cancelButton[i].style.display = "inline-block";
       } else {
-        console.log("파일 없음");
         fileNameArray[i].style.display = "none";
         cancelButton[i].style.display = "none";
       }
@@ -334,8 +338,6 @@ myHeaders.append("Content-Type", "application/json");
         const response = await fetch(`/upload`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          console.log(data);
-          console.log("파일업로드 성공");
           switch (i) {
             case 0:
               file_main_id = data.file_id;
@@ -352,15 +354,11 @@ myHeaders.append("Content-Type", "application/json");
             case 4:
               file_4_id = data.file_id;
               break;
-            default:
-              console.log(data.file_id);
           }
         }
       } catch (err) {
         console.log('Err:', err);
       }
-
-
     }
 
     //파일삭제
@@ -400,17 +398,11 @@ myHeaders.append("Content-Type", "application/json");
         file_2_id,
         file_3_id,
         file_4_id,
-        reg_date: document.querySelector("#reg_date").textContent
+        reg_date: document.querySelector("#reg_date").textContent,
+        exposure_yn:document.querySelector('input[name="exposure_yn"]:checked').value
       };
 
-
-      console.log(raw);
-      if (raw.category === "") {
-        alert("필수 값이 입력되지 않았습니다.");
-        return;
-      }
-      if (raw.title === "") {
-        alert("필수 값이 입력되지 않았습니다.");
+      if (!requireInput([raw.category, raw.title, raw.exposure_yn,raw.reg_date, raw.file_main_id])) {
         return;
       }
 
@@ -423,15 +415,12 @@ myHeaders.append("Content-Type", "application/json");
       const { code, message } = await response.json();
       if (code === 200) {
         alert("수정되었습니다.");
-       // window.location.href = "/admin/content_main";
+        window.location.href = "/admin/content_main";
 
         return;
       }
       alert(message);
     };
-
-
-
   </script>
 
 
