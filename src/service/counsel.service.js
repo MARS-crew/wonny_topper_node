@@ -64,16 +64,20 @@ const counselService = {
         sql = `
           SELECT 
             cs.*,
+            fl2.origin_name AS counsel_file_origin_name,
+            fl2.url AS counsel_file_url,
             if(aw.answer_id IS NOT NULL, 'Y', 'N') AS answer_yn,
             if(aw.answer_id IS NOT NULL, aw.reg_date, NULL) AS answer_date,
             aw.answer_id,
             aw.file_id AS answer_file_id,
             aw.detail AS answer_detail,
-            fl.origin_name AS answer_file_origin_name,
-            fl.url AS answer_file_url
+            fl1.origin_name AS answer_file_origin_name,
+            fl1.url AS answer_file_url
           FROM tbl_counsel cs
           LEFT JOIN tbl_answer aw ON aw.counsel_id = cs.counsel_id
-          LEFT JOIN tbl_file fl ON fl.file_id = aw.file_id
+          LEFT JOIN tbl_content ct ON ct.content_id = cs.content_id
+          LEFT JOIN tbl_file fl1 ON fl1.file_id = aw.file_id AND fl1.del_yn = 'N'
+          LEFT JOIN tbl_file fl2 ON fl2.file_id = ct.file_main_id AND fl2.del_yn = 'N'
           WHERE cs.del_yn = 'N'
           AND cs.counsel_id = ?
         `;
