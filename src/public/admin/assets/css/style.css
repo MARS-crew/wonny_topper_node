@@ -342,6 +342,7 @@ table tr td .tx-area {
     align-items: center;
     display: flex;
     text-align: center;
+    justify-content: center;
 }
 
 /* 모달 */
