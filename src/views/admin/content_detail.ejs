@@ -68,24 +68,30 @@
               </h6>
               <input name="content_id" id="content_id" class="hidden" readonly />
               <h4 class="register-sub-title">■ 컨텐츠 기본정보</h4>
-              <table class="detail table table-bordered">
+              <table class="detail table">
                 <tr>
                   <td width="20%" class="table-title-td">
                     카테고리<span class="star">*</span>
                   </td>
                   <td width="30%">
-                    <input name="category" value="" id="category" readonly />
+                    <input name="category" id="category" disabled />
                   </td>
                   <td width="20%" class="table-title-td">
                     노출여부<span class="star">*</span>
                   </td>
-                    <td width="30%">
-                      <input type="radio" class="rb exposure y" name="exposure_yn" id="exposure_yn_y" value="Y" disabled/>
-                      노출                 
-                    <label class="radio-button-inline" >
-                      <input type="radio" class="rb exposure n" name="exposure_yn" id="exposure_yn_n" value="N" disabled />
-                      비노출
-                    </label>
+                  <td width="30%" id="exposure_yn_radio">
+                    <div class="col-md-9 filter-inputs">
+                      <div class="filter-answer">
+                        <label class="radio-button-filter">
+                          <input type="radio" class="rb exposure y" name="exposure_yn" value="Y" disabled>
+                          노출
+                        </label>
+                        <label class="radio-button-filter">
+                          <input type="radio" class="rb exposure n" name="exposure_yn" value="N" disabled>
+                          비노출
+                        </label>
+                      </div>
+                    </div>
                   </td>
                 </tr>
                 <tr>
@@ -93,7 +99,7 @@
                     제목<span class="star">*</span>
                   </td>
                   <td width="30%" colspan="3">
-                    <input type="text" class="form-control" value="제목" readonly name="title" id="title" required />
+                    <input type="text" class="form-control" value="제목" disabled name="title" id="title" required />
                   </td>
                 </tr>
 
@@ -106,7 +112,7 @@
               </table>
 
               <h4 class="register-sub-title">■ 이미지 등록</h4>
-              <table class="detail table table-bordered" >
+              <table class="detail table table-bordered">
                 <tr>
                   <td width="20%" class="table-title-td">
                     대표 이미지<span class="star">*</span>
@@ -137,11 +143,11 @@
               </table>
 
               <h4 class="register-sub-title">■ 기타 정보</h4>
-              <table class="detail table table-bordered" >
+              <table class="detail table table-bordered">
                 <tr>
                   <td width="20%" class="table-title-td">비고</td>
                   <td width="80%" colspan="2">
-                    <textarea class="form-control" value="비고입니다." readonly id="note"></textarea>
+                    <textarea class="form-control" value="비고입니다." disabled id="note"></textarea>
                   </td>
                 </tr>
               </table>
@@ -198,8 +204,6 @@
     //삭제 
     const onClickDeleteBtn = async () => {
       const content_id = parseInt(document.getElementById("content_id").value);
-      //const contentArr = [parseInt(content_id),];
-
       const contentRaw = JSON.stringify({
         "content_id": [
           content_id,
@@ -220,39 +224,11 @@
           const { code, message } = await response.json();
           if (code === 200) {
             window.location.href = "/admin/content_main";
-
-            /*
-            const array = [file_main_id, file_1_id, file_2_id, file_3_id, file_4_id];
-            array.forEach(el => {
-              deleteAllFile(el);
-            });
-            */
-
           }
-        } catch {
-
+        } catch (err) {
+          console.log('Err:', err);
         }
-
       };
-
-      const deleteAllFile = async (file_id) => {
-        const fileRaw = JSON.stringify({
-          file_id
-        });
-
-        const response2 = await fetch(`/upload/deleteFile`, {
-          method: 'POST',
-          headers: myHeaders,
-          body: fileRaw,
-          redirect: 'follow'
-        });
-
-        const { code2, message2 } = await response2.json();
-        if (code2 === 200) {
-          return;
-        }
-        alert(message2);
-      }
     }
 
     $(document).ready(function () {
@@ -280,7 +256,6 @@
           if (!data) {
             return;
           }
-
           member_id = data[0].member_id;
           const title = document.getElementById("title");
           const note = document.getElementById("note");
@@ -301,23 +276,7 @@
 
           title.value = data[0].title;
           note.value = data[0].note;
-          let cate = "";
-          switch (data[0].category) {
-            case 1:
-              cate = "풍선 장식"
-              break;
-            case 2:
-              cate = "토퍼"
-              break;
-            case 3:
-              cate = "삐에로/페이스페인팅"
-              break;
-            case 4:
-              cate = "원데이클래스"
-              break;
-                      }
-
-          category.value = cate;
+          category.value = categoryDecode(data[0].category);
           modDate.textContent = dayjs(data[0].mod_date).format(
             "YYYY-MM-DD HH:mm:ss"
           );

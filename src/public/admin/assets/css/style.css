@@ -298,24 +298,6 @@ table {
   margin-right: 1rem;
 }
 
-.detail.table td input:focus,
-.detail.table td input:active,
-.detail.table td textarea:focus,
-.detail.table td textarea:active {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  outline: none !important;
-  border: none !important;
-  font-size: inherit;
-  line-height: inherit;
-  font-family: inherit;
-  box-shadow: none;
-}
-
 .detail.table tr td .tx-area {
   min-height: 100px;
   vertical-align: middle;

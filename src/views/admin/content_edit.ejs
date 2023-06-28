@@ -87,7 +87,7 @@
                       <input type="radio" class="rb exposure y" name="exposure_yn" id="exposure_yn_y" value="Y" />
                       노출
                     </label>
-                    <label class="radio-button-inline" >
+                    <label class="radio-button-inline">
                       <input type="radio" class="rb exposure n" name="exposure_yn" id="exposure_yn_n" value="N" />
                       비노출
                     </label>
@@ -104,14 +104,30 @@
 
                 <tr>
                   <td width="20%" class="table-title-td">등록일<span class="star">*</span></td>
-                  <td width="30%" id="reg_date"></td>
+                  <td width="30%">
+                    <div class="input-date">
+                      <div class="input-daterange input-date date-pick" data-plugin-datepicker
+                        data-plugin-options='{"format": "yyyy-mm-dd"}'>
+                        <input type="text" class="form-control daterange" id="select-date" name="start"
+                          autocomplete="off" />
+                        <span class="input-group-addon">
+                          <i class="fa fa-calendar calender-icon"></i>
+                        </span>
+                      </div>
+                      <div class="col-md-6 filter-date">
+                        <select class="form-control hour"></select> <span class="mlr-5">:</span> <select
+                          class="form-control minute"></select> <span class="mlr-5">:</span> <select
+                          class="form-control second"></select>
+                      </div>
+                    </div>
+                  </td>
                   <td width="20%" class="table-title-td">수정일</td>
                   <td width="30%" id="mod_date"></td>
                 </tr>
               </table>
 
               <h4 class="register-sub-title">■ 이미지 등록</h4>
-              <table class="register table table-bordered" >
+              <table class="register table table-bordered">
                 <tr>
                   <td width="20%" class="table-title-td">
                     대표 이미지<span class="star">*</span>
@@ -121,9 +137,8 @@
                     <label for="file1" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
                       onchange="uploadFile(0)" required />
-                    <span id="fileName"  class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden" 
-                      onclick="fileDelete(0)">X</a>
+                    <span id="fileName" class="file-name"></span>
+                    <a id="cancelButton" class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -133,9 +148,9 @@
                   <td width="95%">
                     <label for="file2" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(1)" required />
+                      onchange="uploadFile(1)" />
                     <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(1)">X</a>
+                    <a id="cancelButton" class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -143,9 +158,9 @@
                   <td width="95%">
                     <label for="file3" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(2)" required />
+                      onchange="uploadFile(2)" />
                     <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(2)">X</a>
+                    <a id="cancelButton" class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -153,9 +168,9 @@
                   <td width="95%">
                     <label for="file4" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(3)" required />
+                      onchange="uploadFile(3)" />
                     <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(3)">X</a>
+                    <a id="cancelButton" class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
@@ -163,15 +178,15 @@
                   <td width="95%">
                     <label for="file5" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(4)" required />
+                      onchange="uploadFile(4)" />
                     <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(4)">X</a>
+                    <a id="cancelButton" class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
               </table>
 
               <h4 class="register-sub-title">■ 기타 정보</h4>
-              <table class="register table table-bordered" >
+              <table class="register table table-bordered">
                 <tr>
                   <td width="20%" class="table-title-td">비고</td>
                   <td width="80%" colspan="2">
@@ -210,25 +225,81 @@
   <!-- End of Page Wrapper -->
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+
   <script src="/admin/assets/js/common.js"></script>
   <script>
-    let file_main_id = null;
-    let file_1_id = null;
-    let file_2_id = null;
-    let file_3_id = null;
-    let file_4_id = null;
-    let memberId = "";
+    let fileId = [];
+    let originRegDateTime = null;
+    let selectDateTime = null;
 
     const params = new URLSearchParams(window.location.search);
-    const id = params.get("content_id");
-    const fileInputArray = document.getElementsByName("productImgArr[]");
-    const fileNameArray = document.getElementsByClassName("file-name");
-    const cancelButton = document.getElementsByClassName("cancel-btn");
-    let fileInput = "";
+    const content_id = params.get("content_id");
 
-    $(document).ready(function () {
-      $("#dataTable").DataTable();
-      findContent();
+    const fileInputElArr = document.getElementsByName("productImgArr[]");
+    const fileNameElArr = document.getElementsByClassName("file-name");
+    const cancelElArr = document.getElementsByClassName("cancel-btn");
+    Array.from(cancelElArr).forEach(function (cancelBtn, i) {
+      cancelBtn.addEventListener("click", function () {
+        fileInputElArr[i].value = "";
+        fileId[i] = null;
+        fileNameElArr[i].textContent = "";
+        cancelBtn.style.display = "none";
+        deleteFile(fileId[i]);
+      });
+
+      $(document).ready(function () {
+        $("#dataTable").DataTable();
+        showContent();
+      });
+    });
+
+    window.onload = () => {
+      $('.date-pick').datepicker({
+        dateFormat: 'yy-mm-dd',
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true,
+        placement: 'bottom',
+        orientation: 'auto bottom',
+        templates: {
+          leftArrow: '<i class="fa fa-angle-left"></i>',
+          rightArrow: '<i class="fa fa-angle-right"></i>'
+        },
+        endDate: new Date(),
+      })
+
+    }
+
+    for (var i = 0; i < 24; i++) {
+      var hour = i.toString().padStart(2, "0");
+      $(".hour").append("<option value='" + hour + "'>" + hour + "</option>");
+    }
+    for (var i = 0; i < 60; i++) {
+      var minute = i.toString().padStart(2, "0");
+      $(".minute").append("<option value='" + minute + "'>" + minute + "</option>");
+    }
+    for (var i = 0; i < 60; i++) {
+      var second = i.toString().padStart(2, "0");
+      $(".second").append("<option value='" + second + "'>" + second + "</option>");
+    }
+
+    $("#select-date, .hour, .minute, .second").change(function () {
+      var selectDate = $("#select-date").val();
+      var selectHour = $(".hour").val();
+      var selectMinute = $(".minute").val();
+      var selectSecond = $(".second").val();
+
+      selectDateTime = dayjs(selectDate + " " + selectHour + ":" + selectMinute + ":" + selectSecond);
+      var nowTime = dayjs();
+      if (selectDateTime.isAfter(nowTime)) {
+        $("#select-date").val(originRegDateTime.format("YYYY-MM-DD"));
+        $(".hour").val(originRegDateTime.format("HH"));
+        $(".minute").val(originRegDateTime.format("mm"));
+        $(".second").val(originRegDateTime.format("ss"));
+        selectDateTime = originRegDateTime;
+        alert("현재 시간 이후로는 선택이 불가능합니다");
+      }
     });
 
     const onClickCancleBtn = () => {
@@ -237,20 +308,18 @@
     };
 
     //컨텐츠 조회
-    const findContent = async () => {
-      const raw = JSON.stringify({
-        "content_id": id
-      });
-
+    const showContent = async () => {
       const requestOptions = {
         method: 'GET',
         headers: myHeaders,
-        body: raw,
+        body: JSON.stringify({
+          content_id
+        }),
         redirect: 'follow'
       };
 
       try {
-        const response = await fetch(`/content/select/` + id);
+        const response = await fetch(`/content/select/` + content_id);
         const { code, message, data } = await response.json();
         if (code === 200) {
           if (!data) {
@@ -261,14 +330,15 @@
           const note = document.getElementById("note");
           const category = document.getElementById("category");
           const contentId = document.getElementById("content_id");
-          const regDate = document.querySelector("#reg_date");
+          const regDate = document.querySelector("#select-date");
           const modDate = document.querySelector("#mod_date");
 
-          file_main_id = data[0].file_main_id;
-          file_1_id = data[0].file_1_id;
-          file_2_id = data[0].file_2_id;
-          file_3_id = data[0].file_3_id;
-          file_4_id = data[0].file_4_id;
+          contentId.textContent = content_id;
+          fileId[0] = data[0].file_main_id;
+          fileId[1] = data[0].file_1_id;
+          fileId[2] = data[0].file_2_id;
+          fileId[3] = data[0].file_3_id;
+          fileId[4] = data[0].file_4_id;
           member_id = data[0].member_id;
           title.value = data[0].title;
           note.value = data[0].note;
@@ -281,17 +351,23 @@
           modDate.textContent = dayjs(data[0].mod_date).format(
             "YYYY-MM-DD HH:mm:ss"
           );
-          regDate.textContent = dayjs(data[0].reg_date).format(
+          originRegDateTime = dayjs(data[0].reg_date);
+          selectDateTime = originRegDateTime.format(
             "YYYY-MM-DD HH:mm:ss"
           );
-          contentId.textContent = data[0].content_id;
+          regDate.value = originRegDateTime.format(
+            "YYYY-MM-DD"
+          );
+          $(".hour").val(dayjs(data[0].reg_date).format("HH"));
+          $(".minute").val(dayjs(data[0].reg_date).format("mm"));
+          $(".second").val(dayjs(data[0].reg_date).format("ss"));
 
           const files = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
           files.forEach((el, i) => {
             if (!(el == null)) {
-              fileNameArray[i].textContent = el;
-              fileNameArray[i].style.display = "inline";
-              cancelButton[i].style.display = "inline-block";
+              fileNameElArr[i].textContent = el;
+              fileNameElArr[i].style.display = "inline";
+              cancelElArr[i].style.display = "inline-block";
             }
 
           });
@@ -303,26 +379,39 @@
 
     //파일 등록
     const uploadFile = async (i) => {
-      fileInput = event.target;
-
-      const file = fileInputArray[i].files[0];
-
-      if (fileInput.files.length > 0) {
-        const fileName = fileInput.files[0].name;
-        fileNameArray[i].textContent = fileName;
-        fileNameArray[i].style.display = "inline";
-        cancelButton[i].style.display = "inline-block";
-      } else {
-        fileNameArray[i].style.display = "none";
-        cancelButton[i].style.display = "none";
+      const file = fileInputElArr[i].files[0];
+      if (file) {
+        const fileSizeInBytes = file.size;
+        const fileSizeInMB = fileSizeInBytes / (1024 * 1024); // 바이트를 메가바이트로 변환
+        const maxSizeInMB = 3;
+        if (fileSizeInMB > maxSizeInMB) {
+          alert('파일 크기가 3MB를 초과하였습니다.');
+          fileInputElArr[i].value = '';
+          return
+        }
       }
+
+      if (fileId[i] != null) {
+        fileId[i] = null;
+        await deleteFile(fileId[i]);
+      }
+
+      if (file != null) {
+        const fileName = file.name;
+        fileNameElArr[i].textContent = fileName;
+        fileNameElArr[i].style.display = "inline";
+        cancelElArr[i].style.display = "inline-block";
+      } else {
+        fileNameElArr[i].style.display = "none";
+        cancelElArr[i].style.display = "none";
+      }
+
       const formData = new FormData();
       formData.append("file", file);
 
-
       const requestOptions = {
         method: 'POST',
-        //        headers: myHeaders,
+        //headers: myHeaders,
         body: formData,
         redirect: 'follow'
       };
@@ -331,51 +420,10 @@
         const response = await fetch(`/upload`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          switch (i) {
-            case 0:
-              file_main_id = data.file_id;
-              break;
-            case 1:
-              file_1_id = data.file_id;
-              break;
-            case 2:
-              file_2_id = data.file_id;
-              break;
-            case 3:
-              file_3_id = data.file_id;
-              break;
-            case 4:
-              file_4_id = data.file_id;
-              break;
-          }
+          fileId[i] = data.file_id;
         }
       } catch (err) {
         console.log('Err:', err);
-      }
-    }
-
-    //파일삭제
-    const fileDelete = (i) => {
-      fileInputArray[i].value = "";//
-      fileNameArray[i].textContent = "";
-      cancelButton[i].style.display = "none";
-      switch (i) {
-        case 0:
-          file_main_id = null;
-          break;
-        case 1:
-          file_1_id = null;
-          break;
-        case 2:
-          file_2_id = null;
-          break;
-        case 3:
-          file_3_id = null;
-          break;
-        case 4:
-          file_4_id = null;
-          break;
-
       }
     }
 
@@ -383,20 +431,22 @@
     const modContent = async () => {
       const requiredPhoto = document.getElementById("file1").value;
       const raw = {
-        content_id: document.getElementById("content_id").textContent,
+        content_id,
+        reg_date: selectDateTime.format(
+          "YYYY-MM-DD HH:mm:ss"
+        ),
+        exposure_yn: document.querySelector('input[name="exposure_yn"]:checked').value,
         category: document.getElementById("category").value,
         note: document.getElementById("note").value,
         title: document.getElementById("title").value,
-        file_main_id,
-        file_1_id,
-        file_2_id,
-        file_3_id,
-        file_4_id,
-        reg_date: document.querySelector("#reg_date").textContent,
-        exposure_yn:document.querySelector('input[name="exposure_yn"]:checked').value
+        file_main_id: fileId[0],
+        file_1_id: fileId[1],
+        file_2_id: fileId[2],
+        file_3_id: fileId[3],
+        file_4_id: fileId[4],
       };
 
-      if (!requireInput([raw.category, raw.title, raw.exposure_yn,raw.reg_date, requiredPhoto])) {
+      if (!requireInput([raw.category, raw.title, raw.exposure_yn, raw.reg_date, raw.file_main_id])) {
         return;
       }
 
@@ -416,25 +466,13 @@
       alert(message);
     };
   </script>
+  <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/admin/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="/admin/assets/js/sb-admin-2.min.js"></script>
+  <script src="/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script>
+  <script src="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+  <script src="/admin/assets/js/demo/datatables-demo.js"></script>
 
-
-  <!— Bootstrap core JavaScript—>
-    <script src="/admin/assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!— Core plugin JavaScript—>
-      <script src="/admin/assets/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-      <!— Custom scripts for all pages—>
-        <script src="/admin/assets/js/sb-admin-2.min.js"></script>
-
-        <!— Page level plugins —>
-          <script src="/admin/assets/vendor/datatables/jquery.dataTables.min.js"></script>
-          <script src="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.js"></script>
-
-          <!— Page level custom scripts —>
-            <script src="/admin/assets/js/demo/datatables-demo.js"></script>
-
-            <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
 </body>
 
 </html>
