@@ -48,11 +48,15 @@
                 <div class="qna_input_area">
                     <div class="qna_left_txt">휴대폰 번호</div>
                     <div class="cal_input_area">
-                        <div class="qna_right_txt"><input type="text" class="phoneNum1"></div>
+                        <div class="qna_right_txt"><input type="text" class="phoneNum1" maxlength="3"
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                        </div>
                         <div>-</div>
-                        <div class="qna_right_txt"><input type="text" class="phoneNum2"></div>
+                        <div class="qna_right_txt"><input type="text" class="phoneNum2" maxlength="4" pattern="[0-9]*">
+                        </div>
                         <div>-</div>
-                        <div class="qna_right_txt"><input type="text" class="phoneNum3"></div>
+                        <div class="qna_right_txt"><input type="text" class="phoneNum3" maxlength="4" pattern="[0-9]*">
+                        </div>
 
                     </div>
                 </div>
@@ -75,6 +79,7 @@
                         <div class="qna_cation_txt">만원</div>
                     </div>
                 </div>
+
                 <div class="qna_input_area">
                     <div class="qna_left_txt">의뢰목적</div>
                     <div class="request_selet_area">
@@ -88,18 +93,72 @@
                         </select>
                     </div>
                 </div>
+
+                <div class="qna_input_area">
+                    <div class="qna_left_txt">관련컨텐츠</div>
+                    <div class="contents_area">
+                        <div class="qna_right_txt contents_input_area">
+                            <input type="text" class="contents" disabled>
+                            <div class="select_content_area">
+                                <input type="hidden" class="select_content_id">
+                                <div class="select_content_title"></div>
+                                <div class="content_del hidden"></div>
+                            </div>
+                        </div>
+                        <button class="contents_btn">컨텐츠 선택</button>
+                    </div>
+                </div>
+
                 <div class="qna_input_area align_flex_start">
                     <div class="qna_left_txt">상담내용</div>
                     <div class="textarea_area">
                         <textarea name="" id="" placeholder="내용을 입력해주세요" class="qna_content_detail"></textarea>
                     </div>
                 </div>
-                <div>
-
+                <div class="agree_area">
+                    <input type="checkbox" id="agree" name="agree" value="개인정보" />
+                    <label for="agree">
+                        <span class="checkbox"></span>
+                        <span class="agree_text">개인정보취급방침에 동의합니다.
+                        </span>
+                    </label>
                 </div>
                 <button class="apply_btn">신청하기</button>
             </div>
         </div>
+
+        <!--상세 POPUP-->
+        <div class="qna_popup_wrap hidden">
+            <div class="qna_popup_container">
+                <div class="qna_popup_content">
+                    <div class="qna_popup_header_content">
+                        <div class="qna_popup_title">컨텐츠 선택</div>
+                        <button class="qna_icon_close close_btn"></button>
+                    </div>
+                    <div class="qna_popup_body_content">
+                        <div class="qna_input_area">
+                            <div class="qna_left_txt">카테고리</div>
+                            <div class="request_selet_area">
+                                <select name="" id="" class="select category_request_selet">
+                                    <option value="1,2,3,4" selected>전체</option>
+                                    <option value="1">풍선장식</option>
+                                    <option value="2">토퍼</option>
+                                    <option value="3">삐에로/페이스페인팅</option>
+                                    <option value="4">원데이클래스</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <ul class="conetnts_list">
+
+                        </ul>
+                        <button class="save_btn">저장하기</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- //상세 POPUP-->
     </div>
 
     <script src="/user/assets/js/swiper.js"></script>
