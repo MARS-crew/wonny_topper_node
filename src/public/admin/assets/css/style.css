@@ -88,6 +88,10 @@
   cursor: pointer;
 }
 
+.filter-answer label {
+  margin-right: 10px;
+}
+
 #dataTable_wrapper .row .col-md-7 {
   max-width: 100% !important;
 }
@@ -102,6 +106,26 @@
 
 .ckbox-inline, .radio-button-inline {
   padding-right: 30px;
+}
+
+.radio-button-filter {
+  display: inline-block;
+  margin-bottom: 0;
+}
+
+.input-date {
+  width: 340px;
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.mlr-5 {
+  margin: 0 5px;
+}
+
+.hour, .minute, .second {
+  width: 33.333333%;
 }
 
 .pagination {
@@ -192,6 +216,15 @@ table {
 
 .register-content-body select {
   width: 400px;
+}
+
+.filter-date {
+  display: flex;
+  align-items: center;
+}
+
+.hour, .minute, .second {
+  width: 65px !important;
 }
 
 .file-input {
