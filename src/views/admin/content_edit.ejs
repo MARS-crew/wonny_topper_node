@@ -56,9 +56,7 @@
               컨텐츠 관리 > 컨텐츠 관리 > 컨텐츠 수정
             </h6>
           </div>
-
           <!-- Page Heading -->
-
           <section role="main" class="content-body register-content-body">
             <form action="/admin/source" method="post" enctype="multipart/form-data">
               <h6 class="float-right">
@@ -81,7 +79,6 @@
                       <option value=4>원데이클래스</option>
                     </select>
                   </td>
-
                   <td width="20%" class="table-title-td">
                     노출여부<span class="star">*</span>
                   </td>
@@ -123,7 +120,7 @@
                   <td width="40%" colspan="2">
                     <label for="file1" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
-                      onchange="uploadFormData(0)" required />
+                      onchange="uploadFile(0)" required />
                     <span id="fileName"  class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn hidden" 
                       onclick="fileDelete(0)">X</a>
@@ -136,7 +133,7 @@
                   <td width="95%">
                     <label for="file2" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input" name="productImgArr[]"
-                      onchange="uploadFormData(1)" required />
+                      onchange="uploadFile(1)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(1)">X</a>
                   </td>
@@ -146,7 +143,7 @@
                   <td width="95%">
                     <label for="file3" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input" name="productImgArr[]"
-                      onchange="uploadFormData(2)" required />
+                      onchange="uploadFile(2)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(2)">X</a>
                   </td>
@@ -156,7 +153,7 @@
                   <td width="95%">
                     <label for="file4" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input" name="productImgArr[]"
-                      onchange="uploadFormData(3)" required />
+                      onchange="uploadFile(3)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(3)">X</a>
                   </td>
@@ -166,7 +163,7 @@
                   <td width="95%">
                     <label for="file5" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input" name="productImgArr[]"
-                      onchange="uploadFormData(4)" required />
+                      onchange="uploadFile(4)" required />
                     <span id="fileName" class="file-name"></span>
                     <a id="cancelButton" class="cancel-btn hidden" onclick="fileDelete(4)">X</a>
                   </td>
@@ -195,7 +192,6 @@
             </form>
           </section>
         </div>
-        <!-- /.container-fluid -->
       </div>
       <!-- End of Main Content -->
 
@@ -203,7 +199,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
+            <span>Copyright &copy; Wonny Topper 2023</span>
           </div>
         </div>
       </footer>
@@ -229,9 +225,6 @@
     const fileNameArray = document.getElementsByClassName("file-name");
     const cancelButton = document.getElementsByClassName("cancel-btn");
     let fileInput = "";
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
     $(document).ready(function () {
       $("#dataTable").DataTable();
@@ -309,7 +302,7 @@
     };
 
     //파일 등록
-    const uploadFormData = async (i) => {
+    const uploadFile = async (i) => {
       fileInput = event.target;
 
       const file = fileInputArray[i].files[0];
@@ -388,6 +381,7 @@
 
     //컨텐츠 수정
     const modContent = async () => {
+      const requiredPhoto = document.getElementById("file1").value;
       const raw = {
         content_id: document.getElementById("content_id").textContent,
         category: document.getElementById("category").value,
@@ -402,7 +396,7 @@
         exposure_yn:document.querySelector('input[name="exposure_yn"]:checked').value
       };
 
-      if (!requireInput([raw.category, raw.title, raw.exposure_yn,raw.reg_date, raw.file_main_id])) {
+      if (!requireInput([raw.category, raw.title, raw.exposure_yn,raw.reg_date, requiredPhoto])) {
         return;
       }
 

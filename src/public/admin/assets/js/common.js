@@ -3,14 +3,14 @@ $(document).ready(function () {
   $('#accordionSidebar').load('/admin/common/sidebar')
 
 })
-  
-const formatPhone = (origin) =>{
+
+const formatPhone = (origin) => {
   return `${origin.slice(0, 3)}-${origin.slice(3, 7)}-${origin.slice(7)}`;
 }
 
 const regexDetail = /^[\p{L}\p{N}\p{S}\s\n]{10,1000}$/u; // 국/영문, 숫자, 특수문자 최대 10~1,000자
-const regexTitle = /^[^\p{C}]{1,30}$/u; 
-const regexNote = /^[^\p{C}]{0,300}$/u; 
+const regexTitle = /^[^\p{C}]{1,30}$/u;
+const regexNote = /^[^\p{C}]{0,300}$/u;
 const regexId = /^[a-zA-Z0-9]{4,10}$/;
 const regexPwd = /^[\w!@#$%^&*()-+=~]{4,16}$/;
 
@@ -22,7 +22,7 @@ const validInput = (data, rgx, text) => {
   return true;
 }
 
-const requireInput = (inputs) =>{
+const requireInput = (inputs) => {
   for (const input of inputs) {
     if (!input || (typeof input === 'string' && input.trim() === '') || (input instanceof File && !input.name)) {
       alert('필수값이 입력되지 않았습니다.');
@@ -53,3 +53,31 @@ const purposeDecode = (code) => {
   ];
   return purposes[code - 1] || "";
 }
+
+const myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+//파일 삭제
+const deleteFile = async (file_id) => {
+  const raw = JSON.stringify({
+    file_id
+  });
+
+  const requestOptions = {
+    method: 'POST',
+    headers: myHeaders,
+    body: raw,
+    redirect: 'follow'
+  };
+
+  try {
+    const response = await fetch(`/upload/deleteFile`, requestOptions);
+    const { code, message } = await response.json();
+    if (code === 200) {
+
+    } else {
+    }
+  } catch (err) {
+    console.log("Err:", err);
+  }
+};

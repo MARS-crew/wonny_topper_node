@@ -408,7 +408,7 @@
                 <td width="80%" colspan="2">
                   <label for="file1" class="file-input-label">파일 선택</label>
                   <input type="file" accept=".jpg, .png" id="file1" class="file-input" name="productImgArr[]"
-                    onchange="uploadFormData()" required />
+                    onchange="uploadFile()" required />
                   <span id="fileName" class="file-name"></span>
                   <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                 </td>
@@ -552,9 +552,6 @@
     let purpose = [1, 2, 3, 4, 5, 6];
     let sort = "DESC";
     let answer_yn = ['N', 'Y'];
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
     window.onload = () => {
       $('#from-date, #to-date').datepicker({
@@ -868,7 +865,7 @@
         const response = await fetch(`/upload/deleteFile`, requestOptions);
         const { code, message } = await response.json();
         if (code === 200) {
-          resetModal("delPhoto");
+          resetModal("delFile");
         } else {
         }
       } catch (err) {
@@ -877,7 +874,7 @@
     };
 
     //파일 등록
-    const uploadFormData = async () => {
+    const uploadFile = async () => {
       const fileInput = document.getElementById("file1");
       const file = fileInput.files[0];
       if (file) {

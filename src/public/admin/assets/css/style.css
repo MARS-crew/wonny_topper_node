@@ -233,7 +233,7 @@ table {
 }
 
 .hour, .minute, .second {
-  width: 65px !important;
+  /*width: 65px !important; 글자가 잘려서 주석처리 합니다*/
 }
 
 .file-input {
