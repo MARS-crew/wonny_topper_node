@@ -21,15 +21,13 @@
   <link href="/admin/assets/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet" />
 
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <link rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
   <script
     src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
 
-  <!-- CSS / JS -->
+  <!-- CSS -->
   <link rel="stylesheet" href="/admin/assets/css/style.css" />
-  <script src="/admin/assets/js/common.js"></script>
 
 </head>
 
@@ -67,8 +65,7 @@
                 는 필수 입력값
               </h6>
               <h4 class="register-sub-title">■ 컨텐츠 기본정보</h3>
-                <table class="register table table-bordered" id="datatable-ajax"
-                  data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+                <table class="register table table-bordered">
                   <tr>
                     <td width="20%" class="table-title-td">카테고리<span class="star">*</span></td>
                     <td width="50%" colspan="3">
@@ -106,8 +103,7 @@
                 </table>
 
                 <h4 class="register-sub-title">■ 이미지 등록</h3>
-                  <table class="register table table-bordered" id="datatable-ajax"
-                    data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+                  <table class="register table table-bordered" >
                     <tr>
                       <td width="20%" class="table-title-td">대표 이미지<span class="star">*</span>
                         <div>(최대 1개)</div>
@@ -165,8 +161,7 @@
                   </table>
 
                   <h4 class="register-sub-title">■ 기타 정보</h3>
-                    <table class="register table table-bordered" id="datatable-ajax"
-                      data-url="/resources/admin/assets/ajax/ajax-datatables-sample.json">
+                    <table class="register table table-bordered">
                       <tr>
                         <td width="20%" class="table-title-td">비고
         </div>
@@ -207,7 +202,7 @@
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="/admin/assets/js/common.js"></script>
   <script>
-    let formattedNow =null;
+    let formattedNow = null;
     let file_main_id = null;
     let file_1_id = null;
     let file_2_id = null;
@@ -227,29 +222,38 @@
 
     $(document).ready(function () {
       $('#dataTable').DataTable()
-      const now = moment();
+
+      const now = dayjs();
       formattedNow = now.format('YYYY-MM-DD HH:mm:ss');
       const createDate = document.querySelector('#createDate');
       const editDate = document.querySelector('#editDate');
       createDate.textContent = formattedNow;
       editDate.textContent = formattedNow;
-
-
     })
 
     const onClickCancleBtn = () => {
       if (confirm("등록을 취소하시겠습니까")) location.href = "/admin/content_main";
     }
-    
+
     //파일 등록
     const uploadFormData = async (i) => {
+      const fileInput = document.getElementsByName("productImgArr[]");
+      const file = fileInput[i].files[0];
+      if (file) {
+        const fileSizeInBytes = file.size;
+        const fileSizeInMB = fileSizeInBytes / (1024 * 1024); // 바이트를 메가바이트로 변환
+        const maxSizeInMB = 3;
+        if (fileSizeInMB > maxSizeInMB) {
+          alert('파일 크기가 3MB를 초과하였습니다.');
+          fileInput[i].value = '';
+          return
+        }
+      }
+
       const fileNameElement = document.getElementsByClassName("file-name");
       const cancelButton = document.getElementsByClassName("cancel-btn");
-      const input = document.getElementsByName("productImgArr[]");
-      const fileInput = input[i].files[0];
-      
-      if (fileInput != null) {
-        const fileName = fileInput.name;
+      if (file != null) {
+        const fileName = file.name;
         fileNameElement[i].textContent = fileName;
         fileNameElement[i].style.display = "block";
         cancelButton[i].style.display = "inline-block";
@@ -260,15 +264,13 @@
       }
 
       cancelButton[i].addEventListener("click", function () {
-        fileInput.value = "";
+        file.value = "";
         fileNameElement[i].textContent = "";
         cancelButton[i].style.display = "none";
       });
 
-
       const formData = new FormData();
-      formData.append("file", fileInput);
-
+      formData.append("file", file);
 
       const requestOptions = {
         method: 'POST',
@@ -305,39 +307,22 @@
       } catch (err) {
         console.log('Err:', err);
       }
-
-
     }
-
 
     //컨텐츠 등록
     const registeContent = async (e) => {
-      //e.preventDefault();
-
       const title = document.getElementById("title").value;
       const note = document.getElementById("note").value;
       const category = parseInt(document.getElementById("category").value);
       const requiredPhoto = document.getElementById("file1").value;
+      //const reg_date = "2023-06-22 01:23:19"
 
       const myHeaders = new Headers();
-myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Content-Type", "application/json");
 
-
-      if (title == "") {
-        alert("필수값이 입력되지 않았습니다.");
-        return false;
+      if (!requireInput([title, category, requiredPhoto])) {
+        return;
       }
-      if (category == "") {
-        alert("필수값이 입력되지 않았습니다.");
-        return false;
-      }
-      if (requiredPhoto === "") {
-        alert("필수값이 입력되지 않았습니다.");
-        return false;
-      }
-      const regexTitle = /^[^\p{C}]{1,30}$/u; // 정규식 패턴
-      const regexNote = /^[^\p{C}]{0,300}$/u; // 정규식 패턴
-
 
       if (!regexTitle.test(title)) {
         alert("제목은 국/영문, 숫자, 특수문자 최대 30자까지만 입력 가능합니다.");
@@ -348,9 +333,8 @@ myHeaders.append("Content-Type", "application/json");
         return false;
       }
 
-
       const raw = JSON.stringify({
-        admin_id : 1,
+        admin_id: 1,
         category,
         title,
         note,
@@ -360,7 +344,7 @@ myHeaders.append("Content-Type", "application/json");
         file_3_id,
         file_4_id,
         reg_date: formattedNow,
-        exposure_yn:'N' //NOTE:
+        exposure_yn: 'N' //NOTE:
 
       });
 
@@ -384,9 +368,6 @@ myHeaders.append("Content-Type", "application/json");
 
     }
 
-
-
-
   </script>
 
   <!-- Bootstrap core JavaScript-->
@@ -404,6 +385,8 @@ myHeaders.append("Content-Type", "application/json");
 
   <!-- Page level custom scripts -->
   <script src="/admin/assets/js/demo/datatables-demo.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
+
 </body>
 
 </html>
