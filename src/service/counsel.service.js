@@ -71,6 +71,7 @@ const counselService = {
             aw.answer_id,
             aw.file_id AS answer_file_id,
             aw.detail AS answer_detail,
+            ct.title AS content_title,
             fl1.origin_name AS answer_file_origin_name,
             fl1.url AS answer_file_url
           FROM tbl_counsel cs
