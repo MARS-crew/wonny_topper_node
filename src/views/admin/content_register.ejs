@@ -310,6 +310,7 @@
     const uploadFile = async (i) => {
       const fileInputElArr = document.getElementsByName("productImgArr[]");
       const file = fileInputElArr[i].files[0];
+      console.log("파일업로드 준비");
       if (file) {
         const fileSizeInBytes = file.size;
         const fileSizeInMB = fileSizeInBytes / (1024 * 1024); // 바이트를 메가바이트로 변환
