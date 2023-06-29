@@ -434,7 +434,7 @@
       const requiredPhoto = document.getElementById("file1").value;
       const raw = {
         content_id,
-        reg_date: selectDateTime.format(
+        reg_date: dayjs(selectDateTime).format(
           "YYYY-MM-DD HH:mm:ss"
         ),
         exposure_yn: document.querySelector('input[name="exposure_yn"]:checked').value,
