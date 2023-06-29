@@ -147,9 +147,12 @@
 
       try {
         const response = await fetch(`/user/login`, requestOptions);
-        const { code, message } = await response.json();
+        const { code, message,data } = await response.json();
 
         if (code === 200) {
+          sessionStorage.setItem("username", data.name);
+          sessionStorage.setItem("userid", data.id);
+          
           window.location.href = "/admin/content_main";
           return;
         }

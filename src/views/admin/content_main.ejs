@@ -281,11 +281,9 @@
     orientation: 'auto bottom',
     defaultDate: new Date(),
     onClose: function (dateStr, datepicker) {
-      console.log('클로즈');
       const startDate = new Date($('#from-date').val());
       const endDate = new Date($('#to-date').val());
       if (endDate < startDate) {
-        console.log("끝날짜가 시작날짜보다 이전입니다.");
         $('#to-date').val($('#from-date').val());
       }
     },

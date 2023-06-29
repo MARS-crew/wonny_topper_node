@@ -35,7 +35,7 @@
   <li class="nav-item dropdown no-arrow">
     <button type="button" id="logout-btn" onclick="onClickLnb(event,'/user/logout')"
       class="nav-link dropdown-toggle logout-btn">
-      <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+      <span id="name-text" class="mr-2 d-none d-lg-inline text-gray-600 small">
         ADMIN 관리자님 로그아웃
       </span>
       <img class="img-profile rounded-circle" src="/admin/assets/img/undraw_profile.svg" />
@@ -43,3 +43,11 @@
 
   </li>
 </ul>
+<script>
+  if (sessionStorage.getItem("username")) {
+    const userName = sessionStorage.getItem("username");
+    const userId = sessionStorage.getItem("userid");
+    document.getElementById('name-text').innerHTML = `${userId} ${userName}님 로그아웃`;
+  }
+
+</script>
