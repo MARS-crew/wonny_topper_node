@@ -52,6 +52,10 @@
 }
 
 /* 로그인 페이지 */
+.logout-btn {
+  border: 0;
+    background: unset;
+}
 .login-area {
   height: 100vh;
 }
@@ -324,6 +328,9 @@ table tr td .tx-area {
 }
 
 /* 답변 모달 */
+.consult-modal-dialog {
+  overflow: auto;
+}
 .answer-text-area {
   height: 100px !important;
 }

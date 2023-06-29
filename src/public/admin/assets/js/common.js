@@ -8,7 +8,7 @@ const formatPhone = (origin) => {
   return `${origin.slice(0, 3)}-${origin.slice(3, 7)}-${origin.slice(7)}`;
 }
 
-const regexDetail = /^[\p{L}\p{N}\p{S}\s\n]{10,1000}$/u; // 국/영문, 숫자, 특수문자 최대 10~1,000자
+const regexDetail = /^[\s\S]{10,1000}$/; // 국/영문, 숫자, 특수문자 최대 10~1,000자
 const regexTitle = /^[^\p{C}]{1,30}$/u;
 const regexNote = /^[^\p{C}]{0,300}$/u;
 const regexId = /^[a-zA-Z0-9]{4,10}$/;
@@ -81,3 +81,23 @@ const deleteFile = async (file_id) => {
     console.log("Err:", err);
   }
 };
+
+const onClickLnb = (event, url) => {
+  event.preventDefault();
+
+  const currentPage = window.location.pathname;
+  const targetUrl = ['/admin/content_register', '/admin/content_edit'];
+
+  let shouldLogout = true;
+
+  if (currentPage === targetUrl[0] || currentPage === targetUrl[1]) {
+    if (confirm('등록을 취소하시겠습니까?')) {
+      shouldLogout = true;
+    } else {
+      shouldLogout = false;
+    }
+  }
+  if (shouldLogout) {
+    window.location.href = url;
+  }
+}

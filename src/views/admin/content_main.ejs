@@ -327,14 +327,14 @@
       showListData();
     });
 
-    //나머지 체크
+    //전체 체크
     $('#checkAll').change(function () {
       $('.ck').prop('checked', $(this).prop('checked'));
     });
 
-    //전첵 체크
+    //나머지 체크
     $('.ck').change(function () {
-      if ($('.ck:checked').length === curDataCount) {
+      if ($('.ck:checked').length === $('.ck').length) {
         $('#checkAll').prop('checked', true);
       } else {
         $('#checkAll').prop('checked', false);
