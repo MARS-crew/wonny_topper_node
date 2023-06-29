@@ -138,19 +138,14 @@ const counselService = {
         purpose = '클래스';
       }
 
-      let mailText = `
-      이름 : ${data.name}
+      let attachments = [];
+      let mailText = '<div style="color: black;">이름 : ' + data.name;
+      mailText += '<br><br>휴대폰번호 : ' + data.phone_num;
+      mailText += '<br><br>이메일 : ' + data.email;
+      mailText += '<br><br>장소 : ' + data.location;
+      mailText += '<br><br>예산 : ' + data.budget + ' 만원';
+      mailText += '<br><br>의뢰목적 : ' + purpose;
 
-      휴대폰번호 : ${data.phone_num}
-
-      이메일 : ${data.email}
-
-      장소 : ${data.location}
-
-      예산 : ${data.budget} 만원
-
-      의뢰목적 : ${purpose}
-      `;
 
       // 해당 컨텐츠의 이미지, 제목, 카테고리
       if(data.content_id != null) {
@@ -164,34 +159,25 @@ const counselService = {
           WHERE ct.content_id = ? AND ct.del_yn = 'N'
         `;
         response = await executeQuery(sql, [data.content_id]);
-        let mailText2;
+        
         if(response[0]) {
-          mailText2 = `
-      관련컨텐츠 : ${response[0].title}
-
-      상담내용 : ${data.detail}
-          `;
-          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText + mailText2, response[0].url, response[0].origin_name);
+          mailText += '<br><br>관련컨텐츠 : ' + response[0].title;
+          mailText += '<br><br>상담내용 : ' + data.detail + '</div>';
+          attachments[0] = { path: response[0].url, filename: response[0].origin_name};
         } else {
-          mailText2 = `
-      관련컨텐츠 : 삭제된 컨텐츠
-
-      상담내용 : ${data.detail}
-          `;
-          await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText + mailText2);
+          mailText += '<br><br>관련컨텐츠 : 삭제된 컨텐츠';
+          mailText += '<br><br>상담내용 : ' + data.detail + '</div>';
         }
       } else {
-        mailText2 = `
-      관련컨텐츠 : 없음
-
-      상담내용 : ${data.detail}
-        `;
-        await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText + mailText2);
+        mailText += '<br><br>관련컨텐츠 : 없음';
+        mailText += '<br><br>상담내용 : ' + data.detail + '</div>';
       }
+
+      await sendMail(process.env.MAIL_EMAIL, '[워니토퍼] ' + data.name + '님의 문의가 도착했습니다.', mailText, attachments);
 
       res.status(200).json({
         code: 200,
-        message: "컨텐츠 등록에 성공하였습니다.",
+        message: "상담문의 등록에 성공하였습니다.",
         data: true,
       });
     } catch (err) {
@@ -213,34 +199,92 @@ const counselService = {
       let sql = `INSERT INTO tbl_answer SET ?`;
       let response = await executeQuery(sql, data);
 
-      if(data.file_id != null) {
-        sql = `
-          SELECT 
-            fl.file_id,
-            fl.url,
-            fl.origin_name
-          FROM tbl_file fl 
-          JOIN tbl_answer aw
-          ON aw.admin_id = ?
-          AND aw.answer_id = ?
-          WHERE fl.file_id = aw.file_id
-        `;
-        response = await executeQuery(sql, [data.admin_id, response.insertId]);
+      // 상담문의 내용, 관련컨텐츠, 상담답변 이미지 가져오기
+      sql = `
+        SELECT
+          cs.purpose,
+          cs.detail,
+          ct.title,
+          fl1.origin_name,
+          fl1.url,
+          fl2.origin_name AS answer_origin_name,
+          fl2.url AS answer_url
+        FROM tbl_counsel cs
 
-        await sendMail(req.body.email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", data.detail, response[0].url, response[0].origin_name);
-        res.status(200).json({
-          code: 200,
-          message: "답변 등록에 성공하였습니다.",
-          data: true,
-        });
-      } else {
-        await sendMail(req.body.email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", data.detail);
-        res.status(200).json({
-          code: 200,
-          message: "답변 등록에 성공하였습니다.",
-          data: true,
-        });
+        LEFT JOIN tbl_answer aw 
+        ON aw.admin_id = ?
+        AND aw.answer_id = ?
+
+        LEFT JOIN tbl_content ct
+        ON ct.content_id = cs.content_id
+        AND ct.del_yn = 'N'
+
+        LEFT JOIN tbl_file fl1
+        ON fl1.file_id = ct.file_main_id
+        AND fl1.del_yn = 'N'
+
+        LEFT JOIN tbl_file fl2
+        ON fl2.file_id = aw.file_id
+        AND fl2.del_yn = 'N'
+
+        WHERE cs.counsel_id = aw.counsel_id
+        AND cs.del_yn = 'N';
+      `;
+      response = await executeQuery(sql, [data.admin_id, response.insertId]);
+
+      let purpose;
+      if(response[0].purpose == 1) {
+        purpose = '풍선장식';
+      } else if(response[0].purpose == 2) {
+        purpose = '토퍼';
+      } else if(response[0].purpose == 3) {
+        purpose = '부스체험(토퍼, 풍선)';
+      } else if(response[0].purpose == 4) {
+        purpose = '삐에로';
+      } else if(response[0].purpose == 5) {
+        purpose = '페이스페인팅';
+      } else if(response[0].purpose == 6) {
+        purpose = '클래스';
       }
+
+      const { detail, title, origin_name, url, answer_origin_name, answer_url } = response[0];
+      let cid;
+      let attachments = [];
+
+      let setDetail = '<div style="color: black;">[문의 주신 상담 내용]';
+      setDetail += '<br><br>의뢰목적 : ' + purpose;
+
+      if(title != null) { // 컨텐츠 존재
+        if(origin_name != null && url != null) { // 컨텐츠 이미지 존재
+          cid = 'unique@nodemailer.com';
+          setDetail += '<br><br><img src="cid:unique@nodemailer.com" style="height: 300px" />';
+          setDetail += '<br><br>관련컨텐츠 : ' + title;
+          attachments[0] = { path: url, filename: origin_name, cid: cid };
+        } else {
+          setDetail += '<br><br>관련컨텐츠 : ' + title;
+        }
+      } else { // 컨텐츠 미존재
+        setDetail += '<br><br>관련컨텐츠 : 없음';
+      }
+
+      setDetail += '<br><br>상담내용 : ' + detail;
+      setDetail += '<br><br><br>--<br><br><br>[답변 내용]';
+      setDetail += '<br><br>' + data.detail + '</div>';
+      
+      if(answer_url != null && answer_origin_name != null) { // 문의답변 이미지 존재
+        if(attachments.length > 0) {
+          attachments[1] = { path: answer_url, filename: answer_origin_name};
+        } else {
+          attachments[0] = { path: answer_url, filename: answer_origin_name};
+        }
+      }
+
+      await sendMail(req.body.email, "[워니토퍼] 안녕하세요! 문의 주셔서 감사합니다.", setDetail, attachments);
+      res.status(200).json({
+        code: 200,
+        message: "답변 등록에 성공하였습니다.",
+        data: true,
+      });
     } catch (err) {
       let message;
 
