@@ -272,11 +272,14 @@
             </tr>
             <tr>
               <td width="20%" class="table-title-td">관련컨텐츠</td>
-              <td width="80%" colspan="3">
-                <div id="counsel-relate-img" class="counsel-relate-img"></div>
+              <td id="counsel-relate-img-td" class="align-c reqanswer-img-td"">
+                <!--<div id="counsel-relate-img" class="counsel-relate-img"></div>-->
+                <img src="/user/assets/images/banner.jpg" class="counsel-relate-img" id="counsel-relate-img">
+              </td>
+              <td colspan="2" id="counsel-relate-content-td">
                 <div id="counsel-relate-content" class="counsel-relate-content"></div>
               </td>
-            </tr>
+              <td id="counsel-nodata" colspan="3">-</td>     
             <tr style="vertical-align: middle;">
               <td width="20%" class="table-title-td">상담내용</td>
               <td width="80%" colspan="3">
@@ -368,11 +371,14 @@
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">관련컨텐츠</td>
-                <td width="80%" colspan="3">
-                  <div id="reqanswer-relate-img" class="reqanswer-relate-img"></div>
-                  <div id="reqanswer-relate-content" class="reqanswer-relate-content"></div>
-
+                <td id="reqanswer-relate-img-td"  class="align-c relate-img td">
+                  <!--<div id="reqanswer-relate-img" class="reqanswer-relate-img"></div>-->
+                  <img src="/user/assets/images/banner.jpg" class="counsel-relate-img" id="reqanswer-relate-img">
                 </td>
+                <td colspan="2" id="reqanswer-relate-content-td">
+                  <div id="reqanswer-relate-content" class="reqanswer-relate-content"></div>
+                </td>
+                <td id="reqanswer-nodata" colspan="3">-</td>         
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">상담내용</td>
@@ -461,11 +467,14 @@
             </tr>
             <tr>
               <td width="20%" class="table-title-td">관련컨텐츠</td>
-              <td width="80%" colspan="3">
-                <div id="confirm-answer-relate-img" class="confirm-answer-relate-img"></div>
-                <div id="confirm-answer-relate-content" class="confirm-answer-relate-content"></div>
-
+              <td id="confirm-answer-relate-img-td" class="align-c ">
+                <!--<div id="confirm-answer-relate-img" class="confirm-answer-relate-img"></div>-->
+                <img src="/user/assets/images/banner.jpg" id="confirm-answer-relate-img" class="counsel-relate-img">
               </td>
+              <td colspan="2" id="confirm-answer-relate-content-td">
+                <div id="confirm-answer-relate-content" class="confirm-answer-relate-content"></div>
+              </td>
+              <td id="confirm-answer-nodata" colspan="3">-</td>
             </tr>
             <tr style="vertical-align: middle;">
               <td width="20%" class="table-title-td">상담내용</td>
@@ -772,24 +781,22 @@
       document.getElementById(`${prefix}-purpose`).innerHTML = purposeDecode(data.purpose);
       document.getElementById(`${prefix}-counsel`).innerHTML = data.detail;
       document.getElementById(`${prefix}-reg-date`).innerHTML = dayjs(data.reg_date).format('YYYY-MM-DD HH:mm:ss');
-      console.log("관련" + data.counsel_file_url);
       if (data.counsel_file_url != null) {
-        //src/public/uploads/file-1687959218098.png ->  /img/uploads/file-1687966468886.png 
-        var modifiedLink = data.counsel_file_url.replace(/src\\public\\uploads\\/g, "/img/uploads/");
-        document.getElementById(`${prefix}-relate-img`).style.backgroundImage = `url(${modifiedLink})`;
-        document.getElementById(`${prefix}-relate-img`).style.display = 'inline-block';
-        document.getElementById(`${prefix}-relate-content`).style.float = 'right';
-        document.getElementById(`${prefix}-relate-content`).style.paddingLeft = '15px';
-        document.getElementById(`${prefix}-relate-content`).innerHTML = data.counsel_file_origin_name;
-        document.getElementById(`${prefix}-relate-content`).style.minHeight ='200px';
-
-        //counsel_file_url
+        document.getElementById(`${prefix}-nodata`).style.display='none';
+        var modifiedLink = data.counsel_file_url.replace(/src\\public\\uploads\\/g, "/img/uploads/"); //src/public/uploads/file-1687959218098.png ->  /img/uploads/file-1687966468886.png 
+        document.getElementById(`${prefix}-relate-img`).src = modifiedLink;
+        document.getElementById(`${prefix}-relate-content-td`).style.display = 'table-cell';
+        document.getElementById(`${prefix}-relate-content`).innerHTML = data.content_title;
+       document.getElementById(`${prefix}-relate-img-td`).style.display = 'table-cell';
+        document.getElementById(`${prefix}-relate-img`).style.display = 'inline-block';       
+       // document.getElementById(`${prefix}-relate-content`).style.minHeight = '150px';
       } else {
-        document.getElementById(`${prefix}-relate-img`).style.display = 'none';
-        document.getElementById(`${prefix}-relate-content`).style.float = 'left';
-        document.getElementById(`${prefix}-relate-content`).style.paddingLeft = '0';
+        document.getElementById(`${prefix}-nodata`).style.display='table-cell';
+        document.getElementById(`${prefix}-relate-img-td`).style.display = 'none';
+        document.getElementById(`${prefix}-relate-content-td`).style.display = 'none';
         document.getElementById(`${prefix}-relate-content`).innerHTML = "-";
-        document.getElementById(`${prefix}-relate-content`).style.minHeight ='unset';
+       document.getElementById(`${prefix}-relate-img`).style.display = 'none';
+        //document.getElementById(`${prefix}-relate-content`).style.minHeight = 'unset';
       }
     };
 

@@ -151,6 +151,10 @@
   justify-content: center !important;
 }
 
+.align-c {
+  text-align: center;
+}
+
 .dataTables_paginate {
   text-align: center;
 }
@@ -337,15 +341,16 @@ table tr td .tx-area {
 
 .reqanswer-relate-img,.counsel-relate-img,.confirm-answer-relate-img  {
   display: inline-block;
-
-  background: url("/user/assets/images/banner.jpg") center/cover no-repeat;
-  /*width: 200px;*/
-  height: 200px;
-  width: 50%;
+  /*background: url("/user/assets/images/banner.jpg") center/cover no-repeat;*/
+  /*min-width: 50%;*/
+  height: 150px;
+  width: auto; 
+  object-fit: contain; 
+  
 }
 .counsel-relate-content, .reqanswer-relate-content, .confirm-answer-relate-content{
-    width: 50%;
-    min-height: 200px;
+   /* width: 50%;*/
+    min-height: 150px;
     align-items: center;
     display: flex;
     text-align: center;
