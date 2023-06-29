@@ -421,6 +421,8 @@
         const { code, message, data } = await response.json();
         if (code === 200) {
           fileId[i] = data.file_id;
+        }else{
+          console.log(message);
         }
       } catch (err) {
         console.log('Err:', err);
