@@ -331,6 +331,7 @@ const contentService = {
         FROM tbl_content ct
         LEFT JOIN tbl_file fl1 ON fl1.file_id = ct.file_main_id AND fl1.del_yn = 'N'
         WHERE ct.del_yn = 'N'
+        AND ct.exposure_yn = 'Y'
       `;
       if(category != null) {
         sql += `AND ct.category IN (`;
