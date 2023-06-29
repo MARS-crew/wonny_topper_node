@@ -7,6 +7,9 @@
   display: inline-block;
 }
 
+.flex {
+  display: flex;
+}
 .btn-area {
   width: 150px;
 }
@@ -233,7 +236,7 @@ table {
 }
 
 .hour, .minute, .second {
-  width: 65px !important;
+  /*width: 65px !important; 글자가 잘려서 주석처리 합니다*/
 }
 
 .file-input {
@@ -298,25 +301,7 @@ table {
   margin-right: 1rem;
 }
 
-.detail.table td input:focus,
-.detail.table td input:active,
-.detail.table td textarea:focus,
-.detail.table td textarea:active {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background-color: transparent;
-  padding: 0;
-  margin: 0;
-  outline: none !important;
-  border: none !important;
-  font-size: inherit;
-  line-height: inherit;
-  font-family: inherit;
-  box-shadow: none;
-}
-
-.detail.table tr td .tx-area {
+table tr td .tx-area {
   min-height: 100px;
   vertical-align: middle;
   align-items: center;
@@ -343,13 +328,21 @@ table {
   height: 100px !important;
 }
 
-.reqanswer-relate-img {
+.reqanswer-relate-img,.counsel-relate-img,.confirm-answer-relate-img  {
   display: inline-block;
-  vertical-align: middle;
+
   background: url("/user/assets/images/banner.jpg") center/cover no-repeat;
-  width: 200px;
+  /*width: 200px;*/
   height: 200px;
-  margin-right: 15px;
+  width: 50%;
+}
+.counsel-relate-content, .reqanswer-relate-content, .confirm-answer-relate-content{
+    width: 50%;
+    min-height: 200px;
+    align-items: center;
+    display: flex;
+    text-align: center;
+    justify-content: center;
 }
 
 /* 모달 */

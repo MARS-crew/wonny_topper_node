@@ -236,46 +236,45 @@
           <table class="detail table table-bordered">
             <tr>
               <td width="20%" class="table-title-td">이름</td>
-              <td width="80%" id="counsel-name">
+              <td width="30%" id="counsel-name">
                 홍길동
+              </td>
+              <td width="20%" class="table-title-td">등록일</td>
+              <td width="30%" id="counsel-reg-date">
               </td>
             </tr>
             <tr>
               <td width="20%" class="table-title-td">휴대폰번호</td>
-              <td width="80%" colspan="3" id="counsel-phone">
+              <td width="30%" id="counsel-phone">
 
               </td>
-            </tr>
-            <tr>
               <td width="20%" class="table-title-td">이메일</td>
-              <td width="80%" colspan="3" id="counsel-email">
+              <td width="30%" id="counsel-email">
 
               </td>
             </tr>
+
             <tr>
               <td width="20%" class="table-title-td">장소</td>
-              <td width="80%" colspan="3" id="counsel-location">
+              <td width="30%" id="counsel-location">
 
               </td>
-            </tr>
-            <tr>
               <td width="20%" class="table-title-td">예산</td>
               </td>
-              <td width="80%" colspan="3" id="counsel-budget">
-
+              <td width="30%" id="counsel-budget">
               </td>
             </tr>
+
             <tr>
               <td width="20%" class="table-title-td">의뢰목적</td>
-              <td width="80%" colspan="3" id="counsel-purpose">
-
+              <td width="80%" id="counsel-purpose" colspan="3">
               </td>
             </tr>
             <tr>
               <td width="20%" class="table-title-td">관련컨텐츠</td>
-              <td width="80%" colspan="3" id="counsel-relate-content">
-                <div id="reqanswer-relate-img" class="counsel-relate-img"></div>
-
+              <td width="80%" colspan="3">
+                <div id="counsel-relate-img" class="counsel-relate-img"></div>
+                <div id="counsel-relate-content" class="counsel-relate-content"></div>
               </td>
             </tr>
             <tr style="vertical-align: middle;">
@@ -285,15 +284,11 @@
                 </div>
               </td>
             </tr>
-            <tr>
-              <td width="20%" class="table-title-td">등록일</td>
-              <td width="80%" colspan="3" id="counsel-reg-date">
 
-              </td>
-            </tr>
           </table>
           <hr />
           <table class="detail table table-bordered">
+            <div class="pb-1 float-right"><span class="star">*</span>는 필수 입력값</div>
             <tr>
               <td width="20%" class="table-title-td">답변
               </td>
@@ -341,31 +336,31 @@
             <table class="table table-bordered">
               <tr>
                 <td width="20%" class="table-title-td">이름</td>
-                <td width="80%" id="reqanswer-name">
+                <td width="30%" id="reqanswer-name">
                   홍길동
+                </td>
+                <td width="20%" class="table-title-td">등록일</td>
+                <td width="30%" id="reqanswer-reg-date">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">휴대폰번호</td>
-                <td width="80%" colspan="3" id="reqanswer-phone">
+                <td width="30%" id="reqanswer-phone">
                 </td>
-              </tr>
-              <tr>
                 <td width="20%" class="table-title-td">이메일</td>
-                <td width="80%" colspan="3" id="reqanswer-email">
+                <td width="30%" id="reqanswer-email">
                 </td>
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">장소</td>
-                <td width="80%" colspan="3" id="reqanswer-location">
+                <td width="30%" id="reqanswer-location">
                 </td>
-              </tr>
-              <tr>
                 <td width="20%" class="table-title-td">예산</td>
                 </td>
-                <td width="80%" colspan="3" id="reqanswer-budget">
+                <td width="30%" id="reqanswer-budget">
                 </td>
               </tr>
+
               <tr>
                 <td width="20%" class="table-title-td">의뢰목적</td>
                 <td width="80%" colspan="3" id="reqanswer-purpose">
@@ -373,8 +368,9 @@
               </tr>
               <tr>
                 <td width="20%" class="table-title-td">관련컨텐츠</td>
-                <td width="80%" colspan="3" id="reqanswer-relate-content">
+                <td width="80%" colspan="3">
                   <div id="reqanswer-relate-img" class="reqanswer-relate-img"></div>
+                  <div id="reqanswer-relate-content" class="reqanswer-relate-content"></div>
 
                 </td>
               </tr>
@@ -385,11 +381,7 @@
                   </div>
                 </td>
               </tr>
-              <tr>
-                <td width="20%" class="table-title-td">등록일</td>
-                <td width="80%" colspan="3" id="reqanswer-reg-date">
-                </td>
-              </tr>
+
             </table>
             <hr />
             <table class="table table-bordered">
@@ -408,7 +400,7 @@
                 <td width="80%" colspan="2">
                   <label for="file1" class="file-input-label">파일 선택</label>
                   <input type="file" accept=".jpg, .png" id="file1" class="file-input" name="productImgArr[]"
-                    onchange="uploadFormData()" required />
+                    onchange="uploadFile()" required />
                   <span id="fileName" class="file-name"></span>
                   <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
                 </td>
@@ -439,45 +431,39 @@
           <table class="detail table table-bordered">
             <tr>
               <td width="20%" class="table-title-td">이름</td>
-              <td width="80%" id="confirm-answer-name">
-
+              <td width="30%" id="confirm-answer-name">
               </td>
+              <td width="20%" class="table-title-td">등록일</td>
+              <td width="30%" id="confirm-answer-reg-date">
+
             </tr>
             <tr>
               <td width="20%" class="table-title-td">휴대폰번호</td>
-              <td width="80%" colspan="3" id="confirm-answer-phone">
-
+              <td width="30%" id="confirm-answer-phone">
               </td>
-            </tr>
-            <tr>
               <td width="20%" class="table-title-td">이메일</td>
-              <td width="80%" colspan="3" id="confirm-answer-email">
-
+              <td width="30%" id="confirm-answer-email">
               </td>
             </tr>
             <tr>
               <td width="20%" class="table-title-td">장소</td>
-              <td width="80%" colspan="3" id="confirm-answer-location">
-
+              <td width="30%" id="confirm-answer-location">
               </td>
-            </tr>
-            <tr>
               <td width="20%" class="table-title-td">예산</td>
               </td>
-              <td width="80%" colspan="3" id="confirm-answer-budget">
-
+              <td width="30%" id="confirm-answer-budget">
               </td>
             </tr>
             <tr>
               <td width="20%" class="table-title-td">의뢰목적</td>
-              <td width="80%" colspan="3" id="confirm-answer-purpose">
-
+              <td width="30%" colspan="3" id="confirm-answer-purpose">
               </td>
             </tr>
             <tr>
               <td width="20%" class="table-title-td">관련컨텐츠</td>
-              <td width="80%" colspan="3" id="confirm-answer-relate-content">
-                <div id="reqanswer-relate-img" class="confirm-answer-relate-img"></div>
+              <td width="80%" colspan="3">
+                <div id="confirm-answer-relate-img" class="confirm-answer-relate-img"></div>
+                <div id="confirm-answer-relate-content" class="confirm-answer-relate-content"></div>
 
               </td>
             </tr>
@@ -488,15 +474,11 @@
                 </div>
               </td>
             </tr>
-            <tr>
-              <td width="20%" class="table-title-td">등록일</td>
-              <td width="80%" colspan="3" id="confirm-answer-reg-date">
 
-              </td>
-            </tr>
           </table>
           <hr />
           <table class="detail table table-bordered">
+            <div class="pb-1 float-right"><span class="star">*</span>는 필수 입력값</div>
             <tr>
               <td width="20%" class="table-title-td">답변
               </td>
@@ -509,7 +491,6 @@
               <td width="20%" class="table-title-td">첨부파일
               </td>
               <td width="80%" colspan="2" id="confirm-answer-file">
-
               </td>
             </tr>
           </table>
@@ -552,9 +533,6 @@
     let purpose = [1, 2, 3, 4, 5, 6];
     let sort = "DESC";
     let answer_yn = ['N', 'Y'];
-
-    const myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
 
     window.onload = () => {
       $('#from-date, #to-date').datepicker({
@@ -794,12 +772,24 @@
       document.getElementById(`${prefix}-purpose`).innerHTML = purposeDecode(data.purpose);
       document.getElementById(`${prefix}-counsel`).innerHTML = data.detail;
       document.getElementById(`${prefix}-reg-date`).innerHTML = dayjs(data.reg_date).format('YYYY-MM-DD HH:mm:ss');
-      if (data.answer_file_url != null) {
-        // document.getElementById(`${prefix}-relate-img`).style.backgroundImage = `url(${data.answer_file_url})`;
-        document.getElementById(`${prefix}-relate-content`).innerHTML = "이미지 있음";
+      console.log("관련" + data.counsel_file_url);
+      if (data.counsel_file_url != null) {
+        //src/public/uploads/file-1687959218098.png ->  /img/uploads/file-1687966468886.png 
+        var modifiedLink = data.counsel_file_url.replace(/src\\public\\uploads\\/g, "/img/uploads/");
+        document.getElementById(`${prefix}-relate-img`).style.backgroundImage = `url(${modifiedLink})`;
+        document.getElementById(`${prefix}-relate-img`).style.display = 'inline-block';
+        document.getElementById(`${prefix}-relate-content`).style.float = 'right';
+        document.getElementById(`${prefix}-relate-content`).style.paddingLeft = '15px';
+        document.getElementById(`${prefix}-relate-content`).innerHTML = data.counsel_file_origin_name;
+        document.getElementById(`${prefix}-relate-content`).style.minHeight ='200px';
+
+        //counsel_file_url
       } else {
-        //document.getElementById(`${prefix}-relate-img`).style.display = 'none';
+        document.getElementById(`${prefix}-relate-img`).style.display = 'none';
+        document.getElementById(`${prefix}-relate-content`).style.float = 'left';
+        document.getElementById(`${prefix}-relate-content`).style.paddingLeft = '0';
         document.getElementById(`${prefix}-relate-content`).innerHTML = "-";
+        document.getElementById(`${prefix}-relate-content`).style.minHeight ='unset';
       }
     };
 
@@ -868,7 +858,7 @@
         const response = await fetch(`/upload/deleteFile`, requestOptions);
         const { code, message } = await response.json();
         if (code === 200) {
-          resetModal("delPhoto");
+          resetModal("delFile");
         } else {
         }
       } catch (err) {
@@ -877,7 +867,7 @@
     };
 
     //파일 등록
-    const uploadFormData = async () => {
+    const uploadFile = async () => {
       const fileInput = document.getElementById("file1");
       const file = fileInput.files[0];
       if (file) {
