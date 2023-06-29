@@ -44,7 +44,7 @@ const contentService = {
         }
         sql += `') `;
       }
-      sql += `ORDER BY ct.reg_date ${sort} `;
+      sql += `ORDER BY ct.reg_date ${sort}, ct.content_id DESC `;
       sql2 += sql + `) a`;
       sql += `LIMIT ${pageSize} OFFSET ${offset}`;
       

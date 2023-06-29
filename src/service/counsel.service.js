@@ -50,7 +50,8 @@ const counselService = {
           sql += `) `;
         }
         if(search_word != null) {
-          sql += `AND cs.detail LIKE '%${search_word}%' `;
+          sql += `AND (cs.detail LIKE '%${search_word}%' `;
+          sql += `OR cs.name LIKE '%${search_word}%') `;
         }
         
         sql += `ORDER BY cs.reg_date ${sort} `;
