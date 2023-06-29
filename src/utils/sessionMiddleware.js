@@ -2,12 +2,11 @@ const checkSessionMiddleware = (req, res, next) => {
   if (!req.session.user) {
     if (req.cookies.topper) {
       req.session.user = {
-        id: req.cookies.user,
+        id: req.cookies.topper,
       };
-
-      next();
+    } else {
+      return res.redirect("/admin/index");
     }
-    return res.redirect("/admin/index");
   }
   next();
 };
