@@ -128,7 +128,7 @@
                       <label class="col-md-2 filter-label">답변여부</label>
 
                       <div class="col-md-9 filter-inputs">
-                        <div class="filter-answer">
+                        <div>
                           <label class="ckbox-inline">
                             <input type="radio" name="answer_yn" value="all" checked> 전체
                           </label>
@@ -783,7 +783,7 @@
       document.getElementById(`${prefix}-reg-date`).innerHTML = dayjs(data.reg_date).format('YYYY-MM-DD HH:mm:ss');
       if (data.counsel_file_url != null) {
         document.getElementById(`${prefix}-nodata`).style.display='none';
-        var modifiedLink = data.counsel_file_url.replace(/src\\public\\uploads\\/g, "/img/uploads/"); //src/public/uploads/file-1687959218098.png ->  /img/uploads/file-1687966468886.png 
+        var modifiedLink = data.counsel_file_url.replace(/src[\/\\]public[\/\\]uploads[\/\\]/g, "/img/uploads/");//src/public/uploads,src/public/uploads ->  /img/uploads/file-1687966468886.png 
         document.getElementById(`${prefix}-relate-img`).src = modifiedLink;
         document.getElementById(`${prefix}-relate-content-td`).style.display = 'table-cell';
         document.getElementById(`${prefix}-relate-content`).innerHTML = data.content_title;
@@ -801,17 +801,21 @@
     };
 
     const resetModal = (mode) => {
+      const fileInput = document.getElementById("file1");
       switch (mode) {
         case 'newAnswer':
           document.getElementById('reqanswer-answer').value = "";
           break;
         case 'delFile':
           file_id = null;
-          const fileInput = document.getElementById("file1");
           fileInput.value = "";
           fileButtonStyle(fileInput);
           confirmFileName = "";
           break;
+        case 'upFile':
+          fileButtonStyle(fileInput);
+          break;
+        
       }
     }
 
@@ -864,7 +868,7 @@
         const response = await fetch(`/upload/deleteFile`, requestOptions);
         const { code, message } = await response.json();
         if (code === 200) {
-          resetModal("delFile");
+          resetModal("upFile");
         } else {
         }
       } catch (err) {
@@ -891,6 +895,7 @@
         await deletePreviousFile(file_id);
       }
       fileButtonStyle(fileInput)
+      
 
       const formData = new FormData();
       formData.append("file", file);
@@ -905,8 +910,10 @@
         const response = await fetch(`/upload`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
+          
           file_id = data.file_id;
           confirmFileName = file.name;
+          fileButtonStyle(fileInput);
         }
       } catch (err) {
         console.log('Err:', err);
@@ -965,7 +972,7 @@
           file_id,
           "email": document.getElementById('reqanswer-email').innerHTML
         });
-        // NOTE CHECK : document.getElementById('reqanswer-email').innerHTML,
+
         const requestOptions = {
           method: 'POST',
           headers: myHeaders,

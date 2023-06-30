@@ -123,7 +123,10 @@
 
 .ckbox-inline,
 .radio-button-inline {
-  padding-right: 30px;
+  padding-right: 3rem;
+  margin: 0;
+  vertical-align: middle;
+  /*width: 10rem;*/
 }
 
 .radio-button-filter {
