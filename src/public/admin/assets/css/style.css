@@ -65,7 +65,7 @@
 }
 
 .bg-logo {
-  background: url(../img/wonny_topper_logo.jpg);
+  background: url(../img/wonny_topper_logo.png);
   background-position: center;
   background-size: cover;
   height: 80px;
@@ -84,7 +84,7 @@
 }
 
 .bg-login-banner-image {
-  background: url(../img/login_main_banner.png);
+  background: url(../img/main_banner.jpg);
   background-position: center;
   background-size: cover;
 }

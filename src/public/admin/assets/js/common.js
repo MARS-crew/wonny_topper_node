@@ -37,7 +37,7 @@ const categoryDecode = (code) => {
     "풍선 장식",
     "토퍼",
     "삐에로/페이스페인팅",
-    "원데이클래스"
+    "클래스"
   ];
   return category[code - 1] || "";
 }
