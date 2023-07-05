@@ -18,7 +18,6 @@
 
   <!-- Styles for this page -->
   <link href="/admin/assets/css/sb-admin-2.min.css" rel="stylesheet" />
-
   <link href="/admin/assets/css/style.css" rel="stylesheet" />
 
 </head>
@@ -38,21 +37,21 @@
                   </div>
                   <form class="user">
                     <div class="form-group">
-                      <input type="email" class="form-control form-control-user" id="email" aria-describedby="emailHelp"
-                        placeholder="아이디" onkeydown="checkEnter(event)" />
+                      <input type="email" id="email" class="form-control form-control-user" aria-describedby="emailHelp"
+                        placeholder="아이디" />
                     </div>
                     <div class="form-group">
-                      <input type="password" class="form-control form-control-user" id="password" placeholder="비밀번호" onkeydown="checkEnter(event)"/>
+                      <input type="password" id="password" class="form-control form-control-user" placeholder="비밀번호" />
                     </div>
                     <div class="form-group">
                       <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" name="is_auto" id="is_auto" />
+                        <input type="checkbox" id="is_auto" name="is_auto" class="custom-control-input" />
                         <label class="custom-control-label" for="is_auto">
                           로그인 유지
                         </label>
                       </div>
                     </div>
-                    <a onclick="onClickLogin();" class="login-btn btn btn-user btn-block">
+                    <a id="login_btn" class="login-btn btn btn-user btn-block">
                       로그인
                     </a>
                   </form>
@@ -64,23 +63,6 @@
         </div>
       </div>
     </div>
-
-    <!-- Modal -->
-    <div class="modal fade" id="alertModal" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog alert-modal-dialog" role="document">
-        <div class="modal-content alert-modal-content">
-          <div class="modal-body alert-modal-body">
-            아이디를 다시 입력해주세요.
-          </div>
-          <div class="modal-footer">
-            <button class="btn btn-primary" type="button" data-dismiss="modal">
-              확인
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- modal end -->
   </div>
 
   <!-- Bootstrap core JavaScript-->
@@ -95,8 +77,9 @@
   <script src="/admin/assets/js/common.js"></script>
 
   <script>
-    let idInput = document.getElementById('email');
-    let pwdInput = document.getElementById('password')
+    const idInput = document.getElementById('email');
+    const pwdInput = document.getElementById('password');
+    const loginBtn = document.getElementById('login_btn');
 
     const checkEnter = (event) => {
       if (event.key === 'Enter') {
@@ -106,27 +89,20 @@
     }
 
     const onClickLogin = async () => {
-      let id = idInput.value;
-      let pwd = pwdInput.value;
+      const id = idInput.value;
+      const pwd = pwdInput.value;
       let isAuto = false;
 
       if (id.trim() === '') {
         alert("아이디를 다시 입력해주세요");
+        idInput.focus();
         return;
       }
       if (pwd.trim() === '') {
         alert("비밀번호를 다시 입력해주세요");
+        pwdInput.focus();
         return;
       }
-
-      /*
-      if(!validInput(id,regexId,"아이디는 4~10자 / 영어 대소문자, 숫자만 입력 가능합니다")){
-        return;
-      };
-      if(!validInput(pwd),regexPwd,"비밀번호는 4~16자 / 문자, 숫자, 특수 문자만 혼용 가능합니다"){
-        return;
-      };
-      */
 
       if (document.querySelector('input[name="is_auto"]:checked') != null) {
         isAuto = true;
@@ -147,31 +123,36 @@
 
       try {
         const response = await fetch(`/user/login`, requestOptions);
-        const { code, message,data } = await response.json();
+        const { code, message, data } = await response.json();
 
         if (code === 200) {
           sessionStorage.setItem("username", data.name);
           sessionStorage.setItem("userid", data.id);
-          
+
           window.location.href = "/admin/content_main";
           return;
         }
         if (message === '패스워드가 틀립니다.') {
           alert('비밀번호를 다시 입력해주세요');
+          pwdInput.focus();
           return;
         }
         if (message === '유저를 찾을 수 없습니다.') {
           alert("관리자 정보가 없습니다.");
           return;
         }
-        alert("관리자 정보가 없습니다.");
+        alert(message || "로그인에 실패했습니다.");
       } catch (err) {
-        console.log('Err:', err);
+        alert("에러가 발생했습니다.");
+        console.log("Err", err);
       }
 
     }
-  </script>
+    idInput.addEventListener('keydown', checkEnter);
+    pwdInput.addEventListener('keydown', checkEnter);
+    loginBtn.addEventListener('click', onClickLogin);
 
+  </script>
 </body>
 
 </html>

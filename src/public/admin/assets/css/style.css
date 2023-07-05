@@ -10,6 +10,7 @@
 .flex {
   display: flex;
 }
+
 .btn-area {
   width: 150px;
 }
@@ -54,8 +55,9 @@
 /* 로그인 페이지 */
 .logout-btn {
   border: 0;
-    background: unset;
+  background: unset;
 }
+
 .login-area {
   height: 100vh;
 }
@@ -126,7 +128,6 @@
   padding-right: 3rem;
   margin: 0;
   vertical-align: middle;
-  /*width: 10rem;*/
 }
 
 .radio-button-filter {
@@ -145,7 +146,9 @@
   margin: 0 5px;
 }
 
-.hour, .minute, .second {
+.hour,
+.minute,
+.second {
   width: 33.333333%;
 }
 
@@ -162,7 +165,7 @@
   text-align: center;
 }
 
-/* 메인 필터 영역 */
+/* 메인 검색 패널 영역 */
 .panel-body {
   padding: 15px 0;
 }
@@ -195,7 +198,7 @@
   width: 100%;
 }
 
-/* 메인 버튼 영역 */
+/* 버튼 영역 */
 
 .admin-btn-tool {
   width: 100%;
@@ -233,6 +236,10 @@ table {
   vertical-align: middle !important;
 }
 
+.detail-bottom-btn {
+  margin-bottom: 1rem;
+}
+
 .detail-bottom-btn button:nth-child(2) {
   float: right;
 }
@@ -244,10 +251,6 @@ table {
 .filter-date {
   display: flex;
   align-items: center;
-}
-
-.hour, .minute, .second {
-  /*width: 65px !important; 글자가 잘려서 주석처리 합니다*/
 }
 
 .file-input {
@@ -266,12 +269,10 @@ table {
 }
 
 .file-name {
-  /* display: inline;  */
   margin-left: 10px;
 }
 
 .file-name.hidden {
-  /* display: inline !important; */
   display: none;
   margin-left: 10px;
 }
@@ -299,12 +300,11 @@ table {
   font-size: inherit;
   line-height: inherit;
   font-family: inherit;
-  /* width: 100%;*/
   height: 100%;
   resize: none;
 }
 
-.radio-button-inline{
+.radio-button-inline {
   margin: 0;
 }
 
@@ -338,29 +338,31 @@ table tr td .tx-area {
 .consult-modal-dialog {
   overflow: auto;
 }
+
 .answer-text-area {
   height: 100px !important;
 }
 
-.reqanswer-relate-img,.counsel-relate-img,.confirm-answer-relate-img  {
+.reqanswer-relate-img,
+.counsel-relate-img,
+.confirm-answer-relate-img {
   display: inline-block;
-  /*background: url("/user/assets/images/banner.jpg") center/cover no-repeat;*/
-  /*min-width: 50%;*/
   height: 150px;
-  width: auto; 
-  object-fit: contain; 
-  
-}
-.counsel-relate-content, .reqanswer-relate-content, .confirm-answer-relate-content{
-   /* width: 50%;*/
-    min-height: 150px;
-    align-items: center;
-    display: flex;
-    text-align: center;
-    justify-content: center;
+  width: auto;
+  object-fit: contain;
+
 }
 
-/* 모달 */
+.counsel-relate-content,
+.reqanswer-relate-content,
+.confirm-answer-relate-content {
+  min-height: 150px;
+  align-items: center;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+}
+
 @media (min-width: 576px) {
   .alert-modal-dialog {
     max-width: 350px;
