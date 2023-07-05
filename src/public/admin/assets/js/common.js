@@ -8,7 +8,7 @@ const lang = {
 $(document).ready(function () {
   $('#top_bar').load('/admin/common/topbar')
   $('#accordion_sidebar').load('/admin/common/sidebar')
-  $('#footer').load('/admin/common/footer')
+  //$('#footer').load('/admin/common/footer')
 })
 
 const formatPhone = (origin) => {

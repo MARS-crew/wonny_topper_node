@@ -204,6 +204,11 @@
 
       <!-- Footer -->
       <footer id="footer" class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright &copy; Wonny Topper 2023</span>
+          </div>
+        </div>
       </footer>
       <!-- End of Footer -->
     </div>
@@ -530,7 +535,6 @@
     const cancelElArr = document.getElementsByClassName("cancel-btn");
     const fileInput = document.getElementById("file1");
 
-
     $(document).ready(function () {
       const today = dayjs();
       const formattedDate = today.format('YYYY-MM-DD');
@@ -613,11 +617,12 @@
       });
 
       $(cancelElArr[0]).click(function () {
-        fileInput.val("");
+        fileInput.value="";
         fileNameElArr[0].textContent = "";
         cancelElArr[0].style.display = "none";
         resetModal("delFile");
       });
+
       $('#search_btn').click(onClickSearch);
       $('#edit_btn').click(onClickEdit);
       $('#answer_btn').click(onClickAnswerConfirm);
