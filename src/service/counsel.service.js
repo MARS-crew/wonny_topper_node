@@ -159,11 +159,16 @@ const counselService = {
           WHERE ct.content_id = ? AND ct.del_yn = 'N'
         `;
         response = await executeQuery(sql, [data.content_id]);
+      
+        let setDirname = __dirname.replace(/\\/g, '/');
+        setDirname = setDirname.replace('src/service', '');
+
+        let url = response[0].url.replace(/\\/g, '/');
         
         if(response[0]) {
           mailText += '<br><br>관련컨텐츠 : ' + response[0].title;
           mailText += '<br><br>상담내용 : ' + data.detail + '</div>';
-          attachments[0] = { path: response[0].url, filename: response[0].origin_name};
+          attachments[0] = { path: url, filename: response[0].origin_name};
         } else {
           mailText += '<br><br>관련컨텐츠 : 삭제된 컨텐츠';
           mailText += '<br><br>상담내용 : ' + data.detail + '</div>';
@@ -247,9 +252,14 @@ const counselService = {
         purpose = '클래스';
       }
 
-      const { detail, title, origin_name, url, answer_origin_name, answer_url } = response[0];
+      const { detail, title, origin_name, answer_origin_name, answer_url } = response[0];
+      let { url } = response[0];
       let cid;
       let attachments = [];
+      
+      let setDirname = __dirname.replace(/\\/g, '/');
+      setDirname = setDirname.replace('src/service', '');
+      url = url.replace(/\\/g, '/');
 
       let setDetail = '<div style="color: black;">[문의 주신 상담 내용]';
       setDetail += '<br><br>의뢰목적 : ' + purpose;
@@ -259,7 +269,7 @@ const counselService = {
           cid = 'unique@nodemailer.com';
           setDetail += '<br><br><img src="cid:unique@nodemailer.com" style="height: 300px" />';
           setDetail += '<br><br>관련컨텐츠 : ' + title;
-          attachments[0] = { path: url, filename: origin_name, cid: cid };
+          attachments[0] = { path: setDirname + url, filename: origin_name, cid: cid };
         } else {
           setDetail += '<br><br>관련컨텐츠 : ' + title;
         }
@@ -273,9 +283,9 @@ const counselService = {
       
       if(answer_url != null && answer_origin_name != null) { // 문의답변 이미지 존재
         if(attachments.length > 0) {
-          attachments[1] = { path: answer_url, filename: answer_origin_name};
+          attachments[1] = { path: setDirname + answer_url, filename: answer_origin_name};
         } else {
-          attachments[0] = { path: answer_url, filename: answer_origin_name};
+          attachments[0] = { path: setDirname + answer_url, filename: answer_origin_name};
         }
       }
 
