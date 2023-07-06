@@ -402,7 +402,7 @@
       };
 
       try {
-        const response = await fetch(`/content/search`, requestOptions);
+        const response = await fetch(`${host}/content/search`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
           DT.clear().draw();
@@ -467,7 +467,7 @@
       const result = window.confirm("삭제 하시겠습니까?");
       if (result) {
         try {
-          const response = await fetch(`/content/delete`, requestOptions);
+          const response = await fetch(`${host}/content/delete`, requestOptions);
           const { code, message } = await response.json();
           if (code === 200) {
             window.location.href = "/admin/content_main";

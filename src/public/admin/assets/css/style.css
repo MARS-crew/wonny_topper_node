@@ -42,6 +42,10 @@
 }
 
 /* 사이드바 */
+.sidebar-brand-text {
+  margin: 0 1rem
+}
+
 .nav-item-text {
   display: inline-block !important;
   width: 100%;

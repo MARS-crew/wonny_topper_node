@@ -1,3 +1,5 @@
+//const host = 'https://dev.shsoftnet.com:1081'; //NOTE
+const host = '';
 const lang = {
   decimal: '',
   emptyTable: '데이터가 없습니다.',
@@ -78,7 +80,7 @@ const deleteFile = async (file_id) => {
   };
 
   try {
-    const response = await fetch(`/upload/deleteFile`, requestOptions);
+    const response = await fetch(`${host}/upload/deleteFile`, requestOptions);
     const { code, message } = await response.json();
     if (code === 200) {
 

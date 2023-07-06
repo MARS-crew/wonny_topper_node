@@ -284,7 +284,6 @@
         const selectHour = $("#hour").val();
         const selectMinute = $("#minute").val();
         const selectSecond = $("#second").val();
-
         selectDateTime = dayjs(selectDate + " " + selectHour + ":" + selectMinute + ":" + selectSecond);
         now = dayjs();
         if (selectDateTime.isAfter(now)) {
@@ -295,6 +294,9 @@
           $("#second").val(now.format("ss"));
           selectDateTime = now.format("YYYY-MM-DD HH:mm:ss");
         }
+      });
+      $('#start_date').blur(function(){ 
+        $("#start_date").val(dayjs(selectDateTime).format("YYYY-MM-DD"));
       });
       $('#to_board_btn').click(onClickCancleBtn);
       $('#register_btn').click(registerContent);
@@ -351,7 +353,7 @@
       };
 
       try {
-        const response = await fetch(`/upload`, requestOptions);
+        const response = await fetch(`${host}/upload`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
           fileId[i] = data.file_id;
@@ -402,7 +404,7 @@
       };
 
       try {
-        const response = await fetch(`/content/insert`, requestOptions);
+        const response = await fetch(`${host}/content/insert`, requestOptions);
         const { code, message } = await response.json();
         if (code === 200) {
           alert("등록이 완료되었습니다.");

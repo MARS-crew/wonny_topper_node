@@ -712,7 +712,7 @@
       };
 
       try {
-        const response = await fetch(`/counsel/select`, requestOptions);
+        const response = await fetch(`${host}/counsel/select`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
           DT.clear().draw();
@@ -798,7 +798,7 @@
         redirect: 'follow'
       };
       try {
-        const response = await fetch("/counsel/select/" + counsel_id, requestOptions);
+        const response = await fetch(`${host}/counsel/select/${counsel_id}`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
           if (data[0].answer_yn == 'Y') { //답변 등록 된 경우 
@@ -836,7 +836,7 @@
       };
 
       try {
-        const response = await fetch(`/upload/deleteFile`, requestOptions);
+        const response = await fetch(`${host}/upload/deleteFile`, requestOptions);
         const { code, message } = await response.json();
         if (code === 200) {
           resetModal();
@@ -875,7 +875,7 @@
       };
 
       try {
-        const response = await fetch(`/upload`, requestOptions);
+        const response = await fetch(`${host}/upload`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
           file_id = data.file_id;
@@ -907,7 +907,7 @@
         };
 
         try {
-          const response = await fetch(`/counsel/insertAnswer`, requestOptions);
+          const response = await fetch(`${host}/counsel/insertAnswer`, requestOptions);
           const { code, message } = await response.json();
           if (code === 200) {
             alert("전송이 완료되었습니다.");

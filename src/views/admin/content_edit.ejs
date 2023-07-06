@@ -283,6 +283,9 @@
           alert("현재 시간 이후로는 선택이 불가능합니다");
         }
       });
+      $('#start_date').blur(function(){ 
+        $("#start_date").val(dayjs(selectDateTime).format("YYYY-MM-DD"));
+      });
 
       Array.from(cancelElArr).forEach(function (cancelBtn, i) {
         fileInputElArr[i].addEventListener("change", function () {
@@ -299,7 +302,7 @@
     });
 
     const onClickCancleBtn = () => {
-      if (confirm("등록을 취소하시겠습니까"))
+      if (confirm("수정을 취소하시겠습니까"))
         location.href = "/admin/content_main";
     };
 
@@ -328,7 +331,7 @@
       };
 
       try {
-        const response = await fetch(`/content/select/` + content_id);
+        const response = await fetch(`${host}/content/select/` + content_id);
         const { code, message, data } = await response.json();
         if (code === 200) {
           if (!data) {
@@ -418,7 +421,7 @@
       };
 
       try {
-        const response = await fetch(`/upload`, requestOptions);
+        const response = await fetch(`${host}/upload`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
           fileId[i] = data.file_id;
@@ -448,7 +451,7 @@
         return;
       }
 
-      const response = await fetch("/content/update", {
+      const response = await fetch(`${host}/content/update`, {
         method: 'POST',
         headers: myHeaders,
         body: JSON.stringify(raw),

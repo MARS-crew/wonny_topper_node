@@ -122,7 +122,7 @@
       };
 
       try {
-        const response = await fetch(`/user/login`, requestOptions);
+        const response = await fetch(`${host}/user/login`, requestOptions);
         const { code, message, data } = await response.json();
 
         if (code === 200) {
