@@ -16,13 +16,14 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <script src="https://code.jquery.com/jquery-3.7.0.min.js"
         integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+    <script src="/user/assets/js/common-fetch.js"></script>
 </head>
 
 <body>
     <div class="wrap">
         <header class="gnb">
             <div class="gnb_content">
-                <img src="/user/assets/images/header_logo.jpeg" alt="">
+                <img src="/user/assets/images/header_logo.png" alt="">
 
                 <ul class="gnb_menu">
                     <li><a href=/balloon>풍선장식</a></li>
@@ -58,7 +59,9 @@
                 <ul class="progress_list">
                     <li>
                         <div class="progress_list_area">
-                            <div class="progress_list_content"></div>
+                            <div class="progress_list_content"
+                                style="background: url(/user/assets/images/ico-01.png) no-repeat center center/70%;">
+                            </div>
                         </div>
                         <div class="progress_list_txt">견적신청</div>
                     </li>
@@ -67,7 +70,9 @@
                     </li>
                     <li>
                         <div class="progress_list_area">
-                            <div class="progress_list_content"></div>
+                            <div class="progress_list_content"
+                                style="background: url(/user/assets/images/ico-02.png) no-repeat center center/70%;">
+                            </div>
                         </div>
                         <div class="progress_list_txt">전담매니저<br>상담</div>
                     </li>
@@ -76,7 +81,9 @@
                     </li>
                     <li>
                         <div class="progress_list_area">
-                            <div class="progress_list_content"></div>
+                            <div class="progress_list_content"
+                                style="background: url(/user/assets/images/ico-03.png) no-repeat center center/70%;">
+                            </div>
                         </div>
                         <div class="progress_list_txt">시안제작</div>
                     </li>
@@ -85,7 +92,9 @@
                     </li>
                     <li>
                         <div class="progress_list_area">
-                            <div class="progress_list_content"></div>
+                            <div class="progress_list_content"
+                                style="background: url(/user/assets/images/ico-04.png) no-repeat center center/70%;">
+                            </div>
                         </div>
                         <div class="progress_list_txt">견적확인</div>
                     </li>
@@ -94,7 +103,9 @@
                     </li>
                     <li>
                         <div class="progress_list_area">
-                            <div class="progress_list_content"></div>
+                            <div class="progress_list_content"
+                                style="background: url(/user/assets/images/ico-05_02.png) no-repeat center center/70%;">
+                            </div>
                         </div>
                         <div class="progress_list_txt">최종결정 <br>및 계약</div>
                     </li>
@@ -103,7 +114,9 @@
                     </li>
                     <li>
                         <div class="progress_list_area">
-                            <div class="progress_list_content"></div>
+                            <div class="progress_list_content"
+                                style="background: url(/user/assets/images/ico-06.png) no-repeat center center/70%;">
+                            </div>
                         </div>
                         <div class="progress_list_txt">행사진행</div>
                     </li>
@@ -131,7 +144,7 @@
                 </div>
             </div>
 
-            <div class="instagram_content">
+            <div class="instagram_content hidden">
                 <div class="instagram_area">
                     <h3 class="title">인스타그램</h3>
                     <a href="https://www.instagram.com/wonny_topper/" target="_blank"
@@ -165,16 +178,35 @@
 
             <footer class="footer">
                 <div class="footer_area">
-                    <img src="/user/assets/images/footer_logo.jpg" alt="" class="footer_logo">
-                    <div>
-                        <div class="mb-4">대표자명: 박소연</div>
-                        <div class="mb-4">사업자등록번호: 186-12-00587 | 이메일: woonytopper@naver.com</div>
-                        <div>주소: 서울 서대문구 통일로 27길 8</div>
+                    <img src="/user/assets/images/footer_logo.png" alt="" class="footer_logo">
+                    <div class="footer_line">
+                        <div>
+                            <div class="mb-7">대표자명: 박소연</div>
+                            <div class="mb-7">사업자등록번호: 186-12-00587&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;이메일:
+                                woonytopper@naver.com</div>
+                            <div>주소: 서울 서대문구 통일로 27길 8</div>
+                        </div>
+
+                    </div>
+                    <div class="footer_flex_layout">
+                        <div class="copyright_txt">워니토퍼 Corporation 2023@Copyrights Allrights reserved.</div>
+                        <div>
+                            <a href="http://pf.kakao.com/_mcAmxl/chat" target="_blank">
+                                <div class="kakao_icon"></div>
+                            </a>
+                        </div>
                     </div>
 
-                    <div class="copyright_txt">워니토퍼 Corporation 2023@Copyrights Allrights reserved.</div>
+
+
 
                 </div>
+                <!-- <div>
+                    <div class="kakao_btn_area">
+                        <div class="kakao_icon"></div>
+                        <div class="kakao_text">카카오톡 상담</div>
+                    </div>
+                </div> -->
             </footer>
         </div>
 
@@ -186,6 +218,7 @@
                         <div class="popup_title">Title</div>
                         <button class="icon_close close_btn"></button>
                     </div>
+
                     <div class="popup_body_content">
                         <div class="swiper mySwiper popup_swiper_area">
                             <div class="swiper-wrapper popup_images_list">

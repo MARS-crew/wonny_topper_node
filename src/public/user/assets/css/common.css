@@ -281,7 +281,8 @@ input[type="checkbox"]:checked+label span.checkbox {
     cursor: pointer;
 }
 
-.wrap header.gnb .gnb_menu li:hover {
+.wrap header.gnb .gnb_menu li:hover,
+.wrap header.gnb .gnb_menu li.active {
     color: #554ba0;
 }
 
@@ -289,23 +290,41 @@ input[type="checkbox"]:checked+label span.checkbox {
 
 /* Footer */
 .footer {
-    border-top: 1px solid #d9d9d9;
+    /*border-top: 1px solid #d9d9d9;*/
+    background: #2F3135;
+    color: #DFE0E2;
 }
 
 .footer .footer_area {
     margin: 0 auto;
-    padding: 2em 0;
+    padding: 3em 0;
     max-width: 1460px;
     font-size: 0.875em;
 }
 
-.footer .footer_area .footer_logo {
-    width: 10%;
+.footer .footer_logo {
+    width: 14%;
     margin-bottom: 1.125em;
 }
 
-.footer .footer_area .copyright_txt {
+.footer .footer_line {
+    border-bottom: 1px solid #DFE0E2;
+    padding: 1em 0 3em 0;
+}
+
+.footer .footer_area .copyright_txt {}
+
+.footer .footer_area .footer_flex_layout {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 1.125em;
+}
+
+.kakao_icon {
+    width: 40px;
+    height: 40px;
+    background: url('/user/assets/images/ico_kakao.png') no-repeat 50% 50%/cover;
 }
 
 /* //Footer  */
@@ -585,6 +604,8 @@ input[type="checkbox"]:checked+label span.checkbox {
 .popup_content .swiper-wrapper {
     align-items: center;
     position: unset !important;
+    max-width: 523px;
+    ;
 }
 
 .popup_body_content {
@@ -597,6 +618,10 @@ input[type="checkbox"]:checked+label span.checkbox {
     margin: 0 auto;
 }
 
+.popup_body_content .swiper-slide {
+    /*max-width: 523px;*/
+    /*max-height: 660px;*/
+}
 
 .popup_header_content .swiper-horizontal,
 .popup_body_content .swiper,
@@ -639,12 +664,12 @@ input[type="checkbox"]:checked+label span.checkbox {
 }
 
 .swiper-button-next {
-    right: 1% !important;
+    right: 28% !important;
     background: url('/user/assets/images/ico_arrow_right_w.png') center center/cover;
 }
 
 .swiper-button-prev {
-    left: 1% !important;
+    left: 28% !important;
     background: url('/user/assets/images/ico_arrow_left_w.png') center center/cover;
 }
 
@@ -672,7 +697,7 @@ input[type="checkbox"]:checked+label span.checkbox {
     top: 50%;
     transform: translate(-50%, -50%);
     padding: 1.5em;
-    width: 66%;
+    width: 50%;
     border-radius: 10px;
     background: #fff;
 }
@@ -687,6 +712,8 @@ input[type="checkbox"]:checked+label span.checkbox {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    border-bottom: 1px solid #d9d9d9;
+    padding-bottom: 1em;
 }
 
 .qna_popup_header_content .qna_popup_title {
@@ -765,8 +792,8 @@ input[type="checkbox"]:checked+label span.checkbox {
     align-items: center;
 }
 
-.mb-4 {
-    margin-bottom: 4px;
+.mb-7 {
+    margin-bottom: 7px;
 }
 
 
@@ -934,7 +961,7 @@ input[type="checkbox"]:checked+label span.checkbox {
 /* 상담문의 페이지 */
 .wrap .container .qna_banner_area {
     background: #554ba0;
-    height: 45%;
+    height: 39%;
 }
 
 .wrap .container .qna_banner_area .wrap_banner_txt {

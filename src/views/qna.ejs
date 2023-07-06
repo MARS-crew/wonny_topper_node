@@ -23,13 +23,13 @@
     <div class="wrap">
         <header class="gnb">
             <div class="gnb_content">
-                <img src="/user/assets/images/header_logo.jpeg" alt="" onclick="location.href='/index'">
+                <img src="/user/assets/images/header_logo.png" alt="" onclick="location.href='/index'">
 
                 <ul class="gnb_menu">
                     <li><a href=/balloon>풍선장식</a></li>
                     <li><a href=/topper>토퍼</a></li>
                     <li><a href=/pierrot>삐에로/페이스페인팅</a></li>
-                    <li><a href=/class>클래스</a></li>
+                    <li><a href=/class>원데이클래스</a></li>
                     <li class="active"><a href=/qna>상담문의</a></li>
                 </ul>
             </div>
@@ -66,7 +66,7 @@
                 <div class="qna_input_area">
                     <div class="qna_left_txt">이메일<span class="essential">*</span></div>
                     <div class="email_input_area">
-                        <div class="qna_right_txt"><input type="text" class="email" ></div>
+                        <div class="qna_right_txt"><input type="text" class="email"></div>
                         <div>@</div>
                         <div class="qna_right_txt"><input type="text" class="address"></div>
                     </div>
@@ -79,7 +79,7 @@
                     <div class="qna_left_txt">예산<span class="essential">*</span></div>
                     <div class="budget_area">
                         <div class="qna_right_txt"><input type="text" class="budget"
-                                onkeyup="this.value = this.value.replace(/[^0-9]/g, '')"></div>
+                                oninput="this.value = this.value.replace(/[^0-9]/g, '')"></div>
                         <div class="qna_cation_txt">만원</div>
                     </div>
                 </div>
@@ -150,7 +150,7 @@
                                     <option value="1">풍선장식</option>
                                     <option value="2">토퍼</option>
                                     <option value="3">삐에로/페이스페인팅</option>
-                                    <option value="4">클래스</option>
+                                    <option value="4">원데이클래스</option>
                                 </select>
                             </div>
                         </div>
