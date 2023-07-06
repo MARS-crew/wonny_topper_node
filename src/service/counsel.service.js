@@ -116,9 +116,12 @@ const counselService = {
         budget: req.body.budget,
         purpose: req.body.purpose,
         detail: req.body.detail,
-        agree: req.body.agree,
-        content_id: req.body.content_id
+        agree: req.body.agree
       };
+
+      if(req.body.content_id != undefined && req.body.content_id != '' && req.body.content_id != null) {
+        data.content_id = req.body.content_id;
+      }
 
       let sql = "INSERT INTO tbl_counsel SET ?";
       let response = await executeQuery(sql, data);
@@ -259,7 +262,10 @@ const counselService = {
       
       let setDirname = __dirname.replace(/\\/g, '/');
       setDirname = setDirname.replace('src/service', '');
-      url = url.replace(/\\/g, '/');
+
+      if(url != undefined && url != ''&& url != null) {
+        url = url.replace(/\\/g, '/');
+      }
 
       let setDetail = '<div style="color: black;">[문의 주신 상담 내용]';
       setDetail += '<br><br>의뢰목적 : ' + purpose;
