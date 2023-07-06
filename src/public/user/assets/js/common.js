@@ -221,7 +221,7 @@ const galleryImageList = (img) => {
       galleryListContainer.insertAdjacentHTML(
         "beforeend",
         `
-        <li data-id=${element.content_id} style="background:url(http://14.63.220.194:1080/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+        <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
             <div class="gallery_category_list_content">
               <div class="gallery_category_title_area">
                 <div class="gallery_category_title">${element.title}</div>
@@ -271,35 +271,35 @@ const popupAddElement = (data) => {
 
   popupImagesList.insertAdjacentHTML(
     "beforeend",
-    `<div class="swiper-slide"><img src=http://14.63.220.194:1080/img/uploads/${mainImg}></div>`
+    `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${mainImg}></div>`
   );
 
   if (content[0].file_1_id_url) {
     detailImg01 = trimFilePath(content[0].file_1_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://14.63.220.194:1080/img/uploads/${detailImg01}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg01}></div>`
     );
   }
   if (content[0].file_2_id_url) {
     detailImg02 = trimFilePath(content[0].file_2_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://14.63.220.194:1080/img/uploads/${detailImg02}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg02}></div>`
     );
   }
   if (content[0].file_3_id_url) {
     detailImg03 = trimFilePath(content[0].file_3_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://14.63.220.194:1080/img/uploads/${detailImg03}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg03}></div>`
     );
   }
   if (content[0].file_4_id_url) {
     detailImg04 = trimFilePath(content[0].file_4_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://14.63.220.194:1080/img/uploads/${detailImg04}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg04}></div>`
     );
   }
 
@@ -486,7 +486,7 @@ const contentsImageList = (data) => {
       `
       <li data-id=${element.content_id}>
         <div class="conetnts_list_area">
-          <div class="conetnts_list_content" style="background:url(http://14.63.220.194:1080/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+          <div class="conetnts_list_content" style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
             <div class="radio_area">
               <input type="radio" id=${element.content_id} name="applyInfoType" value="${element.title}" />
                 <label for=${element.content_id}>
@@ -558,7 +558,7 @@ const classImageList = (img) => {
     classListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://14.63.220.194:1080/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
@@ -595,7 +595,7 @@ const pierrotImageList = (img) => {
     pierrotListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://14.63.220.194:1080/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
@@ -632,7 +632,7 @@ const topperImageList = (img) => {
     topperListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://14.63.220.194:1080/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
@@ -672,7 +672,7 @@ const balloonImageList = (imgList) => {
     balloonListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://14.63.220.194:1080/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
