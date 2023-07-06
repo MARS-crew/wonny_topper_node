@@ -1,7 +1,14 @@
-$(document).ready(function () {
-  $('#top-bar').load('/admin/common/topbar')
-  $('#accordionSidebar').load('/admin/common/sidebar')
+const lang = {
+  decimal: '',
+  emptyTable: '데이터가 없습니다.',
+  thousands: ',',
+  zeroRecords: '검색된 데이터가 없습니다.',
+}
 
+$(document).ready(function () {
+  $('#top_bar').load('/admin/common/topbar')
+  $('#accordion_sidebar').load('/admin/common/sidebar')
+  //$('#footer').load('/admin/common/footer')
 })
 
 const formatPhone = (origin) => {

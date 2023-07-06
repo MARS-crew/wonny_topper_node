@@ -34,7 +34,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordion_sidebar"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -42,7 +42,7 @@
       <!-- Main Content -->
       <div id="content">
         <!-- Topbar -->
-        <nav id="top-bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
+        <nav id="top_bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -84,11 +84,11 @@
                   </td>
                   <td width="30%">
                     <label class="radio-button-inline">
-                      <input type="radio" class="rb exposure y" name="exposure_yn" id="exposure_yn_y" value="Y" />
+                      <input type="radio" class="rb exposure y" name="exposure_yn" value="Y" />
                       노출
                     </label>
                     <label class="radio-button-inline">
-                      <input type="radio" class="rb exposure n" name="exposure_yn" id="exposure_yn_n" value="N" />
+                      <input type="radio" class="rb exposure n" name="exposure_yn" value="N" />
                       비노출
                     </label>
                   </td>
@@ -106,18 +106,16 @@
                   <td width="20%" class="table-title-td">등록일<span class="star">*</span></td>
                   <td width="30%">
                     <div class="input-date">
-                      <div class="input-daterange input-date date-pick" data-plugin-datepicker
-                        data-plugin-options='{"format": "yyyy-mm-dd"}'>
-                        <input type="text" class="form-control daterange" id="select-date" name="start"
-                          autocomplete="off" />
+                      <div class="input-daterange input-date date-pick">
+                        <input type="text" class="form-control daterange" id="start_date" autocomplete="off" />
                         <span class="input-group-addon">
                           <i class="fa fa-calendar calender-icon"></i>
                         </span>
                       </div>
                       <div class="col-md-6 filter-date">
-                        <select class="form-control hour"></select> <span class="mlr-5">:</span> <select
-                          class="form-control minute"></select> <span class="mlr-5">:</span> <select
-                          class="form-control second"></select>
+                        <select class="form-control hour" id="hour"></select> <span class="mlr-5">:</span> <select
+                          class="form-control minute" id="minute"></select> <span class="mlr-5">:</span> <select
+                          class="form-control second" id="second"></select>
                       </div>
                     </div>
                   </td>
@@ -136,51 +134,51 @@
                   <td width="40%" colspan="2">
                     <label for="file1" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(0)" required />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden">X</a>
+                      required />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
                   <td width="20%" rowspan="4" class="table-title-td">추가 이미지<div>(최대 4개)</div>
                   </td>
-                  <td width="5%" style="text-align: center;">1</td>
+                  <td width="5%" class="align-c">1</td>
                   <td width="95%">
                     <label for="file2" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(1)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center;">2</td>
+                  <td width="5%" class="align-c">2</td>
                   <td width="95%">
                     <label for="file3" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(2)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center;">3</td>
+                  <td width="5%" class="align-c">3</td>
                   <td width="95%">
                     <label for="file4" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(3)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center;">4</td>
+                  <td width="5%" class="align-c">4</td>
                   <td width="95%">
                     <label for="file5" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(4)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn hidden">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
               </table>
@@ -196,7 +194,7 @@
                 </tr>
               </table>
 
-              <div class="admin-btn-tool tool-btn ib detail-bottom-btn">
+              <div class="admin-btn-tool ib detail-bottom-btn">
                 <button type="button" class="mb-xs mt-xs mr-xs btn btn-primary btn-100" onClick="onClickCancleBtn()">
                   목록
                 </button>
@@ -211,7 +209,7 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
+      <footer id="footer" class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
             <span>Copyright &copy; Wonny Topper 2023</span>
@@ -232,29 +230,13 @@
     let fileId = [];
     let originRegDateTime = null;
     let selectDateTime = null;
-
     const params = new URLSearchParams(window.location.search);
     const content_id = params.get("content_id");
-
     const fileInputElArr = document.getElementsByName("productImgArr[]");
     const fileNameElArr = document.getElementsByClassName("file-name");
     const cancelElArr = document.getElementsByClassName("cancel-btn");
-    Array.from(cancelElArr).forEach(function (cancelBtn, i) {
-      cancelBtn.addEventListener("click", function () {
-        fileInputElArr[i].value = "";
-        fileId[i] = null;
-        fileNameElArr[i].textContent = "";
-        cancelBtn.style.display = "none";
-        deleteFile(fileId[i]);
-      });
 
-      $(document).ready(function () {
-        $("#dataTable").DataTable();
-        showContent();
-      });
-    });
-
-    window.onload = () => {
+    $(document).ready(function () {
       $('.date-pick').datepicker({
         dateFormat: 'yy-mm-dd',
         format: 'yyyy-mm-dd',
@@ -269,43 +251,70 @@
         endDate: new Date(),
       })
 
-    }
+      showContent();
 
-    for (var i = 0; i < 24; i++) {
-      var hour = i.toString().padStart(2, "0");
-      $(".hour").append("<option value='" + hour + "'>" + hour + "</option>");
-    }
-    for (var i = 0; i < 60; i++) {
-      var minute = i.toString().padStart(2, "0");
-      $(".minute").append("<option value='" + minute + "'>" + minute + "</option>");
-    }
-    for (var i = 0; i < 60; i++) {
-      var second = i.toString().padStart(2, "0");
-      $(".second").append("<option value='" + second + "'>" + second + "</option>");
-    }
-
-    $("#select-date, .hour, .minute, .second").change(function () {
-      var selectDate = $("#select-date").val();
-      var selectHour = $(".hour").val();
-      var selectMinute = $(".minute").val();
-      var selectSecond = $(".second").val();
-
-      selectDateTime = dayjs(selectDate + " " + selectHour + ":" + selectMinute + ":" + selectSecond);
-      var nowTime = dayjs();
-      if (selectDateTime.isAfter(nowTime)) {
-        $("#select-date").val(originRegDateTime.format("YYYY-MM-DD"));
-        $(".hour").val(originRegDateTime.format("HH"));
-        $(".minute").val(originRegDateTime.format("mm"));
-        $(".second").val(originRegDateTime.format("ss"));
-        selectDateTime = originRegDateTime;
-        alert("현재 시간 이후로는 선택이 불가능합니다");
+      for (let i = 0; i < 24; i++) {
+        let hour = i.toString().padStart(2, "0");
+        $("#hour").append("<option value='" + hour + "'>" + hour + "</option>");
       }
+      for (let i = 0; i < 60; i++) {
+        let minute = i.toString().padStart(2, "0");
+        $("#minute").append("<option value='" + minute + "'>" + minute + "</option>");
+      }
+      for (let i = 0; i < 60; i++) {
+        let second = i.toString().padStart(2, "0");
+        $("#second").append("<option value='" + second + "'>" + second + "</option>");
+      }
+
+      $("#start_date, #hour, #minute, #second").change(function () {
+        const selectDate = $("#start_date").val();
+        const selectHour = $("#hour").val();
+        const selectMinute = $("#minute").val();
+        const selectSecond = $("#second").val();
+
+        selectDateTime = dayjs(selectDate + " " + selectHour + ":" + selectMinute + ":" + selectSecond);
+        const nowTime = dayjs();
+        if (selectDateTime.isAfter(nowTime)) {
+          $("#start_date").val(originRegDateTime.format("YYYY-MM-DD"));
+          $("#hour").val(originRegDateTime.format("HH"));
+          $("#minute").val(originRegDateTime.format("mm"));
+          $("#second").val(originRegDateTime.format("ss"));
+          selectDateTime = originRegDateTime;
+          alert("현재 시간 이후로는 선택이 불가능합니다");
+        }
+      });
+
+      Array.from(cancelElArr).forEach(function (cancelBtn, i) {
+        fileInputElArr[i].addEventListener("change", function () {
+          uploadFile(i);
+        });
+        cancelBtn.addEventListener("click", function () {
+          fileInputElArr[i].value = "";
+          fileId[i] = null;
+          fileNameElArr[i].textContent = "";
+          cancelBtn.style.display = "none";
+          deleteFile(fileId[i]);
+        });
+      });
     });
 
     const onClickCancleBtn = () => {
       if (confirm("등록을 취소하시겠습니까"))
         location.href = "/admin/content_main";
     };
+
+    const fileButtonStyle = (i) => {
+      const file = fileInputElArr[i].files[0];
+      if (file != null) {
+        const fileName = file.name;
+        fileNameElArr[i].textContent = fileName;
+        fileNameElArr[i].style.display = "inline";
+        cancelElArr[i].style.display = "inline-block";
+      } else {
+        fileNameElArr[i].style.display = "none";
+        cancelElArr[i].style.display = "none";
+      }
+    }
 
     //컨텐츠 조회
     const showContent = async () => {
@@ -330,18 +339,20 @@
           const note = document.getElementById("note");
           const category = document.getElementById("category");
           const contentId = document.getElementById("content_id");
-          const regDate = document.querySelector("#select-date");
+          const regDate = document.querySelector("#start_date");
           const modDate = document.querySelector("#mod_date");
+          const hour = document.getElementById("hour");
+          const minute = document.getElementById("minute");
+          const second = document.getElementById("second");
 
           contentId.textContent = content_id;
+          title.value = data[0].title;
+          note.value = data[0].note;
           fileId[0] = data[0].file_main_id;
           fileId[1] = data[0].file_1_id;
           fileId[2] = data[0].file_2_id;
           fileId[3] = data[0].file_3_id;
           fileId[4] = data[0].file_4_id;
-          member_id = data[0].member_id;
-          title.value = data[0].title;
-          note.value = data[0].note;
           if (data[0].exposure_yn === 'Y') {
             document.querySelector('.exposure.y').checked = true;
           } else {
@@ -352,24 +363,23 @@
             "YYYY-MM-DD HH:mm:ss"
           );
           originRegDateTime = dayjs(data[0].reg_date);
-          selectDateTime = originRegDateTime.format(
-            "YYYY-MM-DD HH:mm:ss"
-          );
           regDate.value = originRegDateTime.format(
             "YYYY-MM-DD"
           );
-          $(".hour").val(dayjs(data[0].reg_date).format("HH"));
-          $(".minute").val(dayjs(data[0].reg_date).format("mm"));
-          $(".second").val(dayjs(data[0].reg_date).format("ss"));
+          selectDateTime = originRegDateTime.format(
+            "YYYY-MM-DD HH:mm:ss"
+          );
+          hour.value = dayjs(data[0].reg_date).format("HH")
+          minute.value = dayjs(data[0].reg_date).format("mm")
+          second.value = dayjs(data[0].reg_date).format("ss")
 
-          const files = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
-          files.forEach((el, i) => {
-            if (!(el == null)) {
-              fileNameElArr[i].textContent = el;
+          const filesName = [data[0].file_main_id_origin_name, data[0].file_1_id_origin_name, data[0].file_2_id_origin_name, data[0].file_3_id_origin_name, data[0].file_4_id_origin_name];
+          filesName.forEach((name, i) => {
+            if (!(name == null)) {
+              fileNameElArr[i].textContent = name;
               fileNameElArr[i].style.display = "inline";
               cancelElArr[i].style.display = "inline-block";
             }
-
           });
         }
       } catch (err) {
@@ -396,22 +406,13 @@
         await deleteFile(fileId[i]);
       }
 
-      if (file != null) {
-        const fileName = file.name;
-        fileNameElArr[i].textContent = fileName;
-        fileNameElArr[i].style.display = "inline";
-        cancelElArr[i].style.display = "inline-block";
-      } else {
-        fileNameElArr[i].style.display = "none";
-        cancelElArr[i].style.display = "none";
-      }
+      fileButtonStyle(i);
 
       const formData = new FormData();
       formData.append("file", file);
 
       const requestOptions = {
         method: 'POST',
-        //headers: myHeaders,
         body: formData,
         redirect: 'follow'
       };
@@ -421,8 +422,6 @@
         const { code, message, data } = await response.json();
         if (code === 200) {
           fileId[i] = data.file_id;
-        }else{
-          console.log(message);
         }
       } catch (err) {
         console.log('Err:', err);
@@ -431,12 +430,9 @@
 
     //컨텐츠 수정
     const modContent = async () => {
-      const requiredPhoto = document.getElementById("file1").value;
       const raw = {
         content_id,
-        reg_date: dayjs(selectDateTime).format(
-          "YYYY-MM-DD HH:mm:ss"
-        ),
+        reg_date: dayjs(selectDateTime).format("YYYY-MM-DD HH:mm:ss"),
         exposure_yn: document.querySelector('input[name="exposure_yn"]:checked').value,
         category: document.getElementById("category").value,
         note: document.getElementById("note").value,

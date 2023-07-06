@@ -36,5 +36,8 @@ router.get("/common/sidebar", checkSessionMiddleware, (req, res) => {
 router.get("/common/topbar", checkSessionMiddleware, (req, res) => {
   res.render("admin/common/topbar", { user: req.session.user });
 });
+router.get("/common/footer", checkSessionMiddleware, (req, res) => {
+  res.render("admin/common/footer", { user: req.session.user });
+});
 
 module.exports = router;

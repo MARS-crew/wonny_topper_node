@@ -35,7 +35,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordion_sidebar">
     </ul>
     <!-- End of Sidebar -->
 
@@ -44,7 +44,7 @@
       <!-- Main Content -->
       <div id="content">
         <!-- Topbar -->
-        <nav id="top-bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
+        <nav id="top_bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -65,89 +65,84 @@
               </h6>
 
               <!-- Search-Panel -->
-              <section class="panel search-panel mb-xs">
-                <div class="panel-body search-panel-body">
-                  <form class="form-horizontal form-bordered">
-                    <div class="form-group">
-                      <label class="col-md-2 filter-label">등록일</label>
-
-                      <div class="col-md-6 filter-inputs">
-                        <div class="input-daterange input-group date-pick" data-plugin-datepicker
-                          data-plugin-options='{"format": "yyyy-mm-dd"}'>
-                          <input type="text" class="form-control" id="from-date" autocomplete="off" />
-                          <span class="input-group-addon">
-                            <i class="fa fa-calendar calender-icon"></i>
-                          </span>
-                          <span class="input-group-addon tx-icon">
-                            ~
-                          </span>
-                          <input type="text" class="form-control" id="to-date" autocomplete="off" />
-                          <span class="input-group-addon">
-                            <i class="fa fa-calendar calender-icon"></i>
-                          </span>
-                        </div>
+              <section class="panel mb-xs">
+                <div class="panel-body">
+                  <div class="form-group">
+                    <label class="col-md-2 filter-label">등록일</label>
+                    <div class="col-md-6 filter-inputs">
+                      <div class="input-daterange input-group date-pick">
+                        <input type="text" class="form-control" id="from_date" autocomplete="off" />
+                        <span class="input-group-addon">
+                          <i class="fa fa-calendar calender-icon"></i>
+                        </span>
+                        <span class="input-group-addon tx-icon">
+                          ~
+                        </span>
+                        <input type="text" class="form-control" id="to_date" autocomplete="off" />
+                        <span class="input-group-addon">
+                          <i class="fa fa-calendar calender-icon"></i>
+                        </span>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="col-md-2 filter-label">카테고리</label>
-
-                      <div class="col-md-9 filter-inputs">
-                        <div class="filter-category">
-                          <label class="ckbox-inline">
-                            <input type="checkbox" id="checkAll" name="ckall" checked />
-                            전체
-                          </label>
-                          <label class="ckbox-inline">
-                            <input type="checkbox" class="ck category" value="1" checked />
-                            풍선 장식
-                          </label>
-                          <label class="ckbox-inline">
-                            <input type="checkbox" class="ck category" value="2" checked />
-                            토퍼
-                          </label>
-                          <label class="ckbox-inline">
-                            <input type="checkbox" class="ck category" value="3" checked />
-                            삐에로 / 페이스페인팅
-                          </label>
-                          <label class="ckbox-inline">
-                            <input type="checkbox" class="ck category" value="4" checked />
-                            클래스
-                          </label>
-                        </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 filter-label">카테고리</label>
+                    <div class="col-md-9 filter-inputs">
+                      <div class="filter-category">
+                        <label class="ckbox-inline">
+                          <input type="checkbox" id="check_all" checked />
+                          전체
+                        </label>
+                        <label class="ckbox-inline">
+                          <input type="checkbox" class="ck category" value="1" checked />
+                          풍선 장식
+                        </label>
+                        <label class="ckbox-inline">
+                          <input type="checkbox" class="ck category" value="2" checked />
+                          토퍼
+                        </label>
+                        <label class="ckbox-inline">
+                          <input type="checkbox" class="ck category" value="3" checked />
+                          삐에로 / 페이스페인팅
+                        </label>
+                        <label class="ckbox-inline">
+                          <input type="checkbox" class="ck category" value="4" checked />
+                          클래스
+                        </label>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="col-md-2 filter-label">노출여부</label>
-                      <div class="col-md-9 filter-inputs">
-                        <div class="filter-expose">
-                          <label class="radio-button-inline">
-                            <input type="radio" name="exposure_yn" value="all" checked />
-                            전체
-                          </label>
-                          <label class="radio-button-inline">
-                            <input type="radio" class="rb exposure" name="exposure_yn" value="Y" />
-                            Y
-                          </label>
-                          <label class="radio-button-inline">
-                            <input type="radio" class="rb exposure" name="exposure_yn" value="N" />
-                            N
-                          </label>
-                        </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 filter-label">노출여부</label>
+                    <div class="col-md-9 filter-inputs">
+                      <div class="filter-expose">
+                        <label class="radio-button-inline">
+                          <input type="radio" name="exposure_yn" value="all" checked />
+                          전체
+                        </label>
+                        <label class="radio-button-inline">
+                          <input type="radio" name="exposure_yn" value="Y" />
+                          Y
+                        </label>
+                        <label class="radio-button-inline">
+                          <input type="radio" name="exposure_yn" value="N" />
+                          N
+                        </label>
                       </div>
                     </div>
-                    <div class="form-group">
-                      <label class="col-md-2 filter-label">검색어</label>
-                      <div class="col-sm-8 search-input filter-inputs">
-                        <input type="text" id="keyword" class="form-control" />
-                      </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-md-2 filter-label">검색어</label>
+                    <div class="col-sm-8 search-input filter-inputs">
+                      <input type="text" id="keyword" class="form-control" />
                     </div>
-                  </form>
+                  </div>
                 </div>
               </section>
               <!-- Search-Panel end -->
 
-              <div class="btn-area float-right" onClick="onClickSearch()">
-                <a href="#" class="btn btn btn-block">
+              <div class="btn-area float-right">
+                <a href="#" class="btn btn btn-block" id="search_btn">
                   검색
                 </a>
               </div>
@@ -157,14 +152,14 @@
               <div class="table-responsive">
                 <div class="admin-btn-tool tx-align-left">
                   <div class="tool-select ib">
-                    <select id="orderSelect" class="form-control" name="orderSelect">
+                    <select id="order_select" class="form-control" name="order_select">
                       <option value="DESC">등록일 ↓</option>
                       <option value="ASC">등록일 ↑</option>
                     </select>
                   </div>
 
                   <div class="tool-btn ib">
-                    <button type="button" id="delete_btn" class="btn btn-sm btn-dark" onclick="onClickDeleteBtn()">
+                    <button type="button" id="delete_btn" class="btn btn-sm btn-dark">
                       선택 삭제
                     </button>
                   </div>
@@ -180,7 +175,7 @@
                   <thead>
                     <tr>
                       <th>
-                        <input type="checkbox" name="table-ck-all" class="table-ck-all" />
+                        <input type="checkbox" name="table_ck_all" />
                       </th>
                       <th>NO</th>
                       <th>카테고리</th>
@@ -196,9 +191,8 @@
                   <div class="col-sm-12 col-md-5">
                     <div id="list_info"></div>
                   </div>
-                  <div class="col-sm-12 col-md-7"></div>
                 </div>
-                <div id="paginationContainer">
+                <div id="pagination_container">
                   <ul class="pagination">
                   </ul>
                 </div>
@@ -212,10 +206,10 @@
   <!-- End of Main Content -->
 
   <!-- Footer -->
-  <footer class="sticky-footer bg-white">
+  <footer id="footer" class="sticky-footer bg-white">
     <div class="container my-auto">
       <div class="copyright text-center my-auto">
-        <span>Copyright &copy; Your Website 2020</span>
+        <span>Copyright &copy; Wonny Topper 2023</span>
       </div>
     </div>
   </footer>
@@ -224,30 +218,6 @@
   <!-- End of Content Wrapper -->
   </div>
   <!-- End of Page Wrapper -->
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Ready to Leave?</h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          Select "Logout" below if you are ready to end your current session.
-        </div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">
-            Cancel
-          </button>
-          <a class="btn btn-primary" href="login.html">Logout</a>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- Logout Modal End -->
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="/admin/assets/js/common.js"></script>
@@ -271,35 +241,25 @@
     let sort = "DESC";
     let exposure_yn = ['N', 'Y'];
 
-    window.onload = () => {
-  $('#from-date, #to-date').datepicker({
-    dateFormat: 'yy-mm-dd',
-    format: 'yyyy-mm-dd',
-    autoclose: true,
-    todayHighlight: true,
-    placement: 'bottom',
-    orientation: 'auto bottom',
-    defaultDate: new Date(),
-    onClose: function (dateStr, datepicker) {
-      const startDate = new Date($('#from-date').val());
-      const endDate = new Date($('#to-date').val());
-      if (endDate < startDate) {
-        $('#to-date').val($('#from-date').val());
-      }
-    },
-  });
-
-  const today = dayjs();
-  const formattedDate = today.format('YYYY-MM-DD');
-  $('#from-date, #to-date').datepicker('setDate', formattedDate);
-}
     $(document).ready(function () {
-      const lang = {
-        decimal: '',
-        emptyTable: '데이터가 없습니다.',
-        thousands: ',',
-        zeroRecords: '검색된 데이터가 없습니다.',
-      }
+      const today = dayjs();
+      const formattedDate = today.format('YYYY-MM-DD');
+      $('#from_date, #to_date').datepicker({
+        dateFormat: 'yyyy-mm-dd',
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true,
+        placement: 'bottom',
+        orientation: 'auto bottom',
+      });
+      $('#from_date, #to_date').datepicker('setDate', formattedDate);
+      $('#from_date, #to_date').on('changeDate', function (event) {
+        const startDate = new Date($('#from_date').val());
+        const endDate = new Date($('#to_date').val());
+        if (endDate < startDate) {
+          $('#to_date').datepicker('setDate', startDate);
+        }
+      });
 
       DT = $('#dataTable').DataTable({
         info: false,
@@ -318,33 +278,95 @@
         ],
       });
       showListData();
+
+      $('#order_select').on('change', function () {
+        sort = $(this).val();
+        showListData();
+      });
+
+      //전체 체크
+      $('#check_all').change(function () {
+        $('.ck').prop('checked', $(this).prop('checked'));
+      });
+
+      //나머지 체크
+      $('.ck').change(function () {
+        if ($('.ck:checked').length === $('.ck').length) {
+          $('#check_all').prop('checked', true);
+        } else {
+          $('#check_all').prop('checked', false);
+        }
+      });
+
+      //테이블 전체 체크
+      $('input[name=table_ck_all]').change(function () {
+        $('.table-ck').prop('checked', $(this).prop('checked'));
+      });
+
+      $('#dataTable tbody').on('click', 'tr.content-list', function () {
+        if ($(event.target).is('input[type="checkbox"]')) {
+          if ($('.table-ck:checked').length === curDataCount) {
+            $('input[name=table_ck_all]').prop('checked', true);
+          } else {
+            $('input[name=table_ck_all]').prop('checked', false);
+          }
+          return;
+        }
+        const checkboxValue = $(this).find('.table-ck').val();
+        const queryString = `?content_id=${checkboxValue}`;
+        window.location.href = '/admin/content_detail' + queryString;
+      })
+
+      $('#search_btn').click(onClickSearch);
+      $('#delete_btn').click(onClickDeleteBtn);
     });
 
-    $('#orderSelect').on('change', function () {
-      sort = $(this).val();
+    const changePage = (i) => {
+      page = (i > 0) ? i : ((i > -1) ? page + 1 : page + i);
       showListData();
-    });
+    }
 
-    //전체 체크
-    $('#checkAll').change(function () {
-      $('.ck').prop('checked', $(this).prop('checked'));
-    });
+    const paginate = () => {
+      pageCount = Math.ceil(allDataCount * 1.0 / pageSize);
+      rangeCount = Math.ceil(pageCount * 1.0 / rangeSize);
+      curRange = Math.floor((page - 1) / rangeSize) + 1;
+      startPage = (curRange - 1) * rangeSize + 1;
+      endPage = startPage + rangeSize - 1;
+      if (endPage > pageCount) endPage = pageCount;
 
-    //나머지 체크
-    $('.ck').change(function () {
-      if ($('.ck:checked').length === $('.ck').length) {
-        $('#checkAll').prop('checked', true);
-      } else {
-        $('#checkAll').prop('checked', false);
+      const paginationContainer = document.querySelector('#pagination_container .pagination');
+      let paginationHTML = '';
+      for (let i = startPage; i <= endPage; i++) {
+        let pageItemClass = 'paginate_button page-item';
+        if (i === page) pageItemClass += ' active';
+
+        paginationHTML += `<li class="${pageItemClass}"><a href="#" class="page-link" onclick="changePage(${i})">${i}</a></li>`;
       }
-    });
 
-    $('input[name=table-ck-all]').change(function () {
-      $('.table-ck').prop('checked', $(this).prop('checked'));
-    });
+      let prevPageLinkHTML = `
+      <li class="paginate_button page-item previous ${page === 1 ? 'disabled' : ''}" id="dataTable_previous">
+        <a href="#" onclick="changePage(-1)"  class="page-link" >
+          <i class="fa fa-chevron-left"></i>
+        </a>
+      </li>
+    `;
+      let nextPageLinkHTML = `
+      <li class="paginate_button page-item next ${page === pageCount ? 'disabled' : ''}" id="dataTable_next">
+        <a href="#" onclick="changePage(0)" class="page-link">
+          <i class="fa fa-chevron-right"></i>
+        </a>
+      </li>
+    `;
+      paginationContainer.innerHTML = prevPageLinkHTML + paginationHTML + nextPageLinkHTML;
 
-    const onClickSearch = () => {
-      const checkboxes = document.querySelectorAll('.filter-category input[type="checkbox"]:checked:not(#checkAll)');
+      const listInfoContainer = document.getElementById('list_info');
+      listInfoContainer.innerHTML = `Showing ${startIndex} to ${startIndex + curDataCount - 1} of ${allDataCount} entriess`;
+    }
+
+    //검색 버튼 이벤트
+    const onClickSearch = (event) => {
+      event.preventDefault();
+      const checkboxes = document.querySelectorAll('.filter-category input[type="checkbox"]:checked:not(#check_all)');
       category = [];
       checkboxes.forEach(function (checkbox) {
         category.push(parseInt(checkbox.value));
@@ -352,9 +374,8 @@
       const exposure_yn_radio = document.querySelector('input[name="exposure_yn"]:checked').value;
       exposure_yn = exposure_yn_radio == 'all' ? ["Y", "N"] : [exposure_yn_radio];
       search_word = document.getElementById('keyword').value;
-      from_date = document.getElementById('from-date').value;
-      to_date = document.getElementById('to-date').value;
-
+      from_date = document.getElementById('from_date').value;
+      to_date = document.getElementById('to_date').value;
       sort = "DESC";
       page = 1;
       showListData();
@@ -362,7 +383,6 @@
 
     //리스트 조회
     const showListData = async () => {
-
       const raw = JSON.stringify({
         from_date,
         to_date,
@@ -388,10 +408,9 @@
           DT.clear().draw();
 
           startIndex = ((page - 1) * pageSize) + 1;
-          let curDataCount = 0;
+          allDataCount = data.count;
+          curDataCount = data.content.length;
           data.content.forEach(function (row, i) {
-            ++curDataCount;
-
             const checkbox = $('<input>').attr({
               type: 'checkbox',
               class: 'content-ck table-ck',
@@ -405,38 +424,14 @@
               i + startIndex,
               categoryDecode(row.category),
               row.title,
-              dayjs(row.reg_date).format(
-                "YYYY-MM-DD"
-              ),
+              dayjs(row.reg_date).format("YYYY-MM-DD"),
               row.exposure_yn
             ]).node().classList.add('content-list');
 
             DT.draw(false);
 
-            const pageInfo = DT.page.info();
-
           });
-
-          allDataCount = data.count;
-          paginate(curDataCount);
-
-          const listInfoContainer = document.getElementById('list_info');
-          listInfoContainer.innerHTML = `Showing ${startIndex} to ${startIndex + curDataCount - 1} of ${allDataCount} entriess`;
-
-          $('#dataTable tbody').on('click', 'tr.content-list', function () {
-            if ($(event.target).is('input[type="checkbox"]')) {
-              if ($('.table-ck:checked').length === curDataCount) {
-                $('input[name=table-ck-all]').prop('checked', true);
-              } else {
-                $('input[name=table-ck-all]').prop('checked', false);
-              }
-              return;
-            }
-            const checkboxValue = $(this).find('.table-ck').val();
-            const queryString = `?content_id=${checkboxValue}`;
-            window.location.href = '/admin/content_detail' + queryString;
-          })
-
+          paginate();
           return;
         }
 
@@ -445,72 +440,15 @@
       }
     }
 
-    const changePage = (i) => {
-      page = (i > 0) ? i : ((i > -1) ? page + 1 : page + i);
-      showListData();
-    }
-
-
-    const paginate = (curDataCount) => {
-      pageCount = Math.ceil(allDataCount * 1.0 / pageSize);
-      rangeCount = Math.ceil(pageCount * 1.0 / rangeSize);
-      curRange = Math.floor((page - 1) / rangeSize) + 1;
-      startPage = (curRange - 1) * rangeSize + 1;
-      endPage = startPage + rangeSize - 1;
-
-      if (endPage > pageCount) {
-        endPage = pageCount;
-      }
-
-      // console.log(`
-      // page${page}
-      // pageCount${pageCount}
-      // rangeCount${rangeCount}
-      // curRange${curRange}
-      // startIndex${startIndex}
-      // startPage${startPage}
-      // endPage${endPage}
-      // `
-      // );
-
-
-      const paginationContainer = document.querySelector('#paginationContainer ul.pagination');
-      let paginationHTML = '';
-      for (let i = startPage; i <= endPage; i++) {
-        let pageItemClass = 'paginate_button page-item';
-        if (i === page) {
-          pageItemClass += ' active';
-        }
-        paginationHTML += `<li class="${pageItemClass}"><a href="#" class="page-link" onclick="changePage(${i})">${i}</a></li>`;
-      }
-
-      let prevPageLinkHTML = `
-      <li class="paginate_button page-item previous ${page === 1 ? 'disabled' : ''}" id="dataTable_previous">
-        <a href="#" onclick="changePage(-1)"  class="page-link" >
-          <i class="fa fa-chevron-left"></i>
-        </a>
-      </li>
-    `;
-      let nextPageLinkHTML = `
-      <li class="paginate_button page-item next ${page === pageCount ? 'disabled' : ''}" id="dataTable_next">
-        <a href="#" onclick="changePage(0)" class="page-link">
-          <i class="fa fa-chevron-right"></i>
-        </a>
-      </li>
-    `;
-      paginationContainer.innerHTML = prevPageLinkHTML + paginationHTML + nextPageLinkHTML;
-
-
-    }
 
     //컨텐츠 선택삭제 
     const onClickDeleteBtn = async () => {
-      const checkboxes = document.querySelectorAll('.content-table input[type="checkbox"]:checked:not(#checkAll)');
+      const checkboxes = document.querySelectorAll('.content-table input[type="checkbox"]:checked:not(#check_all)');
       if (checkboxes.length === 0) {
         alert("삭제할 컨텐츠를 선택해주세요.");
         return;
       }
-      delContents = [];
+      const delContents = [];
       checkboxes.forEach(function (checkbox) {
         delContents.push(parseInt(checkbox.value, 10));
       });
@@ -533,13 +471,16 @@
           const { code, message } = await response.json();
           if (code === 200) {
             window.location.href = "/admin/content_main";
-          }
-        } catch {
 
+          } else {
+            alert(message);
+          }
+        } catch (err) {
+          alert("에러가 발생했습니다.");
+          console.log("Err", err);
         }
       };
     }
-
   </script>
 
   <!-- Bootstrap core JavaScript-->

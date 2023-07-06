@@ -29,143 +29,111 @@ let popupCategoryPopup = [];
 
 // main images 8개  api
 const fetchGalleryImages = (id) => {
-  fetch("http://localhost:3000/content/gallery", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  //console.log(FETCH);
+  FETCH.post(
+    "/content/gallery",
+    {
       page: 1,
       pageSize: 8,
       category: [id],
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
+    },
+    (data) => {
       galleryCategoryImg = data;
       galleryImageList(galleryCategoryImg);
-    });
+    }
+  );
 };
 
 // 원데이 클래스 api
 const fetchClassImages = (id) => {
-  fetch("http://localhost:3000/content/gallery", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  FETCH.post(
+    "/content/gallery",
+    {
       page: null,
       pageSize: null,
       category: [4],
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
+    },
+    (data) => {
       classCategoryImg = data;
       classImageList(classCategoryImg);
-    });
+    }
+  );
 };
 
 // 삐에로/페이스페인팅 api
 const fetchPierrotImages = (id) => {
-  fetch("http://localhost:3000/content/gallery", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  FETCH.post(
+    "/content/gallery",
+    {
       page: null,
       pageSize: null,
       category: [3],
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
+    },
+    (data) => {
       pierrotCategoryImg = data;
       pierrotImageList(pierrotCategoryImg);
-    });
+    }
+  );
 };
 
 // 토퍼 api
 const fetchTopperImages = (id) => {
-  fetch("http://localhost:3000/content/gallery", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  FETCH.post(
+    "/content/gallery",
+    {
       page: null,
       pageSize: null,
       category: [2],
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
+    },
+    (data) => {
       topperCategoryImg = data;
       topperImageList(topperCategoryImg);
-    });
+    }
+  );
 };
 
 let pageCount = 1;
 // 풍선 api
 const fetchBalloonImages = (id) => {
-  fetch("http://localhost:3000/content/gallery", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  FETCH.post(
+    "/content/gallery",
+    {
       page: pageCount,
       pageSize: 12,
       category: [1],
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
+    },
+    (data) => {
       const categoryObj = Object.assign({}, data);
       const categoryList = categoryObj.data;
       balloonCategoryImg = balloonCategoryImg.concat(categoryList); // 받아온 이미지를 배열에 추가
       balloonImageList(balloonCategoryImg);
-    });
+    }
+  );
 };
 
 // 팝업 상세 호출 api
 const fetchGalleryPopupDetail = (id) => {
-  fetch(`http://localhost:3000/content/select/${id}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      galleryCategoryPopup = data;
-      popupAddElement(data); // 수정: data를 전달
-    });
+  FETCH.get(`/content/select/${id}`, (data) => {
+    galleryCategoryPopup = data;
+    popupAddElement(data); // 수정: data를 전달
+  });
 };
 
 // 상담문의 카테고리 조회  api
 const fetchPopupCategoryImages = (id) => {
-  fetch("http://localhost:3000/content/gallery", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  FETCH.post(
+    "/content/gallery",
+    {
       page: null,
       pageSize: null,
       category: [id],
-    }),
-  })
-    .then((response) => response.json())
-    .then((data) => {
+    },
+    (data) => {
       popupCategoryPopup = data;
       console.log(popupCategoryPopup);
       contentsImageList(popupCategoryPopup);
-      // galleryCategoryImg = data;
-      // galleryImageList(galleryCategoryImg);
-    });
+    }
+  );
 };
 
 /* 원데이클래스 호출 */
@@ -253,7 +221,7 @@ const galleryImageList = (img) => {
       galleryListContainer.insertAdjacentHTML(
         "beforeend",
         `
-        <li data-id=${element.content_id} style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+        <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
             <div class="gallery_category_list_content">
               <div class="gallery_category_title_area">
                 <div class="gallery_category_title">${element.title}</div>
@@ -294,7 +262,7 @@ const popupAddElement = (data) => {
 
   const popupTitle = document.querySelector(".popup_title");
 
-  popupImagesList.innerHTML = "";
+  //popupImagesList.innerHTML = "";
   console.log(content[0]);
 
   let detailImg01, detailImg02, detailImg03, detailImg04, mainImg;
@@ -303,37 +271,51 @@ const popupAddElement = (data) => {
 
   popupImagesList.insertAdjacentHTML(
     "beforeend",
-    `<div class="swiper-slide"><img src=http://localhost:3000/img/uploads/${mainImg}></div>`
+    `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${mainImg}></div>`
   );
 
   if (content[0].file_1_id_url) {
     detailImg01 = trimFilePath(content[0].file_1_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://localhost:3000/img/uploads/${detailImg01}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg01}></div>`
     );
   }
   if (content[0].file_2_id_url) {
     detailImg02 = trimFilePath(content[0].file_2_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://localhost:3000/img/uploads/${detailImg02}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg02}></div>`
     );
   }
   if (content[0].file_3_id_url) {
     detailImg03 = trimFilePath(content[0].file_3_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://localhost:3000/img/uploads/${detailImg03}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg03}></div>`
     );
   }
   if (content[0].file_4_id_url) {
     detailImg04 = trimFilePath(content[0].file_4_id_url);
     popupImagesList.insertAdjacentHTML(
       "beforeend",
-      `<div class="swiper-slide"><img src=http://localhost:3000/img/uploads/${detailImg04}></div>`
+      `<div class="swiper-slide"><img src="http://localhost:3000/img/uploads/${detailImg04}></div>`
     );
   }
+
+  const swiper = new Swiper(".mySwiper", {
+    spaceBetween: 2,
+    direction: "horizontal", // 가로 슬라이드
+    slidesPerView: 1,
+    loop: true,
+    centeredSlides: true,
+    autoplay: false,
+    pagination: false,
+    navigation: {
+      nextEl: ".swiper-button-next",
+      prevEl: ".swiper-button-prev",
+    },
+  });
 };
 
 /* popup close */
@@ -347,6 +329,12 @@ if (popupCloseBtn) {
     }
   });
 }
+
+// if (popupWrap) {
+//   popupWrap.addEventListener("click", (event) => {
+//     popupWrap.classList.add("hidden");
+//   });
+// }
 
 /* contents popup open */
 if (contentsBtn) {
@@ -411,31 +399,6 @@ if (applyBtn) {
     }
   });
 
-  // const qnaContentDetail = document.querySelector(".qna_content_detail");
-
-  qnaContent.addEventListener("input", () => {
-    const inputValue = qnaContent.value;
-    const isValid = /^[A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]*$/g.test(inputValue);
-
-    if (!isValid) {
-      qnaContent.value = inputValue
-        .replace(/[^A-Za-zㄱ-ㅎㅏ-ㅣ가-힣]/g, "")
-        .slice(0, 500);
-    }
-  });
-
-  //   qnaContent.addEventListener("input", () => {
-  //   const inputValue = qnaContent.value;
-  //   const length = inputValue.length;
-  //   if (length < 10) {
-  //     qnaContent.setCustomValidity("최소 10글자 이상 입력해주세요.");
-  //   } else if (length > 500) {
-  //     qnaContent.setCustomValidity("최대 500글자까지 입력 가능합니다.");
-  //   } else {
-  //     qnaContent.setCustomValidity("");
-  //   }
-  // });
-
   applyBtn.addEventListener("click", () => {
     // 유효성 체크
     if (
@@ -464,12 +427,9 @@ if (applyBtn) {
       return;
     }
 
-    fetch("http://localhost:3000/counsel/insertCounsel", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    FETCH.post(
+      "/counsel/insertCounsel",
+      {
         name: name.value,
         phone_num: hp1.value + hp2.value + hp3.value,
         email: email.value + "@" + address.value,
@@ -479,14 +439,13 @@ if (applyBtn) {
         detail: qnaContent.value,
         agree: agreeCheckbox.checked,
         content_id: selectContentId.value,
-      }),
-    })
-      .then((response) => response.text())
-      .then((data) => {
+      },
+      (data) => {
         console.log(data);
         alert("신청이 완료되었습니다");
         location.href = "/index";
-      });
+      }
+    );
   });
 
   if (categoryRequestSelet) {
@@ -527,7 +486,7 @@ const contentsImageList = (data) => {
       `
       <li data-id=${element.content_id}>
         <div class="conetnts_list_area">
-          <div class="conetnts_list_content" style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+          <div class="conetnts_list_content" style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
             <div class="radio_area">
               <input type="radio" id=${element.content_id} name="applyInfoType" value="${element.title}" />
                 <label for=${element.content_id}>
@@ -568,6 +527,9 @@ if (saveBtn) {
       alert("컨텐츠를 선택해주세요");
     }
 
+    if (isChecked) {
+      qnaPopupWrap.classList.add("hidden");
+    }
     contentTitle.textContent = checkTitle;
     contentId.value = checkId;
     contentDelBtn.classList.remove("hidden");
@@ -596,7 +558,7 @@ const classImageList = (img) => {
     classListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
@@ -633,7 +595,7 @@ const pierrotImageList = (img) => {
     pierrotListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
@@ -670,7 +632,7 @@ const topperImageList = (img) => {
     topperListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
@@ -710,7 +672,7 @@ const balloonImageList = (imgList) => {
     balloonListContainer.insertAdjacentHTML(
       "beforeend",
       `
-      <li data-id=${element.content_id} style="background:url(http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
+      <li data-id=${element.content_id} style="background:url("http://localhost:3000/img/uploads/${mainImgUrl}) no-repeat center center/cover">
           <div class="gallery_category_list_content">
             <div class="gallery_category_title_area">
               <div class="gallery_category_title">${element.title}</div>
@@ -741,15 +703,16 @@ const balloonImageList = (imgList) => {
 };
 
 /* popup swiper  */
-const swiper = new Swiper(".mySwiper", {
-  spaceBetween: 2,
-  direction: "horizontal", // 가로 슬라이드
-  slidesPerView: 1,
-  centeredSlides: true,
-  autoplay: false,
-  pagination: false,
-  navigation: {
-    nextEl: ".swiper-button-next",
-    prevEl: ".swiper-button-prev",
-  },
-});
+// const swiper = new Swiper(".mySwiper", {
+//   spaceBetween: 2,
+//   direction: "horizontal", // 가로 슬라이드
+//   slidesPerView: 1,
+//   loop: true,
+//   centeredSlides: true,
+//   autoplay: false,
+//   pagination: false,
+//   navigation: {
+//     nextEl: ".swiper-button-next",
+//     prevEl: ".swiper-button-prev",
+//   },
+// });

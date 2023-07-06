@@ -35,7 +35,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordion_sidebar"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -43,7 +43,7 @@
       <!-- Main Content -->
       <div id="content">
         <!-- Topbar -->
-        <nav id="top-bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
+        <nav id="top_bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -79,7 +79,7 @@
                   <td width="20%" class="table-title-td">
                     노출여부<span class="star">*</span>
                   </td>
-                  <td width="30%" id="exposure_yn_radio">
+                  <td width="30%">
                     <div class="col-md-9 filter-inputs">
                       <div class="filter-answer">
                         <label class="radio-button-filter">
@@ -105,9 +105,9 @@
 
                 <tr>
                   <td width="20%" class="table-title-td">등록일<span class="star">*</span></td>
-                  <td width="30%" id="reg_date">2023-10-10 12:00:00</td>
+                  <td width="30%" id="reg_date"></td>
                   <td width="20%" class="table-title-td">수정일</td>
-                  <td width="30%" id="mod_date">2023-10-10 12:00:00</td>
+                  <td width="30%" id="mod_date"></td>
                 </tr>
               </table>
 
@@ -118,27 +118,27 @@
                     대표 이미지<span class="star">*</span>
                     <div>(최대 1개)</div>
                   </td>
-                  <td width="40%" colspan="2" id="file_main_url">00기업_풍선장식_01.jpg</td>
+                  <td width="40%" colspan="2" id="file_main_url"></td>
                 </tr>
                 <tr>
                   <td width="20%" rowspan="4" class="table-title-td">
                     추가 이미지
                     <div>(최대 4개)</div>
                   </td>
-                  <td width="5%" style="text-align: center">1</td>
-                  <td width="95%" id="file_1_url">00기업_풍선장식_02.jpg</td>
+                  <td width="5%" class="align-c">1</td>
+                  <td width="95%" id="file_1_url"></td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center">2</td>
-                  <td width="95%" id="file_2_url">00기업_풍선장식_03.jpg</td>
+                  <td width="5%" class="align-c">2</td>
+                  <td width="95%" id="file_2_url"></td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center">3</td>
-                  <td width="95%" id="file_3_url">00기업_풍선장식_04.jpg</td>
+                  <td width="5%" class="align-c">3</td>
+                  <td width="95%" id="file_3_url"></td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center">4</td>
-                  <td width="95%" id="file_4_url">00기업_풍선장식_05.jpg</td>
+                  <td width="5%" class="align-c">4</td>
+                  <td width="95%" id="file_4_url"></td>
                 </tr>
               </table>
 
@@ -147,22 +147,21 @@
                 <tr>
                   <td width="20%" class="table-title-td">비고</td>
                   <td width="80%" colspan="2">
-                    <textarea class="form-control" value="비고입니다." disabled id="note"></textarea>
+                    <textarea class="form-control" disabled id="note"></textarea>
                   </td>
                 </tr>
               </table>
 
-              <div class="col-md-3 admin-btn-tool tool-btn ib detail-bottom-btn"></div>
+              <div class="col-md-3 admin-btn-tool ib detail-bottom-btn"></div>
 
-              <div class="admin-btn-tool tool-btn ib detail-bottom-btn">
-                <button type="button" class="btn btn-primary btn-100" onClick="onClickCancleBtn()">
+              <div class="admin-btn-tool ib detail-bottom-btn">
+                <button type="button" id="to_board_btn" class="btn btn-primary btn-100">
                   목록
                 </button>
-
-                <button type="button" class="btn btn-primary btn-100 float-right" onClick="onClickUpdateBtn()">
+                <button type="button" id="update_btn" class="btn btn-primary btn-100 float-right">
                   수정
                 </button>
-                <button type="button" class="btn btn-primary btn-100 float-right mr-lg-3" onClick="onClickDeleteBtn()">
+                <button type="button" id="delete_btn" class="btn btn-primary btn-100 float-right mr-lg-3">
                   삭제
                 </button>
               </div>
@@ -173,10 +172,10 @@
       <!-- End of Main Content -->
 
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
+      <footer id="footer" class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
+            <span>Copyright &copy; Wonny Topper 2023</span>
           </div>
         </div>
       </footer>
@@ -189,31 +188,37 @@
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="/admin/assets/js/common.js"></script>
   <script>
-    let member_id = "admin";
     const params = new URLSearchParams(window.location.search);
     const id = params.get("content_id");
-    let formattedNow = null;
-    let file_main_id = null;
-    let file_1_id = null;
-    let file_2_id = null;
-    let file_3_id = null;
-    let file_4_id = null;
 
-    myHeaders.append("Accept", "application/json");
+    $(document).ready(function () {
+      findContent();
+
+      $('#to_board_btn').click(onClickCancleBtn);
+      $('#update_btn').click(onClickUpdateBtn);
+      $('#delete_btn').click(onClickDeleteBtn);
+    });
+
+    const onClickCancleBtn = () => {
+      location.href = "/admin/content_main";
+    };
+
+    const onClickUpdateBtn = () => {
+      location.href = `/admin/content_edit?content_id=${id}`;
+    };
 
     //삭제 
     const onClickDeleteBtn = async () => {
-      const content_id = parseInt(document.getElementById("content_id").value);
-      const contentRaw = JSON.stringify({
+      const raw = JSON.stringify({
         "content_id": [
-          content_id,
+          id,
         ]
       });
 
       const requestOptions = {
         method: 'POST',
         headers: myHeaders,
-        body: contentRaw,
+        body: raw,
         redirect: 'follow'
       };
 
@@ -226,15 +231,11 @@
             window.location.href = "/admin/content_main";
           }
         } catch (err) {
-          console.log('Err:', err);
+          alert("에러가 발생했습니다.");
+          console.log("Err", err);
         }
       };
     }
-
-    $(document).ready(function () {
-      $("#dataTable").DataTable();
-      findContent();
-    });
 
     //상세 조회
     const findContent = async () => {
@@ -256,7 +257,6 @@
           if (!data) {
             return;
           }
-          member_id = data[0].member_id;
           const title = document.getElementById("title");
           const note = document.getElementById("note");
           const category = document.getElementById("category");
@@ -289,29 +289,12 @@
           file2.innerHTML = data[0].file_2_id_origin_name;
           file3.innerHTML = data[0].file_3_id_origin_name;
           file4.innerHTML = data[0].file_4_id_origin_name;
-
-          file_main_id = data[0].file_main_id;
-          file_1_id = data[0].file_1_id;
-          file_2_id = data[0].file_2_id;
-          file_3_id = data[0].file_3_id;
-          file_4_id = data[0].file_4_id;
-
         }
-
       } catch (err) {
         console.log("Err:", err);
-
       }
-
     };
 
-    const onClickCancleBtn = () => {
-      location.href = "/admin/content_main";
-    };
-
-    const onClickUpdateBtn = () => {
-      location.href = `/admin/content_edit?content_id=${id}`;
-    };
   </script>
 
   <!-- Bootstrap core JavaScript-->

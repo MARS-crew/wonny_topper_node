@@ -34,7 +34,7 @@
   <!-- Page Wrapper -->
   <div id="wrapper">
     <!-- Sidebar -->
-    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar"></ul>
+    <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordion_sidebar"></ul>
     <!-- End of Sidebar -->
 
     <!-- Content Wrapper -->
@@ -42,7 +42,7 @@
       <!-- Main Content -->
       <div id="content">
         <!-- Topbar -->
-        <nav id="top-bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
+        <nav id="top_bar" class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"></nav>
         <!-- End of Topbar -->
 
         <!-- Begin Page Content -->
@@ -68,7 +68,7 @@
                 <tr>
                   <td width="20%" class="table-title-td">카테고리<span class="star">*</span></td>
                   <td width="30%">
-                    <select name="category" id="category" class="form-control select " required>
+                    <select name="category" id="category" class="form-control select" required>
                       <option value="">--선택--</option>
                       <option value=1>풍선 장식</option>
                       <option value=2>토퍼</option>
@@ -77,15 +77,15 @@
                     </select>
                   </td>
                   <td width="20%" class="table-title-td">노출여부<span class="star">*</span></td>
-                  <td width="30%" id="exposure_yn_radio">
+                  <td width="30%">
                     <div class="col-md-9 filter-inputs">
                       <div class="filter-answer">
                         <label class="radio-button-filter">
-                          <input type="radio" name="exposure_yn" value="Y" required>
+                          <input type="radio" name="exposure_yn" value="Y" checked>
                           노출
                         </label>
                         <label class="radio-button-filter">
-                          <input type="radio" name="exposure_yn" value="N" checked>
+                          <input type="radio" name="exposure_yn" value="N">
                           비노출
                         </label>
                       </div>
@@ -102,18 +102,16 @@
                   <td width="20%" class="table-title-td">등록일<span class="star">*</span></td>
                   <td width="30%">
                     <div class="input-date">
-                      <div class="input-daterange input-date date-pick" data-plugin-datepicker
-                        data-plugin-options='{"format": "yyyy-mm-dd"}'>
-                        <input type="text" class="form-control daterange" id="select-date" name="start"
-                          autocomplete="off" />
+                      <div class="input-daterange input-date date-pick">
+                        <input type="text" class="form-control daterange" id="start_date" autocomplete="off" />
                         <span class="input-group-addon">
                           <i class="fa fa-calendar calender-icon"></i>
                         </span>
                       </div>
                       <div class="col-md-6 filter-date">
-                        <select class="form-control hour"></select> <span class="mlr-5">:</span> <select
-                          class="form-control minute"></select> <span class="mlr-5">:</span> <select
-                          class="form-control second"></select>
+                        <select class="form-control hour" id="hour"></select> <span class="mlr-5">:</span> <select
+                          class="form-control minute" id="minute"></select> <span class="mlr-5">:</span> <select
+                          class="form-control second" id="second"></select>
                       </div>
                     </div>
                   </td>
@@ -134,51 +132,52 @@
                   <td width="40%" colspan="2">
                     <label for="file1" class="file-input-label">파일 선택</label>
                     <input type="file" accept=".jpg, .jpeg, .png" id="file1" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(0)" required />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                      required />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
                   <td width="20%" rowspan="4" class="table-title-td">추가 이미지<div>(최대 4개)</div>
                   </td>
-                  <td width="5%" style="text-align: center;">1</td>
+                  <td width="5%" class="align-c">1</td>
                   <td width="95%">
                     <label for="file2" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(1)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file2" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center;">2</td>
+                  <td width="5%" class="align-c">2</td>
                   <td width="95%">
                     <label for="file3" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(2)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file3" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center;">3</td>
+                  <td width="5%" class="align-c">3</td>
                   <td width="95%">
                     <label for="file4" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(3)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file4" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden"">X</a>
                   </td>
                 </tr>
                 <tr>
-                  <td width="5%" style="text-align: center;">4</td>
+                  <td width=" 5%" class="align-c">4
+                  </td>
                   <td width="95%">
                     <label for="file5" class="file-input-label">파일 선택</label>
-                    <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input" name="productImgArr[]"
-                      onchange="uploadFile(4)" />
-                    <span id="fileName" class="file-name"></span>
-                    <a id="cancelButton" class="cancel-btn" style="display: none;">X</a>
+                    <input type="file" accept=".jpg, .jpeg, .png" id="file5" class="file-input"
+                      name="productImgArr[]" />
+                    <span class="file-name"></span>
+                    <a class="cancel-btn hidden">X</a>
                   </td>
                 </tr>
               </table>
@@ -194,11 +193,11 @@
                 </tr>
               </table>
 
-              <div class="admin-btn-tool tool-btn ib detail-bottom-btn">
-                <button type="button" class="btn btn-primary btn-100" onClick="onClickCancleBtn()">
+              <div class="admin-btn-tool ib detail-bottom-btn">
+                <button type="button" id="to_board_btn" class="btn btn-primary btn-100">
                   목록
                 </button>
-                <button type="button" class="btn btn-primary btn-100" onClick="registeContent(event)">
+                <button type="button" id="register_btn" class="btn btn-primary btn-100">
                   등록
                 </button>
               </div>
@@ -208,10 +207,10 @@
       </div>
 
       <!-- Footer -->
-      <footer class="sticky-footer bg-white">
+      <footer id="footer" class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2020</span>
+            <span>Copyright &copy; Wonny Topper 2023</span>
           </div>
         </div>
       </footer>
@@ -223,13 +222,17 @@
 
   <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/dayjs@1.10.7/dayjs.min.js"></script>
-  
+
   <script src="/admin/assets/js/common.js"></script>
   <script>
-    let formattedNow = null;
-    let fileId = [];//5
+    let fileId = [];
+    const fileNameElArr = document.getElementsByClassName("file-name");
+    const cancelElArr = document.getElementsByClassName("cancel-btn");
+    const fileInputElArr = document.getElementsByName("productImgArr[]");
+    let now = dayjs();
+    let selectDateTime = now.format("YYYY-MM-DD HH:mm:ss");
 
-    window.onload = () => {
+    $(document).ready(function () {
       $('.date-pick').datepicker({
         dateFormat: 'yy-mm-dd',
         format: 'yyyy-mm-dd',
@@ -243,77 +246,86 @@
         },
         endDate: new Date(),
       })
-    }
 
-    $(document).ready(function () {
       $('#dataTable').DataTable()
+
+      for (let i = 0; i < cancelElArr.length; i++) {
+        fileInputElArr[i].addEventListener("change", function () { uploadFile(i) });
+        $(cancelElArr[i]).click(function () {
+          fileInputElArr[i].value = "";
+          fileNameElArr[i].textContent = "";
+          cancelElArr[i].style.display = "none";
+          fileId[i] = null;
+          deleteFile(fileId[i]);
+        });
+      }
+
+      for (let i = 0; i < 24; i++) {
+        let hour = i.toString().padStart(2, "0");
+        $("#hour").append("<option value='" + hour + "'>" + hour + "</option>");
+      }
+      for (let i = 0; i < 60; i++) {
+        let minute = i.toString().padStart(2, "0");
+        $("#minute").append("<option value='" + minute + "'>" + minute + "</option>");
+      }
+      for (let i = 0; i < 60; i++) {
+        let second = i.toString().padStart(2, "0");
+        $("#second").append("<option value='" + second + "'>" + second + "</option>");
+      }
+
+      $("#start_date").val(now.format("YYYY-MM-DD"));
+      $("#hour").val(now.format("HH"));
+      $("#minute").val(now.format("mm"));
+      $("#second").val(now.format("ss"));
+
+      // 'hour', 'minute', 'second'에 현재 시간보다 미래의 시간이 선택되면 alert 창으로 경고
+      $("#start_date, #hour, #minute, #second").change(function () {
+        const selectDate = $("#start_date").val();
+        const selectHour = $("#hour").val();
+        const selectMinute = $("#minute").val();
+        const selectSecond = $("#second").val();
+
+        selectDateTime = dayjs(selectDate + " " + selectHour + ":" + selectMinute + ":" + selectSecond);
+        now = dayjs();
+        if (selectDateTime.isAfter(now)) {
+          alert("현재 시간 이후로는 선택이 불가능합니다");
+          $("#start_date").val(now.format("YYYY-MM-DD"));
+          $("#hour").val(now.format("HH"));
+          $("#minute").val(now.format("mm"));
+          $("#second").val(now.format("ss"));
+          selectDateTime = now.format("YYYY-MM-DD HH:mm:ss");
+        }
+      });
+      $('#to_board_btn').click(onClickCancleBtn);
+      $('#register_btn').click(registerContent);
     })
 
-    // '.hour'에 시간을 넣어줌
-    for (var i = 0; i < 24; i++) {
-      if (i < 10) {
-        i = "0" + i;
-      }
-      $(".hour").append("<option value='" + i + "'>" + i + "</option>");
-    }
 
-    // '.minute'에 분을 넣어줌
-    for (var i = 0; i < 60; i++) {
-      if (i < 10) {
-        i = "0" + i;
-      }
-      $(".minute").append("<option value='" + i + "'>" + i + "</option>");
-    }
-
-    // '.second'에 초를 넣어줌
-    for (var i = 0; i < 60; i++) {
-      if (i < 10) {
-        i = "0" + i;
-      }
-      $(".second").append("<option value='" + i + "'>" + i + "</option>");
-    }
-
-    var now = dayjs();
-    // 현재 날짜를 'selectDate'에 넣어줌
-    $("#select-date").val(now.format("YYYY-MM-DD"));
-    // 현재 시간을 '.hour', '.minute', '.second'에 넣어줌
-    $(".hour").val(now.format("HH"));
-    $(".minute").val(now.format("mm"));
-    $(".second").val(now.format("ss"));
-
-    let selectDateTime = now.format("YYYY-MM-DD HH:mm:ss");
-
-    // '.hour', '.minute', '.second'에 현재 시간보다 미래의 시간이 선택되면 alert 창으로 경고
-    $("#select-date, .hour, .minute, .second").change(function () {
-      var selectDate = $("#select-date").val();
-      var selectHour = $(".hour").val();
-      var selectMinute = $(".minute").val();
-      var selectSecond = $(".second").val();
-
-      selectDateTime = dayjs(selectDate + " " + selectHour + ":" + selectMinute + ":" + selectSecond);
-      now = dayjs();
-      if (selectDateTime.isAfter(now)) {
-        alert("현재 시간 이후로는 선택이 불가능합니다");
-        $("#select-date").val(now.format("YYYY-MM-DD"));
-        $(".hour").val(now.format("HH"));
-        $(".minute").val(now.format("mm"));
-        $(".second").val(now.format("ss"));
-        selectDateTime = now.format("YYYY-MM-DD HH:mm:ss");
-      }
-    });
 
     const onClickCancleBtn = () => {
       if (confirm("등록을 취소하시겠습니까")) location.href = "/admin/content_main";
     }
 
+    const fileButtonStyle = (i) => {
+      const file = fileInputElArr[i].files[0];
+      if (file != null) {
+        const fileName = file.name;
+        fileNameElArr[i].textContent = fileName;
+        fileNameElArr[i].style.display = "inline";
+        cancelElArr[i].style.display = "inline-block";
+      } else {
+        fileNameElArr[i].style.display = "none";
+        cancelElArr[i].style.display = "none";
+      }
+    }
+
     //파일 등록
     const uploadFile = async (i) => {
-      const fileInputElArr = document.getElementsByName("productImgArr[]");
       const file = fileInputElArr[i].files[0];
-      console.log("파일업로드 준비");
+
       if (file) {
         const fileSizeInBytes = file.size;
-        const fileSizeInMB = fileSizeInBytes / (1024 * 1024); // 바이트를 메가바이트로 변환
+        const fileSizeInMB = fileSizeInBytes / (1024 * 1024);
         const maxSizeInMB = 3;
         if (fileSizeInMB > maxSizeInMB) {
           alert('파일 크기가 3MB를 초과하였습니다.');
@@ -327,32 +339,13 @@
         await deleteFile(fileId[i]);
       }
 
-      const fileNameElArr = document.getElementsByClassName("file-name");
-      const cancelElArr = document.getElementsByClassName("cancel-btn");
-      if (file != null) {
-        const fileName = file.name;
-        fileNameElArr[i].textContent = fileName;
-        fileNameElArr[i].style.display = "inline";
-        cancelElArr[i].style.display = "inline-block";
-      } else {
-        fileNameElArr[i].style.display = "none";
-        cancelElArr[i].style.display = "none";
-      }
-
-      cancelElArr[i].addEventListener("click", function () {
-        fileInputElArr[i].value = "";
-        fileId[i] = null;
-        fileNameElArr[i].textContent = "";
-        cancelElArr[i].style.display = "none";
-        deleteFile(fileId[i]);
-      });
+      fileButtonStyle(i);
 
       const formData = new FormData();
       formData.append("file", file);
 
       const requestOptions = {
         method: 'POST',
-        //headers: myHeaders,
         body: formData,
         redirect: 'follow'
       };
@@ -361,16 +354,15 @@
         const response = await fetch(`/upload`, requestOptions);
         const { code, message, data } = await response.json();
         if (code === 200) {
-          console.log(data);
           fileId[i] = data.file_id;
         }
       } catch (err) {
-        console.log('Err:', err);
+        console.log("Err", err);
       }
     }
 
     //컨텐츠 등록
-    const registeContent = async (e) => {
+    const registerContent = async (e) => {
       const title = document.getElementById("title").value;
       const note = document.getElementById("note").value;
       const category = parseInt(document.getElementById("category").value);
@@ -402,8 +394,6 @@
         exposure_yn
       });
 
-      console.log(raw);
-
       const requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -417,11 +407,12 @@
         if (code === 200) {
           alert("등록이 완료되었습니다.");
           window.location.href = "/admin/content_main";
-        }else{
-          console.log(message);
+        } else {
+          alert("에러가 발생했습니다.");
         }
       } catch (err) {
-        console.log('Err:', err);
+        alert("에러가 발생했습니다.");
+        console.log("Err", err);
       }
     }
   </script>
