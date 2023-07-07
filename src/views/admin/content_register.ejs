@@ -392,7 +392,7 @@
         file_2_id: fileId[2],
         file_3_id: fileId[3],
         file_4_id: fileId[4],
-        reg_date: selectDateTime,
+        reg_date: dayjs(selectDateTime).format("YYYY-MM-DD HH:mm:ss"),
         exposure_yn
       });
 
