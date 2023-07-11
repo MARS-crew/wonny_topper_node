@@ -144,7 +144,7 @@
                 </div>
             </div>
 
-            <div class="instagram_content hidden">
+            <div class="instagram_content">
                 <div class="instagram_area">
                     <h3 class="title">인스타그램</h3>
                     <a href="https://www.instagram.com/wonny_topper/" target="_blank"
@@ -198,8 +198,6 @@
                     </div>
 
 
-
-
                 </div>
                 <!-- <div>
                     <div class="kakao_btn_area">
@@ -241,6 +239,47 @@
 
     <script src="/user/assets/js/swiper.js"></script>
     <script src="/user/assets/js/common.js"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // 인스타그램 API 요청을 위한 엔드포인트 URL
+    var apiUrl = 'https://graph.instagram.com/me/media';
+    // 인스타그램 토큰
+    var accessToken = 'IGQVJYVXBXQ1lkdXNuWndpd0wyYWl0ZA0d6X2JVWm5OcjRWQWNBbUt6aEVzY2RsTG10RnlxRVRfUktxdV9NbVNqUnhwamFwVjh6Y1p6TXozaGdzQS10WDNrZAmd5VXFnUDFHTzNFN2w0MHlJcGVKeU9WcQZDZD';
+    // 가져올 최근 게시물의 수
+    var count = 6;
+
+    // 인스타그램 API 요청
+    $.ajax({
+      url: apiUrl,
+      dataType: 'jsonp',
+      data: {
+        access_token: accessToken,
+        fields: 'id,media_type,media_url',
+        limit: count
+      },
+      success: function(response) {
+        if (response.data) {
+          var media = response.data;
+          // 썸네일 이미지를 표시할 영역 선택자
+          var $instagramList = $('.instagram_list');
+          
+          // 최근 게시물의 수만큼 반복하여 이미지 표시
+          for (var i = 0; i < media.length; i++) {
+            var imageUrl = media[i].media_url;
+            var $instagramContent = $instagramList.find('.instagram_content').eq(i);
+            // 이미지를 표시할 HTML 엘리먼트에 이미지 URL을 추가
+            $instagramContent.html('<img src="' + imageUrl + '">');
+          }
+        }
+      },
+      error: function() {
+        console.log('Error occurred while fetching Instagram data.');
+      }
+    });
+  });
+</script>
 </body>
 
 </html>
